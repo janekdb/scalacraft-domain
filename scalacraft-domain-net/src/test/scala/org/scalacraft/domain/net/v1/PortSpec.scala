@@ -45,9 +45,44 @@ class PortSpec extends FlatSpec with Matchers {
   }
 
   it should "not have one-off errors" in {
-    Port.opt(-1) should matchPattern { case None =>}
+    Port.opt(-1) should be(None)
     Port.opt(0) should matchPattern { case Some(Port(0)) =>}
     Port.opt(65535) should matchPattern { case Some(Port(65535)) =>}
-    Port.opt(65535 + 1) should matchPattern { case None =>}
+    Port.opt(65535 + 1) should be(None)
+  }
+
+
+  it should "be constructed from a valid port number string" in {
+    val portOpt: Option[Port] = Port.opt(ValidPortNumber.toString)
+    portOpt should be('defined)
+    portOpt.get should have(
+      'portNumber(ValidPortNumber)
+    )
+  }
+
+  it should "not be constructed from an invalid port number string" in {
+    Port.opt(InvalidPortNumber.toString) should be(None)
+  }
+
+  it should "not be constructed from a null string" in {
+    Port.opt(null: String) should be(None)
+  }
+
+  it should "not be constructed from an empty string" in {
+    Port.opt("") should be(None)
+  }
+
+  it should "not be constructed from a non-numeric string" in {
+    Port.opt("3rd") should be(None)
+  }
+
+  it should "not be constructed from an out of range positive integer string" in {
+    val n = (Int.MaxValue: Long) + 1
+    Port.opt(n.toString) should be(None)
+  }
+
+  it should "not be constructed from an out of range negative integer string" in {
+    val n = (Int.MinValue: Long) - 1
+    Port.opt(n.toString) should be(None)
   }
 }

@@ -15,6 +15,8 @@
 */
 package org.scalacraft.domain.net.v1
 
+import scala.util.control.Exception.catching
+
 /**
  * `Port`
  */
@@ -22,11 +24,18 @@ case class Port private(portNumber: Int)
 
 object Port {
 
-  private val ValidRange = Range(0, 65535+1)
+  private implicit class sx(val s: String) {
+    def optInt = catching(classOf[NumberFormatException]) opt s.toInt
+  }
+
+  private val ValidRange = Range(0, 65535 + 1)
 
   def opt(portNumber: Int): Option[Port] =
     if (ValidRange contains portNumber)
       Some(Port(portNumber))
     else
       None
+
+  def opt(portNumber: String): Option[Port] =
+    portNumber.optInt filter (_ >= 0) map (Port(_))
 }
