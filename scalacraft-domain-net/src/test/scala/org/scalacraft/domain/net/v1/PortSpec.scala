@@ -18,6 +18,7 @@ package org.scalacraft.domain.net.v1
 import org.scalatest.FlatSpec
 
 import org.scalatest.Matchers
+import org.scalatest.OptionValues._
 
 /**
  * Specification for `Port`
@@ -34,8 +35,7 @@ class PortSpec extends FlatSpec with Matchers {
 
   "A Port" should "be constructed from a valid port number" in {
     val portOpt: Option[Port] = Port.opt(ValidPortNumber)
-    portOpt should be('defined)
-    portOpt.get.portNumber should equal(ValidPortNumber)
+    portOpt.value.portNumber should equal(ValidPortNumber)
   }
 
   it should "not be constructed from an invalid port number" in {
@@ -44,8 +44,8 @@ class PortSpec extends FlatSpec with Matchers {
 
   it should "not have one-off errors" in {
     Port.opt(-1) should be(None)
-    //    Port.opt(0) should matchPattern { case Some(Port(0)) =>}
-    //    Port.opt(65535) should matchPattern { case Some(Port(65535)) =>}
+    Port.opt(0).value.portNumber should equal(0)
+    Port.opt(65535).value.portNumber should equal(65535)
     Port.opt(65535 + 1) should be(None)
   }
 
@@ -62,8 +62,7 @@ class PortSpec extends FlatSpec with Matchers {
 
   it should "be constructed from a valid port number string" in {
     val portOpt: Option[Port] = Port.opt(ValidPortNumber.toString)
-    portOpt should be('defined)
-    portOpt.get.portNumber should equal(ValidPortNumber)
+    portOpt.value.portNumber should equal(ValidPortNumber)
   }
 
   it should "not be constructed from an invalid port number string" in {
