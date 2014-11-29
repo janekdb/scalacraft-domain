@@ -101,4 +101,18 @@ class PortSpec extends FlatSpec with Matchers {
     m(ValidPortNumber.toString) should equal(ValidPortNumber)
     m(InvalidPortNumber.toString) should be(None)
   }
+
+  /* Implicit Conversions */
+
+  it should "implicitly convert to an int" in {
+    val port = Port.opt(ValidPortNumber)
+    val s: Option[Int] = port
+    s.value should equal(ValidPortNumber)
+  }
+
+  it should "implicitly convert to a string" in {
+    val port = Port.opt(ValidPortNumber)
+    val s: Option[String] = port
+    s.value should equal(ValidPortNumber.toString)
+  }
 }

@@ -24,6 +24,12 @@ case class Port private(portNumber: Int)
 
 object Port {
 
+  implicit def `to-Option[Int]`(port: Option[Port]): Option[Int] =
+    port map (_.portNumber)
+
+  implicit def `to-Option[String]`(port: Option[Port]): Option[String] =
+    port map (_.portNumber.toString)
+
   private implicit class sx(val s: String) {
     def optInt = catching(classOf[NumberFormatException]) opt s.toInt
   }
