@@ -28,14 +28,17 @@ object Port {
     def optInt = catching(classOf[NumberFormatException]) opt s.toInt
   }
 
-  private val ValidRange = Range(0, 65535 + 1)
+  private val inRange = Range(0, 65535 + 1).contains _
 
   def opt(portNumber: Int): Option[Port] =
-    if (ValidRange contains portNumber)
-      Some(Port(portNumber))
-    else
-      None
+    Some(portNumber) filter (inRange) map (Port(_))
 
   def opt(portNumber: String): Option[Port] =
-    portNumber.optInt filter (_ >= 0) map (Port(_))
+    portNumber.optInt filter (inRange) map (Port(_))
+
+  def unapply(x: Int): Option[Int] =
+    Some(x) filter (inRange)
+
+  def unapply(x: String): Option[Int] =
+    x.optInt filter (inRange)
 }
