@@ -30,6 +30,17 @@ the unconstrained version of Port applies no validation to the port number.
 Both variations can be used in pattern matching. The unconstrained version will match more inputs than
 the constrained version.
 
+### Class Overview
+
+This sections summarise the available domain classes.
+
+#### Net
+
+Class | Purpose | Example
+---- | ---- | ----
+Port | A port number | 8080
+
+
 ### Documentation Notes
 
 ##### Numeric Ranges
