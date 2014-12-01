@@ -30,6 +30,14 @@ the unconstrained version of Port applies no validation to the port number.
 Both variations can be used in pattern matching. The unconstrained version will match more inputs than
 the constrained version.
 
+### Documentation Notes
+
+##### Numeric Ranges
+
+The notation [m, n] denotes the inclusive range m <= x <= n. For example [0, 65535] refers to the range,
+
+    0, 1, 2, ..., 65535
+
 ### Roadmap
 
 [ ] Implicit conversion from constrained types to the corresponding unconstrained types
