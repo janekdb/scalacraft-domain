@@ -117,4 +117,10 @@ class PortSpec extends FlatSpec with Matchers {
     val s: Option[String] = port
     s.value should equal(ValidPortNumber.toString)
   }
+
+  it should "implicitly convert to an unconstrained Port" in {
+    val Some(port) = Port.opt(ValidPortNumber)
+    val uncons: unconstrained.Port = port
+    uncons.portNumber should equal(ValidPortNumber)
+  }
 }

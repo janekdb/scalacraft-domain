@@ -69,6 +69,8 @@ object Port {
   implicit def `to-Option[String]`(port: Option[Port]): Option[String] =
     port map (_.portNumber.toString)
 
+  implicit def `to-Port`(port: Port): unconstrained.Port = unconstrained.Port(port.portNumber)
+
   private implicit class sx(val s: String) {
     def optInt = catching(classOf[NumberFormatException]) opt s.toInt
   }
