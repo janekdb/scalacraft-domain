@@ -18,14 +18,14 @@ The scalacraft-domain library offers constrained instances of case classes and a
 collection of unconstrained case classes.
 
 Obtaining an instance of a constrained Port,
-````
+````scala
 import org.scalacraft.domain.net.v1._
 
 val portOpt: Option[Port] = Port.opt(3369)
 ````
 
 Obtaining an instance of an unconstrained Port,
-````
+````scala
 import org.scalacraft.domain.net.v1.unconstrained._
 
 val port: Port = Port(-3)
@@ -41,10 +41,14 @@ the constrained version.
 
 ### Implicit Conversions
 
+#### Between domain types
+
 Implicit views that convert between constrained and unconstrained versions of a class are included.
 
 An unconstrained type can be converted to a option of the constrained type, while a constrained type can be
 converted to an unconstrained type unconditionally.
+
+#### Between domain and platform types
 
 Implicit views that convert to String are included. Additionally where the case class has one field an implicit
 view of that field is provided allowing an instance to be used whether the field is required. This supports the
