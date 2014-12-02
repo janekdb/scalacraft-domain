@@ -31,9 +31,11 @@ class PortSpec extends FlatSpec with Matchers {
 
   private val MaxPortNumber = 65535
 
+  behavior of "A Port"
+
   /* Construction from an integer */
 
-  "A Port" should "be constructed from a valid port number" in {
+  it should "be constructed from a valid port number" in {
     val portOpt: Option[Port] = Port.opt(ValidPortNumber)
     portOpt.value.portNumber should equal(ValidPortNumber)
   }
