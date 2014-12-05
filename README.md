@@ -11,6 +11,7 @@ A collection of case classes covering commons domains
 - Functional
   - Complete immutability
   - Zero exception throwing
+- No if statements
 
 ### Constrained and Unconstrained Domain Objects
 
@@ -68,7 +69,7 @@ This sections summarise the available domain classes.
 Class | Purpose | Example
 ---- | ---- | ----
 Port | A port number | 8080
-
+IPAddress | An IP address | 192.162.0.83
 
 ### Documentation Notes
 
