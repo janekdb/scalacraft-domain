@@ -1,1 +1,14 @@
-
+# See http://about.travis-ci.org/docs/user/build-configuration/
+language: scala
+scala:
+   - 2.11.2
+branches:
+  only:
+    - master
+notifications:
+  email:
+    recipients:
+      - janekdb@gmail.com
+jdk:
+  - oraclejdk7
+  - oraclejdk8
