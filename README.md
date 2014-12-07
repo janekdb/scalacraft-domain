@@ -3,6 +3,7 @@ scalacraft-domain
 
 A collection of case classes covering commons domains
 
+![Build Status](https://travis-ci.org/janekdb/scalacraft-domain.svg?branch=master)
 
 ### Design Objectives
 
