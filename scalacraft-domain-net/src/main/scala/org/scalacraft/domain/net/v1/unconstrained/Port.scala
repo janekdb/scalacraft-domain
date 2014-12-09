@@ -22,7 +22,7 @@ import org.scalacraft.domain.net.v1.{Port => ConstrainedPort}
 /**
  * A `Port` represents an IP port.
  *
- * This classes does not constrain the value of the port in anyway.
+ * This class does not constrain the value of the port in anyway.
  *
  * Pattern matching is supported as the following examples demonstrate,
  * {{{
@@ -47,6 +47,8 @@ import org.scalacraft.domain.net.v1.{Port => ConstrainedPort}
  *   val port = Port(6006)
  *   val isa = new InetSocketAddress(p)
  * }}}
+ *
+ * A conversion to an option of the constrained version of this class is also available.
  */
 case class Port(portNumber: Int)
 
