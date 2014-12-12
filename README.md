@@ -82,4 +82,8 @@ The notation [m, n] denotes the inclusive range m <= x <= n. For example [0, 655
 
 ### Roadmap
 
-[ ] Implicit conversion from constrained types to the corresponding unconstrained types
+[ ] Country: Add ISO country codes for alpha-3 and alpha-2
+[ ] Address: Add US zip code
+[ ] Address: Add UK postcode
+[ ] Net: Add domain name
+[x] Implicit conversion from constrained types to the corresponding unconstrained types
