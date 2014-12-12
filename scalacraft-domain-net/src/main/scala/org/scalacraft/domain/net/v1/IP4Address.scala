@@ -15,6 +15,8 @@
 */
 package org.scalacraft.domain.net.v1
 
+import org.scalacraft.domain.net.v1.unconstrained.{IP4Address => UnconstrainedIP4Address}
+
 import scala.util.control.Exception._
 
 /**
@@ -33,6 +35,9 @@ object IP4Address {
    */
   implicit def `to-String`(ip4Address: IP4Address): String =
     ip4Address.tuple.productIterator.mkString(".")
+
+  implicit def `to-IP4Address`(ip4Address: IP4Address): UnconstrainedIP4Address =
+    UnconstrainedIP4Address(ip4Address.byte1, ip4Address.byte2, ip4Address.byte3, ip4Address.byte4)
 
   private val ValidRange = Range(0, 255 + 1)
 

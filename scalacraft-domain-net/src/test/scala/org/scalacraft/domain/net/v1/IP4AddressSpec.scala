@@ -21,6 +21,8 @@ import org.scalatest.Matchers
 
 import org.scalatest.OptionValues._
 
+import org.scalacraft.domain.net.v1.unconstrained.{IP4Address => Other}
+
 /**
  * Specification for `IP4Adress`
  */
@@ -118,5 +120,14 @@ class IP4AddressSpec extends FlatSpec with Matchers {
     s should equal(FormattedValidDottedQuad)
   }
 
-  it should "implicitly convert to an unconstrained IP4Address" in (pending)
+  it should "implicitly convert to an unconstrained IP4Address" in {
+    val ipa = IP4Address(88, 0, 2, 119)
+    val other: Other = ipa
+    other should have(
+      'byte1(88),
+      'byte2(0),
+      'byte3(2),
+      'byte4(119)
+    )
+  }
 }
