@@ -107,15 +107,15 @@ class PortSpec extends FlatSpec with Matchers {
   /* Implicit Conversions */
 
   it should "implicitly convert to an int" in {
-    val port = Port.opt(ValidPortNumber)
-    val s: Option[Int] = port
-    s.value should equal(ValidPortNumber)
+    val Some(port) = Port.opt(ValidPortNumber)
+    val s: Int = port
+    s should equal(ValidPortNumber)
   }
 
   it should "implicitly convert to a string" in {
-    val port = Port.opt(ValidPortNumber)
-    val s: Option[String] = port
-    s.value should equal(ValidPortNumber.toString)
+    val Some(port) = Port.opt(ValidPortNumber)
+    val s: String = port
+    s should equal(ValidPortNumber.toString)
   }
 
   it should "implicitly convert to an unconstrained Port" in {

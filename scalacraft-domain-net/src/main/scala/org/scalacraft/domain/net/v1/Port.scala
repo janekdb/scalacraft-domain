@@ -63,11 +63,9 @@ case class Port private(portNumber: Int)
 
 object Port {
 
-  implicit def `to-Option[Int]`(port: Option[Port]): Option[Int] =
-    port map (_.portNumber)
+  implicit def `to-Int`(port: Port): Int = port.portNumber
 
-  implicit def `to-Option[String]`(port: Option[Port]): Option[String] =
-    port map (_.portNumber.toString)
+  implicit def `to-String`(port: Port): String = port.portNumber.toString
 
   implicit def `to-Port`(port: Port): unconstrained.Port = unconstrained.Port(port.portNumber)
 
