@@ -20,7 +20,26 @@ import org.scalacraft.domain.net.v1.unconstrained.{IP4Address => UnconstrainedIP
 import scala.util.control.Exception._
 
 /**
- * `IP4Address`
+ * An `IP4Address` represents an IP4 address.
+ *
+ * This class constrains the range of each byte to [0, 255].
+ *
+ * Pattern matching is supported as the following examples demonstrate,
+ * {{{
+ * "192.162.0.9" match {
+ * case IP4Address(_, _, b3, b4) => Some(256 * b3 + b4)
+ * case _ => None
+ * }
+ * }}}
+ *
+ * Implicit conversions exist which allow an instance of `IP4Address` when a `String` is required.
+ *
+ * {{{
+ * val ipa = IP4Address(b1, b2, b3, b4)
+ * val inet = java.net.InetAddress.getByName(ipa)
+ * }}}
+ *
+ * A conversion to the unconstrained version of this class is also available.
  */
 case class IP4Address(byte1: Int, byte2: Int, byte3: Int, byte4: Int) {
   private def tuple = (byte1, byte2, byte3, byte4)
