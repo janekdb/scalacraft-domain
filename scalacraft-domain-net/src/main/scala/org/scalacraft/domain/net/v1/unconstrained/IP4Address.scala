@@ -28,8 +28,8 @@ import scala.util.matching.Regex
  * Pattern matching is supported as the following examples demonstrate,
  * {{{
  * "192.162.0.9" match {
- *   case IP4Address(b1, b2, _, _) => (b1, b2)
- *   case _ => None
+ * case IP4Address(b1, b2, _, _) => (b1, b2)
+ * case _ => None
  * }
  * }}}
  *
