@@ -17,6 +17,8 @@ package org.scalacraft.domain.net.v1
 
 import scala.util.control.Exception.catching
 
+import org.scalacraft.domain.internal.NumericConversions.FromString
+
 /**
  * A `Port` represents an IP port.
  *
@@ -68,10 +70,6 @@ object Port {
   implicit def `to-String`(port: Port): String = port.portNumber.toString
 
   implicit def `to-Port`(port: Port): unconstrained.Port = unconstrained.Port(port.portNumber)
-
-  private implicit class sx(val s: String) {
-    def optInt = catching(classOf[NumberFormatException]) opt s.toInt
-  }
 
   private val inRange = Range(0, 65535 + 1).contains _
 

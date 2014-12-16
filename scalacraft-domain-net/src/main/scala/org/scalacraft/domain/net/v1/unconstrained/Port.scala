@@ -17,6 +17,7 @@ package org.scalacraft.domain.net.v1.unconstrained
 
 import scala.util.control.Exception._
 
+import org.scalacraft.domain.internal.NumericConversions.FromString
 import org.scalacraft.domain.net.v1.{Port => ConstrainedPort}
 
 /**
@@ -59,10 +60,6 @@ object Port {
   implicit def `to-String`(port: Port): String = port.portNumber.toString
 
   implicit def `to-Option[Port]`(port: Port): Option[ConstrainedPort] = ConstrainedPort.opt(port.portNumber)
-
-  private implicit class sx(val s: String) {
-    def optInt = catching(classOf[NumberFormatException]) opt s.toInt
-  }
 
   def unapply(x: Int): Option[Int] = Some(x)
 

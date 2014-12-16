@@ -15,6 +15,7 @@
 */
 package org.scalacraft.domain.net.v1
 
+import org.scalacraft.domain.internal.NumericConversions.FromString
 import org.scalacraft.domain.net.v1.unconstrained.{IP4Address => UnconstrainedIP4Address}
 
 import scala.util.control.Exception._
@@ -68,10 +69,6 @@ object IP4Address {
     val digits = "([\\d]{1,3})"
     val dot = "\\."
     ((digits + dot) * 3 + digits).r
-  }
-
-  private implicit class sx(val s: String) {
-    def optInt = catching(classOf[NumberFormatException]) opt s.toInt
   }
 
   def opt(byte1: Int, byte2: Int, byte3: Int, byte4: Int): Option[IP4Address] =
