@@ -42,7 +42,7 @@ import scala.util.control.Exception._
  *
  * A conversion to the unconstrained version of this class is also available.
  */
-case class IP4Address(byte1: Int, byte2: Int, byte3: Int, byte4: Int) {
+case class IP4Address private(byte1: Int, byte2: Int, byte3: Int, byte4: Int) {
   private def tuple = (byte1, byte2, byte3, byte4)
 }
 

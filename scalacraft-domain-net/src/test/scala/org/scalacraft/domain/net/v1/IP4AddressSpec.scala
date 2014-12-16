@@ -121,7 +121,7 @@ class IP4AddressSpec extends FlatSpec with Matchers {
   }
 
   it should "implicitly convert to an unconstrained IP4Address" in {
-    val ipa = IP4Address(88, 0, 2, 119)
+    val ipa: IP4Address = IP4Address.opt(88, 0, 2, 119).get
     val other: Other = ipa
     other should have(
       'byte1(88),
