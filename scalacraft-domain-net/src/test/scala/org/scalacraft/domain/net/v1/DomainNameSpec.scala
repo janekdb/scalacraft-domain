@@ -34,6 +34,14 @@ class DomainNameSpec extends FlatSpec with Matchers {
 
   /* Construction from strings */
 
+  it should "not be constructed from a null seq" in {
+    DomainName.opt(null: _*) should be(None)
+  }
+
+  it should "not be constructed from an empty seq" in {
+    DomainName.opt() should be(None)
+  }
+
   it should "not be constructed from a null string" in {
     DomainName.opt(null: String) should be(None)
   }
@@ -106,4 +114,17 @@ class DomainNameSpec extends FlatSpec with Matchers {
     DomainName.opt(a, a, a, a, a, b) should be(None)
   }
 
+  /* Construction from a strings with separators */
+
+  it should "be constructed from a multi-label string" in {
+    DomainName.opt("example.com").value.labels should equal("example" :: "com" :: Nil)
+  }
+
+  it should "be constructed from two multi-label strings" in {
+    DomainName.opt("a.b", "example.com").value.labels should equal("a" :: "b" :: "example" :: "com" :: Nil)
+  }
+
+  it should "be constructed from two multi-label strings and one other string" in {
+    DomainName.opt("a.b", "c", "example.com").value.labels should equal("a" :: "b" :: "c" :: "example" :: "com" :: Nil)
+  }
 }

@@ -45,14 +45,18 @@ case class DomainName private(labels: String*)
 
 object DomainName {
 
+  private val LabelSeparator = '.'
+
+  private val MaxOverallLength = 253
+
   /**
    * The restriction on the maximum overall length implies this restriction on the
    * maximum label count. Even so the label count is explicitly tested to make clear
    * the nature of the restriction.
    */
-  private val MaxLabelCount = 127
+  private val LabelCountRange = 1 to 127
 
-  private val MaxOverallLength = 253
+  private def labelCountInRange(labels: Seq[String]) = LabelCountRange contains labels.size
 
   /**
    * A pattern that does not match leading or trailing hyphens
@@ -70,11 +74,27 @@ object DomainName {
   private def overallLengthInRange(labels: Seq[String]) =
     labels.map(_.length).sum + labels.size - 1 <= MaxOverallLength
 
+  private def split(labels: Seq[String]): Seq[String] = labels map (_.split(LabelSeparator)) flatten
+
+  /**
+   * If `labels` is a collection of valid labels or a single string with embedded label separators then
+   * return an instance other return None.
+   * Examples of valid labels
+   * - "www", "scalacraft", "com"
+   * - "www.scalacraft", "com"
+   * - "www.scalacraft.com"
+   * Examples of invalid labels
+   * - "www.", "$calacraft", "com-"
+   * - ""
+   * @param labels A sequence of domain name parts or a single string with embedded periods.
+   * @return A valid instance of `DomainName` or `None` if any constraint was violated.
+   */
   def opt(labels: String*): Option[DomainName] = {
+
+    /* Option(seq) converts a null to a None but does not inspect the elements so filter is used. */
     for {
-      labels <- Some(labels)
-      if labels.size <= MaxLabelCount
-      if labels forall (_ != null)
+      labels <- Option(labels) filter (_.forall(_ != null)) map (split)
+      if labelCountInRange(labels)
       if labels forall (labelSizeInRange)
       if labels forall (labelMatchesPattern)
       if overallLengthInRange(labels)
