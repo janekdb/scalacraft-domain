@@ -98,6 +98,8 @@ class IP4AddressSpec extends FlatSpec with Matchers {
     IP4Address.opt("") should be(None)
   }
 
+  /* Pattern Matching */
+
   it should "be usable in string pattern matching" in {
     def m(x: String) = x match {
       case IP4Address(b1, b2, b3, b4) => Some(b1, b2, b3, b4)
@@ -107,6 +109,8 @@ class IP4AddressSpec extends FlatSpec with Matchers {
     m(Strings.NonNumeric) should be(None)
     m(Strings.ValidQuad).value should equal((240, 1, 255, 7))
   }
+
+  /* Implicit Conversions */
 
   it should "implicitly convert to a string" in {
     val ip4Opt: Option[IP4Address] = IP4Address.opt(

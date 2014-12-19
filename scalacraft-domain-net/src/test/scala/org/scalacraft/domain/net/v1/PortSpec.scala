@@ -95,6 +95,8 @@ class PortSpec extends FlatSpec with Matchers {
     Port.opt(n.toString) should be(None)
   }
 
+  /* Pattern Matching */
+
   it should "be usable in string pattern matching" in {
     def m(x: String) = x match {
       case Port(p) => p

@@ -36,6 +36,8 @@ class PortSpec extends FlatSpec with Matchers {
 
   behavior of "A Port"
 
+  /* Pattern Matching */
+
   it should "be usable in pattern matching" in {
     def m(x: Int) = x match {
       case Port(p) => p

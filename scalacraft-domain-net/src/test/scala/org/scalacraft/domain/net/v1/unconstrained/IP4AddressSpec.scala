@@ -29,6 +29,8 @@ class IP4AddressSpec extends FlatSpec with Matchers {
 
   behavior of "An IP4Address"
 
+  /* Pattern Matching */
+
   it should "be usable in string pattern matching" in {
     def m(x: String) = x match {
       case IP4Address(b1, b2, b3, b4) => (b1, b2, b3, b4)
