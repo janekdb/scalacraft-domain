@@ -101,4 +101,6 @@ object DomainName {
     }
     yield DomainName(labels: _*)
   }
+
+  def unapplySeq(x: String): Option[Seq[String]] = opt(x) map (_.labels)
 }

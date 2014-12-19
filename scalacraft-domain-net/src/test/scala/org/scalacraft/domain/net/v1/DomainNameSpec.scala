@@ -127,4 +127,24 @@ class DomainNameSpec extends FlatSpec with Matchers {
   it should "be constructed from two multi-label strings and one other string" in {
     DomainName.opt("a.b", "c", "example.com").value.labels should equal("a" :: "b" :: "c" :: "example" :: "com" :: Nil)
   }
+
+  /* Pattern Matching */
+
+  it should "be usable in string pattern matching" in {
+    def m(x: String): Seq[String] = x match {
+      case DomainName(label) => label :: Nil
+      case DomainName(label1, label2) => label1 :: label2 :: Nil
+      case DomainName(_, _, _) => "unicorn" :: Nil
+      case DomainName(label1, label2, label3, label4) => label1 :: label2 :: label3 :: label4 :: Nil
+      case _ => Nil
+    }
+    m("www") should equal("www" :: Nil)
+    m("example.com") should equal("example" :: "com" :: Nil)
+    m("a.b.c.d") should equal("a" :: "b" :: "c" :: "d" :: Nil)
+    m("") should be(Nil)
+    m("a$") should be(Nil)
+    m("a.b-") should be(Nil)
+  }
+
+  /* Implicit Conversions */
 }
