@@ -45,6 +45,20 @@ case class DomainName private(labels: String*)
 
 object DomainName {
 
+  /**
+   * Provide a string representation for an instance of this class.
+   * @param domainName The instance to use
+   * @return A domain name as a string
+   */
+  implicit def `to-String`(domainName: DomainName): String = domainName.labels mkString LabelSeparator.toString
+
+  /**
+   * Provide direct access to the labels of a domain name.
+   * @param domainName The instance to use
+   * @return The domain name labels
+   */
+  implicit def `to-Seq[String]`(domainName: DomainName): Seq[String] = domainName.labels
+
   private val LabelSeparator = '.'
 
   private val MaxOverallLength = 253

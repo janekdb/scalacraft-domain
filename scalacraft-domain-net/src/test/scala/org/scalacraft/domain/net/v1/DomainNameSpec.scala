@@ -147,4 +147,16 @@ class DomainNameSpec extends FlatSpec with Matchers {
   }
 
   /* Implicit Conversions */
+
+  it should "implicitly convert to a string" in {
+    val dnOpt: Option[DomainName] = DomainName.opt("todo", "example", "com")
+    val s: String = dnOpt.get
+    s should equal("todo.example.com")
+  }
+
+  it should "implicitly convert to a seq" in {
+    val dnOpt: Option[DomainName] = DomainName.opt("todo", "example", "com")
+    val labels: Seq[String] = dnOpt.get
+    labels should equal("todo" :: "example" :: "com" :: Nil)
+  }
 }
