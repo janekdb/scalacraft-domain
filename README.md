@@ -61,6 +61,16 @@ avoidance of direct use of primitive types while preserving the convenience. Thi
   val isa = new InetSocketAddress(p)
 ````
 
+#### To field values
+
+When a case class has a single constructor parameter an implicit view is provided that allows explicit field access
+to be omitted. For example given a Port an assignment to an int will compile,
+
+````scala
+  val port = Port(6006)
+  val portNumber = new port
+````
+
 ### Class Overview
 
 This sections summarise the available domain classes.
