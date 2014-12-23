@@ -27,7 +27,7 @@ import org.scalacraft.domain.net.v1.{IP4Address => Other}
  */
 class IP4AddressSpec extends FlatSpec with Matchers {
 
-  behavior of "An IP4Address"
+  behavior of "An unconstrained IP4Address"
 
   /* Pattern Matching */
 

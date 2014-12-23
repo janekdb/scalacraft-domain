@@ -34,7 +34,7 @@ class PortSpec extends FlatSpec with Matchers {
 
   private val InvalidPortNumber = -1
 
-  behavior of "A Port"
+  behavior of "An unconstrained Port"
 
   /* Pattern Matching */
 
