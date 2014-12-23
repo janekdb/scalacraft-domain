@@ -1,7 +1,7 @@
 scalacraft-domain
 =================
 
-A collection of case classes covering commons domains
+A collection of case classes covering common domains
 
 ![Build Status](https://travis-ci.org/janekdb/scalacraft-domain.svg?branch=master)
 
