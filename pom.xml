@@ -169,6 +169,7 @@
             <build>
                 <plugins>
                     <plugin>
+                        <!-- With this execution the javadoc jar is not created. -->
                         <artifactId>maven-antrun-plugin</artifactId>
                         <executions>
                             <execution>
@@ -177,6 +178,7 @@
                                 <configuration>
                                     <tasks>
                                         <mkdir dir="target/apidocs"/>
+                                        <echo file="target/apidocs/README.txt">This exists to satisfy the requirement to have a javadoc jar for Central Repository</echo>
                                     </tasks>
                                 </configuration>
                                 <goals>
@@ -196,23 +198,8 @@
                                 <goals>
                                     <goal>jar</goal>
                                 </goals>
-                                <configuration>
-                                    <classifier>javadoc</classifier>
-                                    <classesDirectory>${basedir}/empty-javadoc</classesDirectory>
-                                </configuration>
                             </execution>
                         </executions>
-                        <!--
-                                              <executions>
-                                                  <execution>
-                                                      <id>javadoc:jar</id>
-                                                      <phase>verify</phase>
-                                                      <goals>
-                                                          <goal>jar</goal>
-                                                      </goals>
-                                                  </execution>
-                                              </executions>
-                                              -->
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
