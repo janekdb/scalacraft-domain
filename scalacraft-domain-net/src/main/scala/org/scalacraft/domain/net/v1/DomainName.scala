@@ -15,31 +15,53 @@
 */
 package org.scalacraft.domain.net.v1
 
+import org.scalacraft.domain.net.v1.unconstrained.{DomainName => UnconstrainedDomainName}
+
 /**
  * A `DomainName` represents a name in the domain name system.
  *
- * The syntactic constraints on a domain name are taken from [[http://en.wikipedia.org/wiki/Domain_name Wikipedia: Domain Name]],
- * excerpted here for ease of reference. Unlike the example in Programming in Scala/2e the elements of the
- * domain name are stored in the same order as use, i.e. as `www.scalacraft.com`, not reversed. This
- * implementation is case sensitive which is at variance with the Wikipedia specification. Since there is
- * no available use case for case insensitivity this requirement is ignored. Expressed as truth in code we have,
+ * Unlike the example in Programming in Scala/2e the elements of the domain name are stored in the same order
+ * as used, i.e. as `www.scalacraft.com`, not reversed.
+ *
+ * This implementation is case sensitive which is at variance with the Wikipedia specification. If a convincing
+ * use case for case insensitivity arises this could be reconsidered. Expressed in code we have,
  * {{{
  *   DomainName.opt("WWW") != DomainName.opt("www")
  * }}}
  *
- * '''Wikipedia'''
+ * The package documentation provides details of the syntactic constraints placed on domain names.
  *
- * Domain names may be formed from the set of alphanumeric ASCII characters (a-z, A-Z, 0-9), but characters
- * are case-insensitive. In addition the hyphen is permitted if it is surrounded by characters, digits or
- * hyphens, although it is not to start or end a label.
+ * === Pattern Matching ===
  *
- * The hierarchy of domains descends from the right to the left label in the name; each label to the left
- * specifies a subdivision, or subdomain of the domain to the right. For example: the label example specifies
- * a node example.com as a subdomain of the com domain, and www is a label to create www.example.com,
- * a subdomain of example.com. This tree of labels may consist of 127 levels. Each label may contain
- * from 1 to 63 octets. The empty label is reserved for the root node. The full domain name may not exceed a
- * total length of 253 ASCII characters in its textual representation. In practice, some domain registries
- * may have shorter limits.
+ * Pattern matching is supported as the following example demonstrates,
+ * {{{
+ * "example.com" match {
+ * case DomainName(label1, label2) => label1 :: label2 :: Nil  // List("example", "com")
+ * case _ => None
+ * }
+ * }}}
+ * Invalid domain names will not be matched.
+ * {{{
+ * "a.b-" match {
+ * case DomainName(label1, label2) => label1 :: label2 :: Nil
+ * case _ => None  // None
+ * }
+ * }}}
+ * For now there is no way to match an arbitrary number of domain name labels.
+ *
+ * === Implicit Conversions ===
+ *
+ * Implicit conversions exist which allow an instance of `DomainName` to be used when either a `String`
+ * or `Seq[String]`is required.
+ *
+ * {{{
+ *   def countElements(seq: Seq[String]) = seq.length
+ *
+ *   val dn = DomainName.opt("www", "example", "com").get
+ *   val elemNo = countElements(dn) // 3
+ * }}}
+ *
+ * A conversion to the unconstrained version of this class is also available.
  */
 case class DomainName private(labels: String*)
 
@@ -58,6 +80,9 @@ object DomainName {
    * @return The domain name labels
    */
   implicit def `to-Seq[String]`(domainName: DomainName): Seq[String] = domainName.labels
+
+  implicit def `to-DomainName`(domainName: DomainName): UnconstrainedDomainName =
+    UnconstrainedDomainName(domainName.labels: _*)
 
   private val LabelSeparator = '.'
 

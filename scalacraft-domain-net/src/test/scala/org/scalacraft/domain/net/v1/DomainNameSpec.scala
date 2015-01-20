@@ -19,6 +19,8 @@ import org.scalatest.FlatSpec
 import org.scalatest.Matchers
 import org.scalatest.OptionValues._
 
+import org.scalacraft.domain.net.v1.unconstrained.{DomainName => Other}
+
 /**
  * Specification for `DomainNameSpec`
  */
@@ -159,6 +161,12 @@ class DomainNameSpec extends FlatSpec with Matchers {
     val dnOpt: Option[DomainName] = DomainName.opt("todo", "example", "com")
     val labels: Seq[String] = dnOpt.get
     labels should equal("todo" :: "example" :: "com" :: Nil)
+  }
+
+  it should "implicitly convert to a unconstrained domain name" in {
+    val dn = DomainName.opt("blog", "scalacraft", "com").get
+    val other: Other = dn
+    other.labels should equal("blog" :: "scalacraft" :: "com" :: Nil)
   }
 
   /* Other */
