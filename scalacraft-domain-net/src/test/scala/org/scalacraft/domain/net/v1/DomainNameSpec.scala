@@ -141,6 +141,7 @@ class DomainNameSpec extends FlatSpec with Matchers {
     m("www") should equal("www" :: Nil)
     m("example.com") should equal("example" :: "com" :: Nil)
     m("a.b.c.d") should equal("a" :: "b" :: "c" :: "d" :: Nil)
+    m("1.2.3.4.5.6.7") should equal(Nil)
     m("") should be(Nil)
     m("a$") should be(Nil)
     m("a.b-") should be(Nil)
