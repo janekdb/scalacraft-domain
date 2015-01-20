@@ -39,7 +39,7 @@ class DomainNameSpec extends FlatSpec with Matchers {
       case DomainName(label1, label2, label3, label4) => label1 :: label2 :: label3 :: label4 :: Nil
       case _ => Nil
     }
-    m("") should equal(""::Nil)
+    m("") should equal("" :: Nil)
     m("www") should equal("www" :: Nil)
     m("example.com") should equal("example" :: "com" :: Nil)
     m("a.b.c.d") should equal("a" :: "b" :: "c" :: "d" :: Nil)
@@ -73,5 +73,11 @@ class DomainNameSpec extends FlatSpec with Matchers {
     val dn = DomainName("*", "scalacraft", "com")
     val otherOpt: Option[Other] = dn
     otherOpt should be(None)
+  }
+
+  /* Other */
+
+  it should "be case sensitive" in {
+    DomainName("WWW") should not equal (DomainName("www"))
   }
 }

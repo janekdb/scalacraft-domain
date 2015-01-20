@@ -159,4 +159,10 @@ class DomainNameSpec extends FlatSpec with Matchers {
     val labels: Seq[String] = dnOpt.get
     labels should equal("todo" :: "example" :: "com" :: Nil)
   }
+
+  /* Other */
+
+  it should "be case sensitive" in {
+    DomainName.opt("WWW") should not equal (DomainName.opt("www"))
+  }
 }
