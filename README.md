@@ -68,7 +68,7 @@ to be omitted. For example given a Port an assignment to an int will compile,
 
 ````scala
   val port = Port(6006)
-  val portNumber = new port
+  val portNumber: Int = port
 ````
 
 ### Class Overview
@@ -96,5 +96,7 @@ The notation [m, n] denotes the inclusive range m <= x <= n. For example [0, 655
 - [ ] Country: Add ISO country codes for alpha-3 and alpha-2
 - [ ] Address: Add US zip code
 - [ ] Address: Add UK postcode
-- [ ] Net: Add domain name
+- [x] Net: Add domain name
+- [x] Net: Add ip4 address
+- [ ] Net: Add ip6 address
 - [x] Implicit conversion from constrained types to the corresponding unconstrained types
