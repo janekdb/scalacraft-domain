@@ -25,10 +25,12 @@ import org.scalacraft.domain.net.v1.{Port => ConstrainedPort}
  *
  * This class does not constrain the value of the port in anyway.
  *
+ * === Pattern Matching ===
+ *
  * Pattern matching is supported as the following examples demonstrate,
  * {{{
  *   7 match {
- *     case Port(p) => p
+ *     case Port(p) => p // 7
  *     case _ => None
  *   }
  * }}}
@@ -41,6 +43,8 @@ import org.scalacraft.domain.net.v1.{Port => ConstrainedPort}
  *     case _ => None
  *   }
  * }}}
+ *
+ * === Implicit Conversions ===
  *
  * Implicit conversions exists which allow an instance of `Port` to be used when an `Int` or `String` is required.
  *

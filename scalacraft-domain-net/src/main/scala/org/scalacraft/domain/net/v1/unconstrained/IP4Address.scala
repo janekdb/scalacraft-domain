@@ -24,15 +24,19 @@ import scala.util.matching.Regex
 /**
  * An `IP4Address` represents an IP4 address.
  *
- * This class does not constrain the value of the port in anyway.
+ * This class does not constrain the value of the address components.
  *
- * Pattern matching is supported as the following examples demonstrate,
+ * === Pattern Matching ===
+ *
+ * Pattern matching is supported as the following example demonstrates,
  * {{{
  * "192.162.0.9" match {
- * case IP4Address(b1, b2, _, _) => Some(b1, b2)
+ * case IP4Address(b1, b2, _, _) => Some(b1, b2) // Some(192, 162)
  * case _ => None
  * }
  * }}}
+ *
+ * === Implicit Conversions ===
  *
  * Implicit conversions exist which allow an instance of `IP4Address` when a `String` is required.
  *

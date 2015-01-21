@@ -33,12 +33,14 @@ import org.scalacraft.domain.internal.NumericConversions.FromString
  *   val portOpt2: Option[Port] = Port.opt("40115")
  * }}}
  *
- * When any class constraint would be violated the result is `None`.
+ * When any class constraint is violated the result is `None`.
+ *
+ * === Pattern Matching ===
  *
  * Pattern matching is supported as the following examples demonstrate,
  * {{{
  *   7 match {
- *     case Port(p) => p
+ *     case Port(p) => p // 7
  *     case _ => None
  *   }
  * }}}
@@ -52,6 +54,16 @@ import org.scalacraft.domain.internal.NumericConversions.FromString
  *   }
  * }}}
  *
+ * Invalid ports are not matched,
+ * {{{
+ *   -129 match {
+ *     case Port(p) => p
+ *     case _ => None // None
+ *   }
+ * }}}
+ *
+ * === Implicit Conversions ===
+ *
  * Implicit conversions exists which allow an instance of `Port` to be used when an `Int` or `String` is required.
  *
  * {{{
@@ -60,6 +72,8 @@ import org.scalacraft.domain.internal.NumericConversions.FromString
  *     p => new InetSocketAddress(p)
  *   }
  * }}}
+ *
+ * A conversion to the unconstrained version of this class is also available.
  */
 case class Port private(portNumber: Int)
 

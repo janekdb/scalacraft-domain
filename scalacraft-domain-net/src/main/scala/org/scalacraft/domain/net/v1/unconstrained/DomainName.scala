@@ -18,8 +18,50 @@ package org.scalacraft.domain.net.v1.unconstrained
 import org.scalacraft.domain.net.v1.{DomainName => ConstrainedDomainName}
 
 /**
- * `DomainName`
- * TODO: Documentation
+ * A `DomainName` represents a name in the domain name system.
+ *
+ * This class does not constrain the value of the domain name in anyway.
+ *
+ * Unlike the example in Programming in Scala/2e the elements of the domain name are stored in the same order
+ * as used, i.e. as `www.scalacraft.com`, not reversed.
+ *
+ * This implementation is case sensitive which is at variance with the Wikipedia specification. If a convincing
+ * use case for case insensitivity arises this could be reconsidered. Expressed in code we have,
+ * {{{
+ *   DomainName("WWW") != DomainName("www")
+ * }}}
+ *
+ * === Pattern Matching ===
+ *
+ * Pattern matching is supported as the following example demonstrates,
+ * {{{
+ * "example.com" match {
+ * case DomainName(label1, label2) => label1 :: label2 :: Nil  // List("example", "com")
+ * case _ => None
+ * }
+ * }}}
+ * Domain names with invalid labels will also be matched because this class is unconstrained,
+ * {{{
+ * "a.b-" match {
+ * case DomainName(label1, label2) => label1 :: label2 :: Nil  // List("a", "b-")
+ * case _ => None
+ * }
+ * }}}
+ * For now there is no way to match an arbitrary number of domain name labels.
+ *
+ * === Implicit Conversions ===
+ *
+ * Implicit conversions exist which allow an instance of `DomainName` to be used when either a `String`
+ * or `Seq[String]` is required.
+ *
+ * {{{
+ *   def countElements(seq: Seq[String]) = seq.length
+ *
+ *   val dn = DomainName("www", "example", "com")
+ *   val elemNo = countElements(dn) // 3
+ * }}}
+ *
+ * A conversion to an option of the constrained version of this class is also available.
  */
 case class DomainName(labels: String*)
 

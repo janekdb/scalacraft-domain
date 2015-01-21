@@ -25,13 +25,17 @@ import scala.util.control.Exception._
  *
  * This class constrains the range of each byte to [0, 255].
  *
- * Pattern matching is supported as the following examples demonstrate,
+ * === Pattern Matching ===
+ *
+ * Pattern matching is supported as the following example demonstrates,
  * {{{
- * "192.162.0.9" match {
- * case IP4Address(_, _, b3, b4) => Some(256 * b3 + b4)
+ * "192.162.1.9" match {
+ * case IP4Address(_, _, b3, b4) => Some(256 * b3 + b4) // Some(265)
  * case _ => None
  * }
  * }}}
+ *
+ * === Implicit Conversions ===
  *
  * Implicit conversions exist which allow an instance of `IP4Address` when a `String` is required.
  *

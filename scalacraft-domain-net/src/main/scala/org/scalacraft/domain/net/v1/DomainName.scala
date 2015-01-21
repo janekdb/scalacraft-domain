@@ -52,7 +52,7 @@ import org.scalacraft.domain.net.v1.unconstrained.{DomainName => UnconstrainedDo
  * === Implicit Conversions ===
  *
  * Implicit conversions exist which allow an instance of `DomainName` to be used when either a `String`
- * or `Seq[String]`is required.
+ * or `Seq[String]` is required.
  *
  * {{{
  *   def countElements(seq: Seq[String]) = seq.length
