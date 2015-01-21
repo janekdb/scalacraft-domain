@@ -31,6 +31,33 @@
         A collection of case classes covering common domains
     </description>
     <url>https://github.com/janekdb/scalacraft-domain</url>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>janekdb</id>
+            <name>Janek Bogucki</name>
+            <email>janekdb@gmail.com</email>
+            <organization>ScalaCraft.com</organization>
+            <organizationUrl>http://ScalaCraft.com</organizationUrl>
+            <roles>
+                <role>Benevolent Dictator</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:janekdb/scalacraft-domain.git</connection>
+        <developerConnection>scm:git:git@github.com:janekdb/scalacraft-domain.git</developerConnection>
+        <url>git@github.com:janekdb/scalacraft-domain.git</url>
+    </scm>
+
     <properties>
         <scala.version>2.11.4</scala.version>
         <scalatest.version>2.2.2</scalatest.version>
@@ -152,17 +179,6 @@
         <module>scalacraft-domain-net</module>
     </modules>
 
-    <developers>
-        <developer>
-            <id>janekdb</id>
-            <name>Janek Bogucki</name>
-            <email>janekdb@gmail.com</email>
-            <roles>
-                <role>Benevolent Dictator</role>
-            </roles>
-        </developer>
-    </developers>
-
     <profiles>
         <profile>
             <id>distribution</id>
@@ -178,7 +194,9 @@
                                 <configuration>
                                     <tasks>
                                         <mkdir dir="target/apidocs"/>
-                                        <echo file="target/apidocs/README.txt">This exists to satisfy the requirement to have a javadoc jar for Central Repository</echo>
+                                        <echo file="target/apidocs/README.txt">This exists to satisfy the requirement to
+                                            have a javadoc jar for Central Repository
+                                        </echo>
                                     </tasks>
                                 </configuration>
                                 <goals>
