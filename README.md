@@ -14,6 +14,10 @@ A collection of case classes covering common domains
   - Zero exception throwing
 - No if statements
 
+### Semantic Versioning
+
+This project uses semantic versioning. See http://semver.org/ for details.
+
 ### Constrained and Unconstrained Domain Objects
 
 The scalacraft-domain library offers constrained instances of case classes and a parallel
