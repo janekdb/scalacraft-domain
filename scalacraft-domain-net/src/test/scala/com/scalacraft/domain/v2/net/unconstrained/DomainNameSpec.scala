@@ -13,14 +13,14 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package org.scalacraft.domain.v2.net.unconstrained
+package com.scalacraft.domain.v2.net.unconstrained
 
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers
 
 import org.scalatest.OptionValues._
 
-import org.scalacraft.domain.v2.net.{DomainName => Other}
+import com.scalacraft.domain.v2.net.{DomainName => Other}
 
 /**
  * Specification for an unconstrained `DomainNameSpec`

@@ -13,10 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package org.scalacraft.domain.v2.net
+package com.scalacraft.domain.v2.net
 
-import org.scalacraft.domain.v2.internal.NumericConversions.FromString
-import org.scalacraft.domain.v2.net.unconstrained.{IP4Address => UnconstrainedIP4Address}
+import com.scalacraft.domain.v2.internal.NumericConversions.FromString
+import com.scalacraft.domain.v2.net.unconstrained.{IP4Address => UnconstrainedIP4Address}
 
 import scala.util.control.Exception._
 

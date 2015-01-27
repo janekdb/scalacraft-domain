@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package org.scalacraft.domain.v2
+package com.scalacraft.domain.v2
 
 /**
  * == Domain classes related to networking ==

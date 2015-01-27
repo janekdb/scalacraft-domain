@@ -29,13 +29,13 @@ When a major release is taken the package names of all classes are versioned by 
 In release 4.y.z
 
 ````scala
-package org.scalacraft.domain.v4.net
+package com.scalacraft.domain.v4.net
 ````
 
 In release 5.y.z
 
 ````scala
-package org.scalacraft.domain.v5.net
+package com.scalacraft.domain.v5.net
 ````
 
 The benefit that arises from this renaming is the option to include different major versions of ScalaCraft Domain
@@ -60,14 +60,14 @@ collection of unconstrained case classes.
 
 Obtaining an instance of a constrained Port,
 ````scala
-import org.scalacraft.domain.v2.net._
+import com.scalacraft.domain.v2.net._
 
 val portOpt: Option[Port] = Port.opt(3369)
 ````
 
 Obtaining an instance of an unconstrained Port,
 ````scala
-import org.scalacraft.domain.v2.net.unconstrained._
+import com.scalacraft.domain.v2.net.unconstrained._
 
 val port: Port = Port(-3)
 ````

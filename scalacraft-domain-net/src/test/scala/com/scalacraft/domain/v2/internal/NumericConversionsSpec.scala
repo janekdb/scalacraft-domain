@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package org.scalacraft.domain.v2.internal
+package com.scalacraft.domain.v2.internal
 
 import org.scalatest.{Matchers, FlatSpec}
 import org.scalatest.OptionValues._
