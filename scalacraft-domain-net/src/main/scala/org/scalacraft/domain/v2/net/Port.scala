@@ -13,11 +13,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package org.scalacraft.domain.net.v1
+package org.scalacraft.domain.v2.net
 
-import scala.util.control.Exception.catching
-
-import org.scalacraft.domain.internal.NumericConversions.FromString
+import org.scalacraft.domain.v2.internal.NumericConversions.FromString
 
 /**
  * A `Port` represents an IP port.

@@ -13,10 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package org.scalacraft.domain.net.v1.unconstrained
+package org.scalacraft.domain.v2.net.unconstrained
 
-import org.scalacraft.domain.internal.NumericConversions.FromString
-import org.scalacraft.domain.net.v1.{IP4Address => ConstrainedIP4Address}
+import org.scalacraft.domain.v2.internal.NumericConversions.FromString
+import org.scalacraft.domain.v2.net.{IP4Address => ConstrainedIP4Address}
 
 import scala.util.control.Exception._
 import scala.util.matching.Regex
@@ -42,7 +42,7 @@ import scala.util.matching.Regex
  *
  * {{{
  * val ipa = IP4Address(b1, b2, b3, b4)
- * val inet = java.net.InetAddress.getByName(ipa)
+ * val inet = java.v2.InetAddress.getByName(ipa)
  * }}}
  *
  * A conversion to an option of the constrained version of this class is also available.

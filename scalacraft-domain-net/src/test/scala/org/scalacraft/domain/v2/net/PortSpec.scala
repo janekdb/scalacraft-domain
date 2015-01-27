@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package org.scalacraft.domain.net.v1
+package org.scalacraft.domain.v2.net
 
 import org.scalatest.FlatSpec
 

@@ -13,9 +13,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package org.scalacraft.domain.net.v1.unconstrained
+package org.scalacraft.domain.v2.net.unconstrained
 
-import org.scalacraft.domain.net.v1.{DomainName => ConstrainedDomainName}
+import org.scalacraft.domain.v2.net.{DomainName => ConstrainedDomainName}
 
 /**
  * A `DomainName` represents a name in the domain name system.

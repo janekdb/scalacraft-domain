@@ -60,14 +60,14 @@ collection of unconstrained case classes.
 
 Obtaining an instance of a constrained Port,
 ````scala
-import org.scalacraft.domain.net.v1._
+import org.scalacraft.domain.v2.net._
 
 val portOpt: Option[Port] = Port.opt(3369)
 ````
 
 Obtaining an instance of an unconstrained Port,
 ````scala
-import org.scalacraft.domain.net.v1.unconstrained._
+import org.scalacraft.domain.v2.net.unconstrained._
 
 val port: Port = Port(-3)
 ````

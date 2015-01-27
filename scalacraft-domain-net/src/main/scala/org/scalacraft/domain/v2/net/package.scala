@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package org.scalacraft.domain.net
+package org.scalacraft.domain.v2
 
 /**
  * == Domain classes related to networking ==
@@ -37,6 +37,6 @@ package org.scalacraft.domain.net
  * total length of 253 ASCII characters in its textual representation. In practice, some domain registries
  * may have shorter limits.
  */
-package object v1 {
+package object net {
 
 }

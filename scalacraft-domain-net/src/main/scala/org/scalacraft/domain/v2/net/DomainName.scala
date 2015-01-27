@@ -13,9 +13,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package org.scalacraft.domain.net.v1
+package org.scalacraft.domain.v2.net
 
-import org.scalacraft.domain.net.v1.unconstrained.{DomainName => UnconstrainedDomainName}
+import org.scalacraft.domain.v2.net.unconstrained.{DomainName => UnconstrainedDomainName}
 
 /**
  * A `DomainName` represents a name in the domain name system.
@@ -29,7 +29,7 @@ import org.scalacraft.domain.net.v1.unconstrained.{DomainName => UnconstrainedDo
  *   DomainName.opt("WWW") != DomainName.opt("www")
  * }}}
  *
- * The package documentation provides details of the syntactic constraints placed on domain names.
+ * The v2 documentation provides details of the syntactic constraints placed on domain names.
  *
  * === Pattern Matching ===
  *

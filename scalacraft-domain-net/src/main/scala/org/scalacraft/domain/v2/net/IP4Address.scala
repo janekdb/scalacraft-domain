@@ -13,10 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package org.scalacraft.domain.net.v1
+package org.scalacraft.domain.v2.net
 
-import org.scalacraft.domain.internal.NumericConversions.FromString
-import org.scalacraft.domain.net.v1.unconstrained.{IP4Address => UnconstrainedIP4Address}
+import org.scalacraft.domain.v2.internal.NumericConversions.FromString
+import org.scalacraft.domain.v2.net.unconstrained.{IP4Address => UnconstrainedIP4Address}
 
 import scala.util.control.Exception._
 
@@ -41,7 +41,7 @@ import scala.util.control.Exception._
  *
  * {{{
  * val ipa = IP4Address(b1, b2, b3, b4)
- * val inet = java.net.InetAddress.getByName(ipa)
+ * val inet = java.v2.InetAddress.getByName(ipa)
  * }}}
  *
  * A conversion to the unconstrained version of this class is also available.

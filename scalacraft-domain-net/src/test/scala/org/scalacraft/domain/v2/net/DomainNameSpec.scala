@@ -13,13 +13,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package org.scalacraft.domain.net.v1
+package org.scalacraft.domain.v2.net
 
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers
 import org.scalatest.OptionValues._
 
-import org.scalacraft.domain.net.v1.unconstrained.{DomainName => Other}
+import org.scalacraft.domain.v2.net.unconstrained.{DomainName => Other}
 
 /**
  * Specification for `DomainNameSpec`
@@ -69,8 +69,8 @@ class DomainNameSpec extends FlatSpec with Matchers {
   }
 
   it should "not be constructed from surrounding hyphens" in {
-    DomainName.opt("-net") should be(None)
-    DomainName.opt("net-") should be(None)
+    DomainName.opt("-v2") should be(None)
+    DomainName.opt("v2-") should be(None)
   }
 
   it should "be constructed from a single label" in {

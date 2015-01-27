@@ -13,12 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package org.scalacraft.domain.net.v1.unconstrained
+package org.scalacraft.domain.v2.net.unconstrained
 
-import scala.util.control.Exception._
-
-import org.scalacraft.domain.internal.NumericConversions.FromString
-import org.scalacraft.domain.net.v1.{Port => ConstrainedPort}
+import org.scalacraft.domain.v2.internal.NumericConversions.FromString
+import org.scalacraft.domain.v2.net.{Port => ConstrainedPort}
 
 /**
  * A `Port` represents an IP port.
