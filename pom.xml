@@ -165,7 +165,7 @@
     </build>
 
     <modules>
-        <module>scalacraft-domain-net</module>
+        <module>scalacraft-domain-v2</module>
     </modules>
 
     <profiles>

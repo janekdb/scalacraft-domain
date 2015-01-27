@@ -11,8 +11,8 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>scalacraft-domain-net</artifactId>
-    <name>ScalaCraft Domain Net</name>
+    <artifactId>scalacraft-domain-v2</artifactId>
+    <name>ScalaCraft Domain v2</name>
 
     <build>
         <defaultGoal>install</defaultGoal>
