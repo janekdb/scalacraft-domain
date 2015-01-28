@@ -22,9 +22,11 @@ This project uses semantic versioning. See http://semver.org/ for details.
 The public api comprises of the classes found under com.scalacraft.domain.v<n> excluding
 classes under `internal`.
 
-#### Package and Artifact Renaming Across Major Releases
+#### Package Renaming Across Major Releases
 
-When a major release is taken the package names of all classes are versioned by replacing v<n> with v<n+1>
+When a major release is taken the package names of all classes are versioned by replacing `v<n>` with `v<n+1>`
+
+##### Examples of Package Renaming
 
 In release 4.y.z
 
@@ -38,20 +40,21 @@ In release 5.y.z
 package com.scalacraft.domain.v5.net
 ````
 
-The benefit that arises from this renaming is the option to include different major versions of ScalaCraft Domain
+##### Package Renaming Rationale
+
+The benefit arising from this renaming is the option to include different major versions of ScalaCraft Domain
 in the same classloader with no conflicts,
 
+This will work,
+
 ````
-scalacraft-domain-v2-2.1.1.jar
-scalacraft-domain-v3-3.7.1.jar
-scalacraft-domain-v5-5.0.17.jar
+scalacraft-domain-2.1.1.jar
+scalacraft-domain-3.7.1.jar
+scalacraft-domain-5.0.17.jar
 ````
 
 In practice this means that when the public api changes with a major release the change has no impact on existing
 code if the previous major release of the library remains available.
-
-The artifact is named for the major release to allow a project to include several different major releases of the
-otherwise same artifact.
 
 ### Constrained and Unconstrained Domain Objects
 
