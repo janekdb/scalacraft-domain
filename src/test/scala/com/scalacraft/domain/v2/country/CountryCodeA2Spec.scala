@@ -15,6 +15,7 @@
 */
 package com.scalacraft.domain.v2.country
 
+import com.scalacraft.domain.v2.internal.Reflections
 import org.scalatest.{Matchers, FlatSpec}
 import org.scalatest.OptionValues._
 
@@ -60,7 +61,12 @@ class CountryCodeA2Spec extends FlatSpec with Matchers {
 
   /* Constructor access */
 
-  //  it should "not have a public constructor" in (pending)
+  it should "not have a public constructor" in {
+    val constructors = Reflections.declaredConstructors[CountryCodeA2]
+    constructors should have size (1)
+    val con = constructors.head
+    con.isPrivate should be(true)
+  }
 
   /* Pattern Matching */
 
