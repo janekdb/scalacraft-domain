@@ -18,12 +18,42 @@ package com.scalacraft.domain.v2.country
 /**
  * A `CountryCodeA2` represents an ISO 3166 alpha-2 country code.
  *
- * Reference: http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
- * 
+ * Details of the ISO 3166-1 alpha 2 codes can be found here: [[http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2]]
+ *
+ * === Pattern Matching ===
+ *
+ * Pattern matching is supported as the following example demonstrates,
+ * {{{
+ * "SC" match {
+ * case CountryCodeA2(code) => code  // "SC"
+ * case _ => None
+ * }
+ * }}}
+ * Invalid country codes will not be matched.
+ * {{{
+ * "GBR" match {
+ * case CountryCodeA2(code) => code
+ * case _ => None  // None
+ * }
+ * }}}
+ *
+ * === Implicit Conversions ===
+ *
+ * Implicit conversions exist which allow an instance of `CountryCodeA2` to be used when a `String`
+ * is required.
+ *
+ * {{{
+ *   def logCode(code: String) = println(s"code: $code")
+ *
+ *   val cc = CountryCodeA2.opt("TV").get
+ *   logCode // "code: TV"
+ * }}}
+ *
+ * A conversion to the unconstrained version of this class is also available.
+ *
  * TODO: Documentation
  */
-// TODO: Add test for no public constructor
-case class CountryCodeA2(countryCode: String)
+case class CountryCodeA2 private(countryCode: String)
 
 /**
  * TODO: Documentation
