@@ -15,7 +15,6 @@
 */
 package com.scalacraft.domain.v2.country.unconstrained
 
-
 import com.scalacraft.domain.v2.country.{CountryCodeA3 => ConstrainedCountryCodeA3}
 
 /**
@@ -44,7 +43,7 @@ import com.scalacraft.domain.v2.country.{CountryCodeA3 => ConstrainedCountryCode
  *
  * === Implicit Conversions ===
  *
- * Implicit conversions exist which allow an instance of `CountryCodeA3` to be used when a `String`
+ * An implicit conversion is provided which allows an instance of `CountryCodeA3` to be used when a `String`
  * is required.
  *
  * {{{
@@ -54,7 +53,7 @@ import com.scalacraft.domain.v2.country.{CountryCodeA3 => ConstrainedCountryCode
  *   logCode(cc) // "code: TVU"
  * }}}
  *
- * A conversion to the constrained version of this class is also available.
+ * An implicit conversion to the constrained version of this class is also available.
  *
  * @param countryCode A value which can be a valid or invalid alpha 3 country code
  */
