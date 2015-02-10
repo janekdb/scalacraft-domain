@@ -124,6 +124,13 @@ to be omitted. For example given a Port an assignment to an int will compile,
 
 This sections summarise the available domain classes.
 
+#### Country
+
+Class | Purpose | Example
+---- | ---- | ----
+CountryCodeA2 | Alpha 2 Country Codes | AW
+CountryCodeA3 | Alpha 3 Country Codes | ABW
+
 #### Net
 
 Class | Purpose | Example
@@ -142,8 +149,8 @@ The notation [m, n] denotes the inclusive range m <= x <= n. For example [0, 655
 
 ### Roadmap
 
-- [ ] Country: Add ISO country codes for alpha-2
-- [ ] Country: Add ISO country codes for alpha-3
+- [x] Country: Add ISO country codes for alpha-2
+- [x] Country: Add ISO country codes for alpha-3
 - [ ] Country: Add ISO country codes for numeric
 - [ ] Address: Add US zip code
 - [ ] Address: Add UK postcode
