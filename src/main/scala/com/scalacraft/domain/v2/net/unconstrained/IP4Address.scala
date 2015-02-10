@@ -71,14 +71,14 @@ object IP4Address {
   }
 
   private def opt(quad: String): Option[IP4Address] = quad match {
-    case DottedQuadPat(s1, s2, s3, s4) => {
+    case DottedQuadPat(s1, s2, s3, s4) =>
       for {
         b1 <- s1.optInt
         b2 <- s2.optInt
         b3 <- s3.optInt
         b4 <- s4.optInt
       } yield IP4Address(b1, b2, b3, b4)
-    }
+
     case _ => None
   }
 

@@ -85,7 +85,7 @@ object IP4Address {
     yield IP4Address(b1, b2, b3, b4)
 
   def opt(quad: String): Option[IP4Address] = quad match {
-    case DottedQuadPat(s1, s2, s3, s4) => {
+    case DottedQuadPat(s1, s2, s3, s4) =>
       for {
         b1 <- s1.optInt
         b2 <- s2.optInt
@@ -93,7 +93,7 @@ object IP4Address {
         b4 <- s4.optInt
         r <- opt(b1, b2, b3, b4)
       } yield r
-    }
+
     case _ => None
   }
 
