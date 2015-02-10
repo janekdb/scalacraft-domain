@@ -41,7 +41,7 @@ import com.scalacraft.domain.v2.country.unconstrained.{CountryCodeA2 => Unconstr
  *
  * === Implicit Conversions ===
  *
- * Implicit conversions exist which allow an instance of `CountryCodeA2` to be used when a `String`
+ * An implicit conversion is provided which allows an instance of `CountryCodeA2` to be used when a `String`
  * is required.
  *
  * {{{
@@ -51,7 +51,7 @@ import com.scalacraft.domain.v2.country.unconstrained.{CountryCodeA2 => Unconstr
  *   logCode(cc) // "code: TV"
  * }}}
  *
- * A conversion to the unconstrained version of this class is also available.
+ * An implicit conversion to the unconstrained version of this class is also available.
  *
  * @param countryCode A valid alpha 2 country code
  */
