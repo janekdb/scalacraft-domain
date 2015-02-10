@@ -87,11 +87,9 @@ class CountryCodeA2Spec extends FlatSpec with Matchers {
     s should equal(ValidCountryCode)
   }
 
-  //  it should "implicitly convert to an unconstrained Port" in (pending)
-  //  {
-  //    val Some(port) = Port.opt(ValidPortNumber)
-  //    val uncons: unconstrained.Port = port
-  //    uncons.portNumber should equal(ValidPortNumber)
-  //  }
-
+  it should "implicitly convert to an unconstrained CountryCodeA2" in {
+    val Some(cc) = CountryCodeA2.opt(ValidCountryCode)
+    val uncons: unconstrained.CountryCodeA2 = cc
+    uncons.countryCode should equal(ValidCountryCode)
+  }
 }
