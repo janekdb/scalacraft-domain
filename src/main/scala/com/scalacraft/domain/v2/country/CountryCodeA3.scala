@@ -16,13 +16,13 @@
 package com.scalacraft.domain.v2.country
 
 /**
- * A `CountryCodeA3` represents an ISO 3166 alpha-2 country code.
+ * A `CountryCodeA3` represents an ISO 3166 alpha-3 country code.
  *
  * Details of the ISO 3166-1 alpha 3 codes can be found here: [[http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3]]
  *
  * === Pattern Matching ===
  *
- * Pattern matching is supported as the following example demonstrates,
+ * Pattern matching is supported as illustrated by the following examples,
  * {{{
  * "JAM" match {
  * case CountryCodeA3(code) => code  // "JAM"
@@ -46,20 +46,25 @@ package com.scalacraft.domain.v2.country
  *   def logCode(code: String) = println(s"code: $code")
  *
  *   val cc = CountryCodeA3.opt("TKL").get
- *   logCode // "code: TKL"
+ *   logCode(cc) // "code: TKL"
  * }}}
  *
  * A conversion to the unconstrained version of this class is also available.
  *
- * TODO: Documentation
  */
 case class CountryCodeA3 private(countryCode: String)
 
 /**
- * TODO: Documentation
+ * This object provides a set of operations needed to create and convert instances of [[CountryCodeA3]]
  */
 object CountryCodeA3 {
 
+  /**
+   * Provide direct access to the country code.
+   *
+   * @param countryCode The instance to use.
+   * @return The country code. For example "AUD"
+   */
   implicit def `to-String`(countryCode: CountryCodeA3): String = countryCode.countryCode
 
   /**
@@ -68,7 +73,7 @@ object CountryCodeA3 {
   private val CodePat = "^[A-Z]{3}$".r
 
   /**
-   * TODO: Documentation
+   * @return A non-empty option when `countryCode` is a syntactically valid country code.
    */
   def opt(countryCode: String): Option[CountryCodeA3] =
     CodePat findFirstIn countryCode map apply
