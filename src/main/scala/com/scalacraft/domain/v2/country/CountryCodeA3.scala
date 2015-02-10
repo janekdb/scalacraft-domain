@@ -15,6 +15,8 @@
 */
 package com.scalacraft.domain.v2.country
 
+import com.scalacraft.domain.v2.country.unconstrained.{CountryCodeA3 => UnconstrainedCountryCodeA3}
+
 /**
  * A `CountryCodeA3` represents an ISO 3166 alpha-3 country code.
  *
@@ -66,6 +68,9 @@ object CountryCodeA3 {
    * @return The country code. For example "AUD"
    */
   implicit def `to-String`(countryCode: CountryCodeA3): String = countryCode.countryCode
+
+  implicit def `to-[CountryCodeA3]`(countryCode: CountryCodeA3): UnconstrainedCountryCodeA3 =
+    UnconstrainedCountryCodeA3(countryCode.countryCode)
 
   /**
    * Match three upper case letters
