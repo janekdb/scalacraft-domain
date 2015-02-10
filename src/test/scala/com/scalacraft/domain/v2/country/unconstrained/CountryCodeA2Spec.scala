@@ -21,9 +21,9 @@ import org.scalatest.OptionValues._
 import com.scalacraft.domain.v2.country.{CountryCodeA2 => Other}
 
 /**
- *  Specification for an unconstrained `CountryCodeA2Spec`
+ * Specification for an unconstrained `CountryCodeA2Spec`
  */
-class CountryCodeA2Spec  extends FlatSpec with Matchers {
+class CountryCodeA2Spec extends FlatSpec with Matchers {
 
   private val ValidCountryCode = "AZ"
 
