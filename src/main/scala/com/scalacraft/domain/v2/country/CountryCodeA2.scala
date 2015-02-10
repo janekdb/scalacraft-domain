@@ -22,7 +22,7 @@ package com.scalacraft.domain.v2.country
  *
  * === Pattern Matching ===
  *
- * Pattern matching is supported as the following example demonstrates,
+ * Pattern matching is supported as illustrated by the following examples,
  * {{{
  * "SC" match {
  * case CountryCodeA2(code) => code  // "SC"
@@ -46,20 +46,26 @@ package com.scalacraft.domain.v2.country
  *   def logCode(code: String) = println(s"code: $code")
  *
  *   val cc = CountryCodeA2.opt("TV").get
- *   logCode // "code: TV"
+ *   logCode(cc) // "code: TV"
  * }}}
  *
  * A conversion to the unconstrained version of this class is also available.
  *
- * TODO: Documentation
+ * @param countryCode A valid alpha 2 country code
  */
 case class CountryCodeA2 private(countryCode: String)
 
 /**
- * TODO: Documentation
+ * This object provides a set of operations needed to create and convert instances of [[CountryCodeA2]]
  */
 object CountryCodeA2 {
 
+  /**
+   * Provide direct access to the country code.
+   *
+   * @param countryCode The instance to use.
+   * @return The country code. For example "PL"
+   */
   implicit def `to-String`(countryCode: CountryCodeA2): String = countryCode.countryCode
 
   /**
@@ -68,7 +74,7 @@ object CountryCodeA2 {
   private val CodePat = "^[A-Z]{2}$".r
 
   /**
-   * TODO: Documentation
+   * @return A non-empty option when `countryCode` is a syntactically valid country code.
    */
   def opt(countryCode: String): Option[CountryCodeA2] =
     CodePat findFirstIn countryCode map apply
