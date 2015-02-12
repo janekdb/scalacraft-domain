@@ -130,6 +130,7 @@ Class | Purpose | Example
 ---- | ---- | ----
 CountryCodeA2 | Alpha 2 Country Codes | AW
 CountryCodeA3 | Alpha 3 Country Codes | ABW
+CountryCodeNumeric | Numeric Country Codes | 732
 
 #### Net
 
@@ -149,11 +150,11 @@ The notation [m, n] denotes the inclusive range m <= x <= n. For example [0, 655
 
 ### Roadmap
 
-- [x] Country: Add ISO country codes for alpha-2
-- [x] Country: Add ISO country codes for alpha-3
-- [ ] Country: Add ISO country codes for numeric
 - [ ] Address: Add US zip code
 - [ ] Address: Add UK postcode
+- [x] Country: Add ISO country codes for alpha-2
+- [x] Country: Add ISO country codes for alpha-3
+- [x] Country: Add ISO country codes for numeric
 - [x] Net: Add domain name
 - [x] Net: Add ip4 address
 - [ ] Net: Add ip6 address
