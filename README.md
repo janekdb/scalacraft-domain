@@ -13,6 +13,26 @@ A collection of case classes covering common domains
   - No exceptions thrown from public api
 - No if statements
 
+### Class Overview
+
+This sections summarise the available domain classes.
+
+#### Country
+
+Class | Purpose | Example
+---- | ---- | ----
+CountryCodeA2 | Alpha 2 Country Codes | AW
+CountryCodeA3 | Alpha 3 Country Codes | ABW
+CountryCodeNumeric | Numeric Country Codes | 732
+
+#### Net
+
+Class | Purpose | Example
+---- | ---- | ----
+Port | A port number | 8080
+IPAddress | An IP address | 192.162.0.83
+DomainName | A DNS name | scalacraft.com
+
 ### Semantic Versioning
 
 This project uses semantic versioning. See http://semver.org/ for details.
@@ -119,26 +139,6 @@ to be omitted. For example given a Port an assignment to an int will compile,
   val port = Port(6006)
   val portNumber: Int = port
 ````
-
-### Class Overview
-
-This sections summarise the available domain classes.
-
-#### Country
-
-Class | Purpose | Example
----- | ---- | ----
-CountryCodeA2 | Alpha 2 Country Codes | AW
-CountryCodeA3 | Alpha 3 Country Codes | ABW
-CountryCodeNumeric | Numeric Country Codes | 732
-
-#### Net
-
-Class | Purpose | Example
----- | ---- | ----
-Port | A port number | 8080
-IPAddress | An IP address | 192.162.0.83
-DomainName | A DNS name | scalacraft.com
 
 ### Documentation Notes
 
