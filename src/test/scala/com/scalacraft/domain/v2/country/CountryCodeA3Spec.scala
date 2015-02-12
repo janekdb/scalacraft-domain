@@ -20,7 +20,7 @@ import org.scalatest.{Matchers, FlatSpec}
 import org.scalatest.OptionValues._
 
 /**
- * Specification for `CountryA3`
+ * Specification for `CountryCodeA3`
  */
 class CountryCodeA3Spec extends FlatSpec with Matchers {
 
@@ -51,7 +51,7 @@ class CountryCodeA3Spec extends FlatSpec with Matchers {
     CountryCodeA3.opt(LongCountryCode) should be(None)
   }
 
-  it should "not be constructed from a country code with invalid character" in {
+  it should "not be constructed from a country code with invalid characters" in {
     CountryCodeA3.opt(InvalidCharsCountryCode) should be(None)
   }
 

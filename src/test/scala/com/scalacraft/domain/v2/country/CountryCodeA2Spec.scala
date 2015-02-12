@@ -51,7 +51,7 @@ class CountryCodeA2Spec extends FlatSpec with Matchers {
     CountryCodeA2.opt(LongCountryCode) should be(None)
   }
 
-  it should "not be constructed from a country code with invalid character" in {
+  it should "not be constructed from a country code with invalid characters" in {
     CountryCodeA2.opt(InvalidCharsCountryCode) should be(None)
   }
 
