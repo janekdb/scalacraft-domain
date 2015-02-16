@@ -1,0 +1,8 @@
+ - [ ] Release project to Central Repository
+  - [ ] Deploy snapshot with mvn clean deploy -P distribution
+  - [ ] Update release notes
+  - [ ] Modify version to X.Y.Z
+  - [ ] Git tag: git tag -a vX.Y.Z
+  - [ ] Deploy release tagged project with mvn clean deploy -P distribution
+  - [ ] Modify version to (X.Y.Z)+1-SNAPSHOT
+  - [ ] Check Central Repository later
