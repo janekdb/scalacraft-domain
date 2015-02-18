@@ -47,7 +47,12 @@ import com.scalacraft.domain.v2.net.{DomainName => ConstrainedDomainName}
  * case _ => None
  * }
  * }}}
- * For now there is no way to match an arbitrary number of domain name labels.
+ * To match an arbitrary number of domain name labels use a pattern sequence,
+ * {{{
+ * "www.example.com" match {
+ * case DomainName(label, labels@_*) => labels  // "example"::"com"::Nil
+ * }
+ * }}}
  *
  * === Implicit Conversions ===
  *

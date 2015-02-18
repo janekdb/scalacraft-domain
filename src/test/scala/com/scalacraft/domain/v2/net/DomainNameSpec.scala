@@ -149,6 +149,14 @@ class DomainNameSpec extends FlatSpec with Matchers {
     m("a.b-") should be(Nil)
   }
 
+  it should "be usable in string pattern matching with trailing sequences" in {
+    def m(x: String): Seq[String] = x match {
+      case DomainName(label, labels@_*) => labels
+    }
+    m("www") should equal(Nil)
+    m("www.example.com") should equal("example" :: "com" :: Nil)
+  }
+
   /* Implicit Conversions */
 
   it should "implicitly convert to a string" in {
