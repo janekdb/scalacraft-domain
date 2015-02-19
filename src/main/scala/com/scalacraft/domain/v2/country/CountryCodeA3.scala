@@ -16,6 +16,7 @@
 package com.scalacraft.domain.v2.country
 
 import com.scalacraft.domain.v2.country.unconstrained.{CountryCodeA3 => UnconstrainedCountryCodeA3}
+import com.scalacraft.domain.v2.internal.SingleParam
 
 /**
  * A `CountryCodeA3` represents an ISO 3166 alpha-3 country code.
@@ -60,7 +61,7 @@ case class CountryCodeA3 private(countryCode: String)
 /**
  * This object provides a set of operations needed to create and convert instances of [[CountryCodeA3]]
  */
-object CountryCodeA3 {
+object CountryCodeA3 extends SingleParam[CountryCodeA3] {
 
   /**
    * Provide direct access to the country code.
@@ -76,16 +77,11 @@ object CountryCodeA3 {
   /**
    * Match three upper case letters
    **/
-  private val CodePat = "^[A-Z]{3}$".r
+  protected val ValuePat = "^[A-Z]{3}$".r
 
   /**
    * @return A non-empty option when `countryCode` is a syntactically valid country code.
    */
-  def opt(countryCode: String): Option[CountryCodeA3] =
-    CodePat findFirstIn countryCode map apply
+  override def opt(countryCode: String): Option[CountryCodeA3] = super.opt(countryCode)
 
-  def unapply(x: String): Option[String] =
-    CodePat findFirstIn x
 }
-
-// TODO: Refactor the objects for A2 and A3 into a trait with an abstract type.

@@ -16,6 +16,7 @@
 package com.scalacraft.domain.v2.country
 
 import com.scalacraft.domain.v2.country.unconstrained.{CountryCodeA2 => UnconstrainedCountryCodeA2}
+import com.scalacraft.domain.v2.internal.SingleParam
 
 /**
  * A `CountryCodeA2` represents an ISO 3166 alpha-2 country code.
@@ -60,7 +61,7 @@ case class CountryCodeA2 private(countryCode: String)
 /**
  * This object provides a set of operations needed to create and convert instances of [[CountryCodeA2]]
  */
-object CountryCodeA2 {
+object CountryCodeA2 extends SingleParam[CountryCodeA2] {
 
   /**
    * Provide direct access to the country code.
@@ -76,14 +77,11 @@ object CountryCodeA2 {
   /**
    * Match two upper case letters
    **/
-  private val CodePat = "^[A-Z]{2}$".r
+  protected val ValuePat = "^[A-Z]{2}$".r
 
   /**
    * @return A non-empty option when `countryCode` is a syntactically valid country code.
    */
-  def opt(countryCode: String): Option[CountryCodeA2] =
-    CodePat findFirstIn countryCode map apply
+  override def opt(countryCode: String): Option[CountryCodeA2] = super.opt(countryCode)
 
-  def unapply(x: String): Option[String] =
-    CodePat findFirstIn x
 }

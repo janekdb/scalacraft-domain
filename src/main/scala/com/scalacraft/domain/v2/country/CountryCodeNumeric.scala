@@ -16,6 +16,7 @@
 package com.scalacraft.domain.v2.country
 
 import com.scalacraft.domain.v2.country.unconstrained.{CountryCodeNumeric => UnconstrainedCountryCodeNumeric}
+import com.scalacraft.domain.v2.internal.SingleParam
 
 /**
  * A `CountryCodeNumeric` represents an ISO 3166 numeric country code.
@@ -60,7 +61,7 @@ case class CountryCodeNumeric private(countryCode: String)
 /**
  * This object provides a set of operations needed to create and convert instances of [[CountryCodeNumeric]]
  */
-object CountryCodeNumeric {
+object CountryCodeNumeric extends SingleParam[CountryCodeNumeric] {
 
   /**
    * Provide direct access to the country code.
@@ -76,16 +77,11 @@ object CountryCodeNumeric {
   /**
    * Match three digits
    **/
-  private val CodePat = "^[0-9]{3}$".r
+  protected val ValuePat = "^[0-9]{3}$".r
 
   /**
    * @return A non-empty option when `countryCode` is a syntactically valid country code.
    */
-  def opt(countryCode: String): Option[CountryCodeNumeric] =
-    CodePat findFirstIn countryCode map apply
+  override def opt(countryCode: String): Option[CountryCodeNumeric] = super.opt(countryCode)
 
-  def unapply(x: String): Option[String] =
-    CodePat findFirstIn x
 }
-
-// TODO: Refactor the objects for A2, A3 & Numeric into a trait with an abstract type.
