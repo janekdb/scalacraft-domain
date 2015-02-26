@@ -86,14 +86,14 @@ object Port {
   private val inRange = Range(0, 65535 + 1).contains _
 
   def opt(portNumber: Int): Option[Port] =
-    Some(portNumber) filter (inRange) map (Port(_))
+    Some(portNumber) filter inRange map (Port(_))
 
   def opt(portNumber: String): Option[Port] =
-    portNumber.optInt filter (inRange) map (Port(_))
+    portNumber.optInt filter inRange map (Port(_))
 
   def unapply(x: Int): Option[Int] =
-    Some(x) filter (inRange)
+    Some(x) filter inRange
 
   def unapply(x: String): Option[Int] =
-    x.optInt filter (inRange)
+    x.optInt filter inRange
 }

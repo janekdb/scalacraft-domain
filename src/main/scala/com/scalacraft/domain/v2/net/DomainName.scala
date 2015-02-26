@@ -108,7 +108,7 @@ object DomainName {
    **/
   private val LabelPat = "^(?!-)[-a-zA-Z0-9]++(?<!-)$" r
 
-  private def labelMatchesPattern(label: String) = LabelPat findFirstIn (label) isDefined
+  private def labelMatchesPattern(label: String) = LabelPat findFirstIn label isDefined
 
   private val LabelRange = 1 to 63
 
@@ -137,10 +137,10 @@ object DomainName {
 
     /* Option(seq) converts a null to a None but does not inspect the elements so filter is used. */
     for {
-      labels <- Option(labels) filter (_.forall(_ != null)) map (split)
+      labels <- Option(labels) filter (_.forall(_ != null)) map split
       if labelCountInRange(labels)
-      if labels forall (labelSizeInRange)
-      if labels forall (labelMatchesPattern)
+      if labels forall labelSizeInRange
+      if labels forall labelMatchesPattern
       if overallLengthInRange(labels)
     }
     yield DomainName(labels: _*)
