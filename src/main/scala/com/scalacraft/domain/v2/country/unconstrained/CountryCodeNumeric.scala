@@ -22,7 +22,7 @@ import com.scalacraft.domain.v2.country.{CountryCodeNumeric => ConstrainedCountr
  *
  * This class does not constrain the value of the code in anyway.
  *
- * Details of the ISO 3166-1 numberic codes can be found here: [[http://en.wikipedia.org/wiki/ISO_3166-1_numeric]]
+ * Details of the ISO 3166-1 numeric codes can be found here: [[http://en.wikipedia.org/wiki/ISO_3166-1_numeric]]
  *
  * === Pattern Matching ===
  *
