@@ -159,4 +159,7 @@ The notation [m, n] denotes the inclusive range m <= x <= n. For example [0, 655
 - [x] Net: Add ip4 address
 - [ ] Net: Add ip6 address
 - [x] Net: Add port
+- [x] Payment: PAN
+- [x] Payment: CVV
+- [x] Payment: Expiry date
 - [x] Implicit conversion from constrained types to the corresponding unconstrained types
