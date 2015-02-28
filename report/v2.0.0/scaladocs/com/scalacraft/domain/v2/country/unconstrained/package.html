@@ -1,0 +1,245 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>unconstrained - ScalaCraft Domain 2.0.0-SNAPSHOT API - com.scalacraft.domain.v2.country.unconstrained</title>
+          <meta name="description" content="unconstrained - ScalaCraft Domain 2.0.0 - SNAPSHOT API - com.scalacraft.domain.v2.country.unconstrained" />
+          <meta name="keywords" content="unconstrained ScalaCraft Domain 2.0.0 SNAPSHOT API com.scalacraft.domain.v2.country.unconstrained" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../../../index.html';
+            var hash = 'com.scalacraft.domain.v2.country.unconstrained.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../../../package.html" class="extype" name="com">com</a>.<a href="../../../../package.html" class="extype" name="com.scalacraft">scalacraft</a>.<a href="../../../package.html" class="extype" name="com.scalacraft.domain">domain</a>.<a href="../../package.html" class="extype" name="com.scalacraft.domain.v2">v2</a>.<a href="../package.html" class="extype" name="com.scalacraft.domain.v2.country">country</a></p>
+        <h1>unconstrained</h1><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.country.unconstrained.package" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">unconstrained</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="com.scalacraft.domain.v2.country.unconstrained.CountryCodeA2" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="CountryCodeA2extendsProductwithSerializable"></a>
+      <a id="CountryCodeA2:CountryCodeA2"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CountryCodeA2.html"><span class="name">CountryCodeA2</span></a><span class="params">(<span name="countryCode">countryCode: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.country.unconstrained.package@CountryCodeA2extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A <code>CountryCodeA2</code> represents an ISO 3166 alpha-2 country code.</p><div class="fullcomment"><div class="comment cmt"><p>A <code>CountryCodeA2</code> represents an ISO 3166 alpha-2 country code.</p><p>This class does not constrain the value of the code in anyway.</p><p>Details of the ISO 3166-1 alpha 2 codes can be found here: <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank">http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</a></p><h5> Pattern Matching </h5><p>Pattern matching is supported as illustrated by the following examples,</p><pre><span class="lit">"SC"</span> <span class="kw">match</span> {
+<span class="kw">case</span> CountryCodeA2(code) <span class="kw">=&gt;</span> code  <span class="cmt">// "SC"</span>
+<span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span>
+}</pre><p>Invalid country codes will be matched.</p><pre><span class="lit">"GBR"</span> <span class="kw">match</span> {
+<span class="kw">case</span> CountryCodeA2(code) <span class="kw">=&gt;</span> code <span class="cmt">// "GBR"</span>
+<span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span>
+}</pre><h5> Implicit Conversions </h5><p>An implicit conversion is provided which allows an instance of <code>CountryCodeA2</code> to be used when a <code>String</code>
+is required.</p><pre><span class="kw">def</span> logCode(code: <span class="std">String</span>) = println(s<span class="lit">"code: $code"</span>)
+
+<span class="kw">val</span> cc = CountryCodeA2(<span class="lit">"TV"</span>)
+logCode(cc) <span class="cmt">// "code: TV"</span></pre><p>An implicit conversion to the constrained version of this class is also available.
+</p></div><dl class="paramcmts block"><dt class="param">countryCode</dt><dd class="cmt"><p>A value which can be a valid or invalid alpha 2 country code
+</p></dd></dl></div>
+    </li><li name="com.scalacraft.domain.v2.country.unconstrained.CountryCodeA3" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="CountryCodeA3extendsProductwithSerializable"></a>
+      <a id="CountryCodeA3:CountryCodeA3"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CountryCodeA3.html"><span class="name">CountryCodeA3</span></a><span class="params">(<span name="countryCode">countryCode: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.country.unconstrained.package@CountryCodeA3extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A <code>CountryCodeA3</code> represents an ISO 3166 alpha-3 country code.</p><div class="fullcomment"><div class="comment cmt"><p>A <code>CountryCodeA3</code> represents an ISO 3166 alpha-3 country code.</p><p>This class does not constrain the value of the code in anyway.</p><p>Details of the ISO 3166-1 alpha 3 codes can be found here: <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank">http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3</a></p><h5> Pattern Matching </h5><p>Pattern matching is supported as illustrated by the following examples,</p><pre><span class="lit">"GBR"</span> <span class="kw">match</span> {
+<span class="kw">case</span> CountryCodeA3(code) <span class="kw">=&gt;</span> code  <span class="cmt">// "GBR"</span>
+<span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span>
+}</pre><p>Invalid country codes will be matched.</p><pre><span class="lit">"GBRT"</span> <span class="kw">match</span> {
+<span class="kw">case</span> CountryCodeA3(code) <span class="kw">=&gt;</span> code <span class="cmt">// "GBRT"</span>
+<span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span>
+}</pre><h5> Implicit Conversions </h5><p>An implicit conversion is provided which allows an instance of <code>CountryCodeA3</code> to be used when a <code>String</code>
+is required.</p><pre><span class="kw">def</span> logCode(code: <span class="std">String</span>) = println(s<span class="lit">"code: $code"</span>)
+
+<span class="kw">val</span> cc = CountryCodeA3(<span class="lit">"TVU"</span>)
+logCode(cc) <span class="cmt">// "code: TVU"</span></pre><p>An implicit conversion to the constrained version of this class is also available.
+</p></div><dl class="paramcmts block"><dt class="param">countryCode</dt><dd class="cmt"><p>A value which can be a valid or invalid alpha 3 country code
+</p></dd></dl></div>
+    </li><li name="com.scalacraft.domain.v2.country.unconstrained.CountryCodeNumeric" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="CountryCodeNumericextendsProductwithSerializable"></a>
+      <a id="CountryCodeNumeric:CountryCodeNumeric"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CountryCodeNumeric.html"><span class="name">CountryCodeNumeric</span></a><span class="params">(<span name="countryCode">countryCode: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.country.unconstrained.package@CountryCodeNumericextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A <code>CountryCodeNumeric</code> represents an ISO 3166 numeric country code.</p><div class="fullcomment"><div class="comment cmt"><p>A <code>CountryCodeNumeric</code> represents an ISO 3166 numeric country code.</p><p>This class does not constrain the value of the code in anyway.</p><p>Details of the ISO 3166-1 numberic codes can be found here: <a href="http://en.wikipedia.org/wiki/ISO_3166-1_numeric" target="_blank">http://en.wikipedia.org/wiki/ISO_3166-1_numeric</a></p><h5> Pattern Matching </h5><p>Pattern matching is supported as illustrated by the following examples,</p><pre><span class="lit">"419"</span> <span class="kw">match</span> {
+<span class="kw">case</span> CountryCodeNumeric(code) <span class="kw">=&gt;</span> code  <span class="cmt">// "419"</span>
+<span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span>
+}</pre><p>Invalid country codes will be matched.</p><pre><span class="lit">"B*"</span> <span class="kw">match</span> {
+<span class="kw">case</span> CountryCodeNumeric(code) <span class="kw">=&gt;</span> code <span class="cmt">// "B*"</span>
+<span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span>
+}</pre><h5> Implicit Conversions </h5><p>An implicit conversion is provided which allows an instance of <code>CountryCodeNumeric</code> to be used when a <code>String</code>
+is required.</p><pre><span class="kw">def</span> logCode(code: <span class="std">String</span>) = println(s<span class="lit">"code: $code"</span>)
+
+<span class="kw">val</span> cc = CountryCodeNumeric(<span class="lit">"415"</span>)
+logCode(cc) <span class="cmt">// "code: 415"</span></pre><p>An implicit conversion to the constrained version of this class is also available.
+</p></div><dl class="paramcmts block"><dt class="param">countryCode</dt><dd class="cmt"><p>A value which can be a valid or invalid numeric country code
+</p></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="com.scalacraft.domain.v2.country.unconstrained.CountryCodeA2" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CountryCodeA2"></a>
+      <a id="CountryCodeA2:CountryCodeA2"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CountryCodeA2$.html"><span class="name">CountryCodeA2</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.country.unconstrained.package@CountryCodeA2" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This object provides a set of operations needed to create and convert instances of <a href="CountryCodeA2.html" class="extype" name="com.scalacraft.domain.v2.country.unconstrained.CountryCodeA2">CountryCodeA2</a>
+</p>
+    </li><li name="com.scalacraft.domain.v2.country.unconstrained.CountryCodeA3" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CountryCodeA3"></a>
+      <a id="CountryCodeA3:CountryCodeA3"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CountryCodeA3$.html"><span class="name">CountryCodeA3</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.country.unconstrained.package@CountryCodeA3" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This object provides a set of operations needed to create and convert instances of <a href="CountryCodeA3.html" class="extype" name="com.scalacraft.domain.v2.country.unconstrained.CountryCodeA3">CountryCodeA3</a>
+</p>
+    </li><li name="com.scalacraft.domain.v2.country.unconstrained.CountryCodeNumeric" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CountryCodeNumeric"></a>
+      <a id="CountryCodeNumeric:CountryCodeNumeric"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CountryCodeNumeric$.html"><span class="name">CountryCodeNumeric</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.country.unconstrained.package@CountryCodeNumeric" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This object provides a set of operations needed to create and convert instances of <a href="CountryCodeNumeric.html" class="extype" name="com.scalacraft.domain.v2.country.unconstrained.CountryCodeNumeric">CountryCodeNumeric</a>
+</p>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
