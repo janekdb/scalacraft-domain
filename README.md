@@ -152,6 +152,8 @@ The notation [m, n] denotes the inclusive range m <= x <= n. For example [0, 655
 
 - [ ] Address: Add US zip code
 - [ ] Address: Add UK postcode
+- [ ] Binary: Octet
+- [ ] Binary: OctetPair
 - [x] Country: Add ISO country codes for alpha-2
 - [x] Country: Add ISO country codes for alpha-3
 - [x] Country: Add ISO country codes for numeric
