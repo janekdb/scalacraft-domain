@@ -35,7 +35,7 @@ class NumericConversionsSpec extends FlatSpec with Matchers {
     "-90102".optInt.value should equal(-90102)
   }
 
-  it should "not convert an invalid string to ints" in {
+  it should "not convert invalid integer strings to ints" in {
     (null: String).optInt should be(None)
     "".optInt should be(None)
     "NaN".optInt should be(None)
@@ -43,5 +43,21 @@ class NumericConversionsSpec extends FlatSpec with Matchers {
     "0.1".optInt should be(None)
     "IX".optInt should be(None)
     "full fathom five thy father lies".optInt should be(None)
+  }
+
+  it should "convert valid hex integer strings to ints" in {
+    "0".optHexInt.value should equal(0)
+    "100".optHexInt.value should equal(256)
+    "-ff".optHexInt.value should equal(-255)
+  }
+
+  it should "not convert invalid hex integer strings to ints" in {
+    (null: String).optHexInt should be(None)
+    "".optHexInt should be(None)
+    "NaN".optHexInt should be(None)
+    "0xG".optHexInt should be(None)
+    "0.1".optHexInt should be(None)
+    "IX".optHexInt should be(None)
+    "full fathom five thy father lies".optHexInt should be(None)
   }
 }

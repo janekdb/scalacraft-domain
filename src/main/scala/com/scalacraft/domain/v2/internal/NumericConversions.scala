@@ -36,6 +36,12 @@ object NumericConversions {
      *         to convert the string to an integer.
      */
     def optInt = catching(classOf[NumberFormatException]) opt s.toInt
+
+    /**
+     * @return The integer value of the hex string or None if it was not possible
+     *         to convert the string to an integer.
+     */
+    def optHexInt = catching(classOf[NumberFormatException]) opt Integer.parseInt(s, 0x10)
   }
 
 }
