@@ -135,6 +135,9 @@
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
                     <junitxml>.</junitxml>
                     <filereports>${project.artifactId}.txt</filereports>
+                    <!-- W: Suppress ANSI color codes -->
+                    <!-- T: Failed test reminders with short stack traces -->
+                    <stdout>WT</stdout>
                 </configuration>
                 <executions>
                     <execution>
