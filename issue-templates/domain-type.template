@@ -1,0 +1,59 @@
+### Notes
+
+_Add notes related to the domain_
+
+## Validated Type
+
+### Construction
+
+- [ ] Add spec and None result
+- [ ] Ensure class constructor is private
+- [ ] Reject when _Conditions_
+
+### Extensions
+
+ - [ ] Alternative `opt` overloads
+
+### Extractors
+
+ - [ ] Extract from natural type
+ - [ ] Extract from alternative types
+
+### Implicit Views
+
+ - [ ] Convert to singleton constructor type if appropriate
+ - [ ] Convert to logically related nearby types
+ - [ ] Convert to unvalidated type
+
+### Documentation
+
+ - [ ] Complete API docs
+
+## Unvalidated Type
+
+### Construction
+
+- [ ] Add spec and tests
+
+### Extensions
+
+ - [ ] Alternative `apply` overloads
+
+### Extractors
+
+ - [ ] Extract from natural type
+ - [ ] Extract from alternative types
+
+### Implicit Views
+
+ - [ ] Convert to singleton constructor type if appropriate
+ - [ ] Convert to logically related nearby types
+ - [ ] Convert to validated type
+
+### Documentation
+
+ - [ ] Complete API docs
+
+### Common Documentation
+
+ - [ ] Update README.md
