@@ -45,9 +45,5 @@ object Octet {
 
   def unapply(x: Int): Option[Option[Int]] = Some(Some(x))
 
-  def unapply(x: String): Option[Option[Int]] = {
-    Information.whenSome(x) {
-      case info => info.optHexInt map (Some(_))
-    }
-  }
+  def unapply(x: String): Option[Option[Int]] = Information.whenSome(x)(_.optHexInt)
 }

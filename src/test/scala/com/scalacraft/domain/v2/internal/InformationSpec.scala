@@ -35,7 +35,7 @@ class InformationSpec extends FlatSpec with Matchers {
   }
 
   it should "passthrough conversion of a number string to Some(Some(n))" in {
-    val result = Information.whenSome("5") { case x => Some(Some(x.toInt))}
+    val result = Information.whenSome("5") { case x => Some(x.toInt)}
     result should equal(Some(Some(5)))
   }
 

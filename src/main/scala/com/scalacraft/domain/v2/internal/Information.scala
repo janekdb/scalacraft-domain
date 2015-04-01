@@ -35,10 +35,10 @@ object Information {
    *         to an instance otherwise None which signifies the presence of unconvertible information bearing
    *         data
    */
-  def whenSome[T](data: String)(info: String => Option[Option[T]]): Option[Option[T]] = {
+  def whenSome[T](data: String)(info: String => Option[T]): Option[Option[T]] = {
     data match {
       case Zero() => Some(None)
-      case _ => info(data)
+      case _ => info(data) map (Some(_))
     }
   }
 }
