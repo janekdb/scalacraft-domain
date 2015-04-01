@@ -11,6 +11,7 @@ A collection of case classes covering common domains
 - Functional
   - Complete immutability
   - No exceptions thrown from public api
+    - Except when rejecting null constructor args for unconstrained types
 - No if statements
 
 ### Class Overview
@@ -109,6 +110,103 @@ useful for validation reporting.
 
 Both variations can be used in pattern matching. The unconstrained version will match more inputs than
 the constrained version.
+
+#### API Rules for Unconstrained Types
+
+There are two ways to obtain an instance of an unconstrained domain type. The first is by direct
+instantiation using the public constructor. The second is through pattern matching on a string or other
+type, string being the most common.
+
+Rules 1 to 4 presented below are used to guide design choices when creating extractors for unconstrained types. By
+following these rules the matchings choices will have improved consistency across different types and the matching
+utility will be enhanced.
+
+Terminology. In the following rules an alternative representation is a value of some type which is pattern
+matched to. Often this will be string but other types maybe fulfil this role.
+
+##### Rule 1 - Instances Have Alternative Representations
+
+Every instance of the type obtained by direct constructor use must have at least one alternative
+representation that will pattern match to the same constructor args.
+
+Note: This rule led to the requirement for null constructor args to be rejected. If nulls were accepted then
+it would be necessary under this rule to extract nulls from alternative representations. It would have been
+possible to have a private constructor restricting object creation to the companion object. This was rejected
+because the it would result in this pattern of use: `MyUnconstrained.opt(nonNull).get`.
+
+In mathematical parlance this defines a function from a subset of all possible strings (or alternative
+representations) onto the set of all possible domain type instances.
+
+##### Rule 2 - Instance For All Alternative Representations
+
+This rule complements Rule 1: There is no alternative representation including any string representation
+that will pattern match to a list of values that cannot be used as constructor args.
+
+Rule 1 allows that two strings could be equivalent to the same value of a type, while Rule 2 precludes the
+possibility of extracting values from a representation that do not equate to a possible instance.
+
+##### Rule 3 - Additional Freedom
+
+Given a unconstrained domain type it must be possible to create an invalid instance given only valid constructor
+args to pick from.
+
+The purpose of Rule 3 is to ensure the type is contributing to the unconstrained nature of the type at a higher
+level than the properties that comprise it. For example if the IP4Address type had a constructor that took four
+integers and we had only valid octets to work with (integers in the range [0,255]) then it would be impossible
+to construct an invalid IP4Address. In this case the validity of the IP4Address is implied by the validity of the
+constructor args therefore IP4Address is failing to provide any way of capturing a value that is invalid at a level
+beyond invalid octet values. Possible corrections in this case would be to use optional args or a variable list
+of octets thereby allowing an invalid IP4Address to be constructed entirely from valid octets.
+
+Note: IP4Address, Port and possibly others currently violate Rule 3. This is a defect requiring a breaking
+release to correct to change constructor signatures from x: T to x: Option[T] which introduces the ability
+to have an invalid type when only valid instances of T are available.
+
+A consequence of Rule 3 being applied is an increase in the number of strings or alternative representations
+that will pattern match.
+
+##### Rule 4 - No Information Waste
+
+When an alternative representation is matched and the extracted values are used to create an instance then
+it must be possible to create an alternative representation that contains the same information as the initial
+alternative representation.
+
+For example if  the string "2<3<5<7" is matched and if we regard the information that is present in this string as,
+
+ - a set of integers
+ - an ordering relationship between these integers
+
+then both of these alternative representations include this information
+
+ - "2<3<5<7"
+ - "7>5>3>2"
+
+whereas some of this information is lost in both of these examples
+
+ - "2<3<5"
+ - 210
+
+Note: 210 = 2*3*5*7
+
+Motivation. Given a type `Example(Option[E])` it would be possible to match every conceivable alternative
+representation because `Example(None)` is always a match when the match target does not map to an allowed value
+of `E`.
+
+This rule disallows matching on information that is not retained in the matched values. A benefit of this is
+the ability to have many match cases and know that an extractor will only match when it fully uses the target
+data which leads to a useful chaining of match attempts.
+
+If the first match case could match any value then later cases will never have the chance to match the data
+more usefully. There is a valid comparison to parsers that fail on input streams and then backtrack to allow
+the next parser to attempt a match.
+
+Another way of looking at this is to note that all the information is the target value is still available
+following the match. There is no loss of information.
+
+A consequence of this rule is a reduction to a subset of all possible alternative representations an
+unconstrained type can pattern match to.
+
+Whitespace is not regarded as useful information so can be dropped under this rule.
 
 ### Implicit Conversions
 
