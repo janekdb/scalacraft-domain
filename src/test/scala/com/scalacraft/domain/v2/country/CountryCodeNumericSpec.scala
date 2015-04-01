@@ -63,7 +63,7 @@ class CountryCodeNumericSpec extends FlatSpec with Matchers {
 
   it should "not have a public constructor" in {
     val constructors = Reflections.declaredConstructors[CountryCodeNumeric]
-    constructors should have size (1)
+    constructors should have size 1
     val con = constructors.head
     con.isPrivate should be(true)
   }

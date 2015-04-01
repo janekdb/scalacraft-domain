@@ -34,7 +34,7 @@ class ReflectionsSpec extends FlatSpec with Matchers {
 
   it should "extract a non-private case class constructor" in {
     val cons = Reflections.declaredConstructors[A]
-    cons should have size (1)
+    cons should have size 1
     val con = cons.head
     con.name.toString should equal("<init>")
     con.isPrivate should be(false)
@@ -42,7 +42,7 @@ class ReflectionsSpec extends FlatSpec with Matchers {
 
   it should "extract a private case class constructor" in {
     val cons = Reflections.declaredConstructors[B]
-    cons should have size (1)
+    cons should have size 1
     val con = cons.head
     con.name.toString should equal("<init>")
     con.isPrivate should be(true)
@@ -50,7 +50,7 @@ class ReflectionsSpec extends FlatSpec with Matchers {
 
   it should "extract multiple constructors" in {
     val cons = Reflections.declaredConstructors[C]
-    cons should have size (2)
+    cons should have size 2
     cons map (_.name.toString) should equal("<init>" :: "<init>" :: Nil)
   }
 

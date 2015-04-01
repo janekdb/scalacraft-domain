@@ -83,9 +83,15 @@ class DomainNameSpec extends FlatSpec with Matchers {
     otherOpt should be(None)
   }
 
+  it should "implicitly convert to None when domain name is empty" in {
+    val dn = DomainName()
+    val otherOpt: Option[Other] = dn
+    otherOpt should be(None)
+  }
+
   /* Other */
 
   it should "be case sensitive" in {
-    DomainName("WWW") should not equal (DomainName("www"))
+    DomainName("WWW") should not equal DomainName("www")
   }
 }

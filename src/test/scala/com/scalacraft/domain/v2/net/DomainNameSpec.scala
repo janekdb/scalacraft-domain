@@ -104,7 +104,7 @@ class DomainNameSpec extends FlatSpec with Matchers {
     val a = "a" * 49
     assert(a.size <= MaxLabelLength)
     val b = "bcd"
-    ((a + ".") * 5 + b) should have length (MaxOverallLength)
+    ((a + ".") * 5 + b) should have length MaxOverallLength
     DomainName.opt(a, a, a, a, a, b).value.labels should equal(a :: a :: a :: a :: a :: b :: Nil)
   }
 
@@ -180,6 +180,6 @@ class DomainNameSpec extends FlatSpec with Matchers {
   /* Other */
 
   it should "be case sensitive" in {
-    DomainName.opt("WWW") should not equal (DomainName.opt("www"))
+    DomainName.opt("WWW") should not equal DomainName.opt("www")
   }
 }
