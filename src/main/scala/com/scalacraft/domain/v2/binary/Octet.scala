@@ -21,6 +21,67 @@ import com.scalacraft.domain.v2.internal.NumericConversions.FromString
  * TODO: Documentation
  * `Octet`
  */
+/**
+ * An `Octet` represents an integer in the range [0, 255]
+ *
+ * The following constraints hold for instances of this class,
+ *
+ * - `octet` is in the range [0, 255]
+ *
+ * An instance can be created using a suitable overload of the `opt` method.
+ *
+ * {{{
+ *   val octetOpt1: Option[Octet] = Octet.opt(117)
+ *   val octetOpt2: Option[Octet] = Octet.opt(0x75)
+ *   val octetOpt3: Option[Octet] = Octet.opt("fe") // Decimal 254
+ *   val octetOpt4: Option[Octet] = Octet.opt("d") // Decimal 13
+ *   val octetOpt5: Option[Octet] = Octet.opt("12") // Decimal 18
+ * }}}
+ *
+ * Note that the string variant takes either one or two hex characters.
+ *
+ * When any class constraint is violated the result is `None`.
+ *
+ * === Pattern Matching ===
+ *
+ * Pattern matching is supported as the following examples demonstrate,
+ * {{{
+ *   7 match {
+ *     case Octet(n) => n // 7
+ *     case _ => None
+ *   }
+ * }}}
+ *
+ * The match target can be a string,
+ * {{{
+ * val s: String = "20"
+ *   s match {
+ *     case Octet(n) => n  // 32
+ *     case _ => None
+ *   }
+ * }}}
+ *
+ * Invalid octets are not matched,
+ * {{{
+ *   -129 match {
+ *     case Octet(n) => n
+ *     case _ => None // None
+ *   }
+ * }}}
+ *
+ * === Implicit Conversions ===
+ *
+ * Implicit conversions exists which allow an instance of `Octet` to be used when an `Int` or `String` is required.
+ *
+ * {{{
+ *   val octet = Octet.opt(0x7f)
+ *   val ???? = octet map {
+ *     ???? => ???? new InetSocketAddress(p)
+ *   }
+ * }}}
+ *
+ * A conversion to the unconstrained version of this class is also available.
+ */
 case class Octet private(octet: Int)
 
 // TODO: Add trait to allow merge with Port following CountryCode regex example
@@ -35,7 +96,12 @@ object Octet {
    */
   implicit def `to-String`(octet: Octet): String = octet.octet.formatted("%02x")
 
-  //  implicit def `to-Octet`(octet: Octet): unconstrained.Octet = unconstrained.Octet(???)
+  /**
+   * Implicit conversion to the unconstrained version of octet.
+   * @param octet The instance to convert
+   * @return An unconstrained instance of octet
+   */
+  implicit def `to-Octet`(octet: Octet): unconstrained.Octet = unconstrained.Octet(Some(octet.octet))
 
   private val HexPat = "^([0-9a-f]{1,2})$" r
 

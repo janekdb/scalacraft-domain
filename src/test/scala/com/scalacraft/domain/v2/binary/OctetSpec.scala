@@ -111,7 +111,7 @@ class OctetSpec extends FlatSpec with Matchers {
 
   it should "not have a public constructor" in {
     val constructors = Reflections.declaredConstructors[Octet]
-    constructors should have size (1)
+    constructors should have size 1
     val con = constructors.head
     con.isPrivate should be(true)
   }
@@ -146,11 +146,11 @@ class OctetSpec extends FlatSpec with Matchers {
     s should equal(ValidOctet.HexString)
   }
 
-  // TODO
-  //  it should "implicitly convert to an unconstrained Octet" in {
-  //    val Some(octet) = Octet.opt(ValidOctet.Number)
-  //    fail("TODO")
-  //    val uncons: unconstrained.Octet = octet
-  //    uncons.octetNumber should equal(ValidOctetNumber)
-  //  }
+  it should "implicitly convert to an unconstrained Octet" in {
+    val Some(octet) = Octet.opt(ValidOctet.Number)
+    val uncons: unconstrained.Octet = octet
+    val a = uncons.octet
+    val b = uncons.octet.value
+    uncons.octet.value should equal(ValidOctet.Number)
+  }
 }
