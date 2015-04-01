@@ -16,7 +16,13 @@ A collection of case classes covering common domains
 
 ### Class Overview
 
-This sections summarise the available domain classes.
+This sections summarises the available domain classes.
+
+#### Binary
+
+Class | Purpose | Example
+---- | ---- | ----
+Octet | Integer in the range [0, 255] | 129
 
 #### Country
 
@@ -159,7 +165,7 @@ beyond invalid octet values. Possible corrections in this case would be to use o
 of octets thereby allowing an invalid IP4Address to be constructed entirely from valid octets.
 
 Note: IP4Address, Port and possibly others currently violate Rule 3. This is a defect requiring a breaking
-release to correct to change constructor signatures from x: T to x: Option[T] which introduces the ability
+release to correct to change constructor signatures from `x: T` to `x: Option[T]` which introduces the ability
 to have an invalid type when only valid instances of T are available.
 
 A consequence of Rule 3 being applied is an increase in the number of strings or alternative representations
