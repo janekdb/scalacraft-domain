@@ -45,6 +45,16 @@ class OctetSpec extends FlatSpec with Matchers {
     thrown.paramName should equal("octet")
   }
 
+  it should "accept an option int constructor arg" in {
+    val octet = Octet(Some(10088))
+    octet.octet.value should equal(10088)
+  }
+
+  it should "accept an int arg" in {
+    val octet = Octet(10088)
+    octet.octet.value should equal(10088)
+  }
+
   /* Pattern Matching */
 
   private object Unmatched
