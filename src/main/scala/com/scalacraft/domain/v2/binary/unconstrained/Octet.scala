@@ -21,8 +21,59 @@ import com.scalacraft.domain.v2.internal.NumericConversions.FromString
 import com.scalacraft.domain.v2.internal.RejectNullConstructorArgument
 
 /**
- * TODO: Documentation
- * `Octet`
+ * An `Octet` represents an integer in the range [0, 255].
+ *
+ * This class does not constrain the value of the octet beyond requiring a non-null constructor argument.
+ *
+ * The value maybe outside the given range or undefined.
+ *
+ * === Pattern Matching ===
+ *
+ * Pattern matching is supported as the following examples demonstrate,
+ * {{{
+ *   5 match {
+ *     case Octet(n) => n // Some(5)
+ *     case _ => None
+ *   }
+ * }}}
+ *
+ * The match target can be a string,
+ * {{{
+ *   val s: String = "ff"
+ *   s match {
+ *     case Octet(n) => n // Some(255)
+ *     case _ => None
+ *   }
+ * }}}
+ *
+ * A null or whitespace string will match to Octet(None) while a non-hex value will not match.
+ * {{{
+ *   val s: String = " " * 4
+ *   s match {
+ *     case Octet(n) => n  // None
+ *     case _ => None
+ *   }
+ * }}}
+ * {{{
+ *   val s = "foobarbaz"
+ *   s match {
+ *     case Octet(n) => n
+ *     case _ => None  // None
+ *   }
+ * }}}
+ * === Implicit Conversions ===
+ *
+ * Implicit conversions exists which allow an instance of `Octet` to be used when an `Option[Int]` or
+ * `Option[String]` is required.
+ *
+ * {{{
+ *   val octet = Octet(1022)  // The value is not constrained
+ *   val i: Option[Int] = octet  // Some(1022)
+ * }}}
+ *
+ * A conversion to an option of the constrained version of this class is also available.
+ *
+ * @param octet An optional octet value
  */
 case class Octet(octet: Option[Int]) {
   RejectNullConstructorArgument(octet, "octet")
@@ -42,6 +93,12 @@ object Octet {
 
   implicit def `to-Option[Octet]`(octet: Octet): Option[ConstrainedOctet] =
     octet.octet.flatMap(ConstrainedOctet.opt)
+
+  /**
+   * @param octet A defined octet value
+   * @return A new instance
+   */
+  def apply(octet: Int) = new Octet(Some(octet))
 
   def unapply(x: Int): Option[Option[Int]] = Some(Some(x))
 
