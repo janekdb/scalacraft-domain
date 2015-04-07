@@ -71,16 +71,17 @@ import com.scalacraft.domain.v2.internal.NumericConversions.FromString
  *
  * === Implicit Conversions ===
  *
- * Implicit conversions exists which allow an instance of `Octet` to be used when an `Int` or `String` is required.
+ * Implicit conversions exists which allow an instance of `Octet` to be used when an `Int` or `String` is
+ * required.
  *
  * {{{
- *   val octet = Octet.opt(0x7f)
- *   val ???? = octet map {
- *     ???? => ???? new InetSocketAddress(p)
- *   }
+ *   val Some(hi) = Octet.opt(4)
+ *   val Some(lo) = Octet.opt(3)
+ *   val w: Int = 256 * hi + lo // 0x0403
  * }}}
  *
  * A conversion to the unconstrained version of this class is also available.
+ * @param octet A valid octet
  */
 case class Octet private(octet: Int)
 

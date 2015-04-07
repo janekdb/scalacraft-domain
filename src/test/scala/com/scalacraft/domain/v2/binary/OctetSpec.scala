@@ -140,6 +140,13 @@ class OctetSpec extends FlatSpec with Matchers {
     s should equal(ValidOctet.Number)
   }
 
+  it should "implicitly convert to an int with addition" in {
+    val Some(hi) = Octet.opt(4)
+    val Some(lo) = Octet.opt(3)
+    val w: Int = 256 * hi + lo
+    w should equal(0x0403)
+  }
+
   it should "implicitly convert to a string from a valid int" in {
     val Some(octet) = Octet.opt(ValidOctet.Number)
     val s: String = octet
