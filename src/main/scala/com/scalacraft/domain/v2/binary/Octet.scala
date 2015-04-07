@@ -18,11 +18,7 @@ package com.scalacraft.domain.v2.binary
 import com.scalacraft.domain.v2.internal.NumericConversions.FromString
 
 /**
- * TODO: Documentation
- * `Octet`
- */
-/**
- * An `Octet` represents an integer in the range [0, 255]
+ * An `Octet` represents an integer in the range [0, 255].
  *
  * The following constraints hold for instances of this class,
  *
