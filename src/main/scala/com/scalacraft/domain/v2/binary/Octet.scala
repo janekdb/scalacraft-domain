@@ -37,6 +37,9 @@ import com.scalacraft.domain.v2.internal.NumericConversions.FromString
  * Note that the string variant takes either one or two hex characters.
  *
  * When any class constraint is violated the result is `None`.
+ * {{{
+ *   val octetOpt: Option[Octet] = Octet.opt("NaN") // None
+ * }}}
  *
  * === Pattern Matching ===
  *
@@ -51,10 +54,11 @@ import com.scalacraft.domain.v2.internal.NumericConversions.FromString
  * The match target can be a string,
  * {{{
  * val s: String = "20"
- *   s match {
- *     case Octet(n) => n  // 32
- *     case _ => None
- *   }
+ *
+ * s match {
+ *   case Octet(n) => n  // 32
+ *   case _ => None
+ * }
  * }}}
  *
  * Invalid octets are not matched,
