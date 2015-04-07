@@ -192,7 +192,7 @@ whereas some of this information is lost in both of these examples
  - "2<3<5"
  - 210
 
-Note: 210 = 2*3*5*7
+Note: 210 = 2x3x5x7
 
 Motivation. Given a type `Example(Option[E])` it would be possible to match every conceivable alternative
 representation because `Example(None)` is always a match when the match target does not map to an allowed value
@@ -256,7 +256,7 @@ The notation [m, n] denotes the inclusive range m <= x <= n. For example [0, 655
 
 - [ ] Address: Add US zip code
 - [ ] Address: Add UK postcode
-- [ ] Binary: Octet
+- [x] Binary: Octet
 - [ ] Binary: OctetPair
 - [x] Country: Add ISO country codes for alpha-2
 - [x] Country: Add ISO country codes for alpha-3
