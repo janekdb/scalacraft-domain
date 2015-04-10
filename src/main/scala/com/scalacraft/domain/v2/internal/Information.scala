@@ -29,7 +29,7 @@ object Information {
    * When information exists delegate conversion to the provided function, otherwise convert missing information
    * into Some(None). This supports `Rule 3 - Additional Freedom`
    * @param data The information source
-   * @param info Conversion code to invoke if `data` contains any useful information
+   * @param info Conversion function to invoke when `data` contains useful information
    * @tparam T The type the information will be converted to
    * @return Some(None) if there is no information otherwise Some(Some(t)) when `info` can convert the data
    *         to an instance otherwise None which signifies the presence of unconvertible information bearing
@@ -39,6 +39,22 @@ object Information {
     data match {
       case Zero() => Some(None)
       case _ => info(data) map (Some(_))
+    }
+  }
+
+  /**
+   * When information exists delegate conversion to the provided function, otherwise convert missing information
+   * into Some(`whenZeroInfo`). The initial client was the validated version of OctetPair.
+   * @param data The data to convert
+   * @param whenZeroInfo When no information present in `data` return Some(whenZeroInfo)
+   * @param info Conversion function to invoke when `data` contains useful information
+   * @tparam T The type the data is being converted to
+   * @return The conversion of `data` to an instance of `T` or not
+   */
+  def whenSome[T](data: String, whenZeroInfo: T)(info: String => Option[T]): Option[T] = {
+    data match {
+      case Information.Zero() => Some(whenZeroInfo)
+      case _ => info(data)
     }
   }
 }

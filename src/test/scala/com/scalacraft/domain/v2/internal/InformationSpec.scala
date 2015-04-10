@@ -43,4 +43,26 @@ class InformationSpec extends FlatSpec with Matchers {
     val result = Information.whenSome("five") { case x => None}
     result should be(None)
   }
+
+  private val X = "X"
+
+  it should "convert null to X when X is specified as the zero info conversion" in {
+    val result = Information.whenSome(null, X) { case x => throw new RuntimeException}
+    result should equal(Some(X))
+  }
+
+  it should "convert a whitespace string to X when X is specified as the zero info conversion" in {
+    val result = Information.whenSome(" " * 4, X) { case x => throw new RuntimeException}
+    result should equal(Some(X))
+  }
+
+  it should "passthrough conversion of A to Some(AA) when X is specified as the zero info conversion" in {
+    val result = Information.whenSome("A", X) { case x => Some(x * 2)}
+    result should equal(Some("AA"))
+  }
+
+  it should "passthrough conversion to None when X is specified as the zero info conversion" in {
+    val result = Information.whenSome("A", X) { case x => None}
+    result should be(None)
+  }
 }
