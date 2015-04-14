@@ -53,7 +53,7 @@ object Information {
    */
   def whenSome[T](data: String, whenZeroInfo: T)(info: String => Option[T]): Option[T] = {
     data match {
-      case Information.Zero() => Some(whenZeroInfo)
+      case Zero() => Some(whenZeroInfo)
       case _ => info(data)
     }
   }
