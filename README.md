@@ -40,6 +40,23 @@ Port | A port number | 8080
 IPAddress | An IP address | 192.162.0.83
 DomainName | A DNS name | scalacraft.com
 
+### Maven
+
+ScalaCraft-Domain is published to the Central Repository, so you simply have to add the appropriate dependency
+to your POM:
+
+````xml
+  <dependencies>
+    <dependency>
+      <groupId>com.scalacraft.domain</groupId>
+      <artifactId>scalacraft-domain</artifactId>
+      <version>x.y.z</version>
+    </dependency>
+  </dependencies>
+````
+
+Replace `x.y.z` with the release you want to use. For example `2.1.0`.
+
 ### Semantic Versioning
 
 This project uses semantic versioning. See http://semver.org/ for details.
