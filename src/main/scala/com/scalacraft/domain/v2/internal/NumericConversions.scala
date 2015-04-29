@@ -35,13 +35,13 @@ object NumericConversions {
      * @return The integer value of the string or None if it was not possible
      *         to convert the string to an integer.
      */
-    def optInt = catching(classOf[NumberFormatException]) opt s.toInt
+    def optInt: Option[Int] = catching(classOf[NumberFormatException]) opt s.toInt
 
     /**
      * @return The integer value of the hex string or None if it was not possible
      *         to convert the string to an integer.
      */
-    def optHexInt = catching(classOf[NumberFormatException]) opt Integer.parseInt(s, 0x10)
+    def optHexInt: Option[Int] = catching(classOf[NumberFormatException]) opt Integer.parseInt(s, 0x10)
   }
 
 }
