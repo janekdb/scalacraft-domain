@@ -105,6 +105,14 @@ object OctetPair {
   implicit def `to-String`(octetPair: OctetPair): String =
     Octet.`to-String`(octetPair.hi) + Octet.`to-String`(octetPair.lo)
 
+  /**
+   * Implicit conversion to the unconstrained version of octet pair.
+   * @param octetPair The instance to convert
+   * @return An unconstrained instance of octet pair
+   */
+  implicit def `to-OctetPair`(octetPair: OctetPair): unconstrained.OctetPair =
+    unconstrained.OctetPair(octetPair.hi, octetPair.lo)
+
   // TODO: Move this to Octet.Zero
   private val ZeroOctet = Octet.opt(0).get
 

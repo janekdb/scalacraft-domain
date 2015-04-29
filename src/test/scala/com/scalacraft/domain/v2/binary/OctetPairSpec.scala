@@ -15,10 +15,11 @@
 */
 package com.scalacraft.domain.v2.binary
 
-import com.scalacraft.domain.v2.internal.Reflections
 import org.scalatest.{FlatSpec, Matchers}
-
 import org.scalatest.OptionValues._
+
+import com.scalacraft.domain.v2.internal.Reflections
+import com.scalacraft.domain.v2.binary.unconstrained.{OctetPair => Unconstrained}
 
 /**
  * Specification for `OctetPair`
@@ -213,11 +214,17 @@ class OctetPairSpec extends FlatSpec with Matchers {
     s should equal("000f")
   }
 
-  //  it should "implicitly convert to an unconstrained Octet" in {
-  //    val Some(octet) = Octet.opt(ValidOctet.Number)
-  //    val uncons: unconstrained.Octet = octet
-  //    val a = uncons.octet
-  //    val b = uncons.octet.value
-  //    uncons.octet.value should equal(ValidOctet.Number)
-  //  }
+  it should "implicitly convert to an unconstrained Octet with hi and lo" in {
+    val Some(octetPair) = OctetPair.opt(0x1122)
+    val uncons: Unconstrained = octetPair
+    uncons.hi.value.octet should equal(0x11)
+    uncons.lo.value.octet should equal(0x22)
+  }
+
+  it should "implicitly convert to an unconstrained Octet with lo only" in {
+    val Some(octetPair) = OctetPair.opt(0x22)
+    val uncons: Unconstrained = octetPair
+    uncons.hi.value.octet should equal(0x00)
+    uncons.lo.value.octet should equal(0x22)
+  }
 }
