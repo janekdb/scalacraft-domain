@@ -69,6 +69,16 @@ class OctetSpec extends FlatSpec with Matchers {
   }
 
   it should "be usable in string pattern matching" in {
+    /* Int is signed 4 bytes: 11223344 */
+    /* 7fffffff */
+    val maxHexInt = Int.MaxValue.formatted("%h")
+    maxHexInt should equal("7fffffff")
+    val maxHexIntPlusOne = "80000000"
+    /* -80000000 */
+    val minHexInt = Int.MinValue.formatted("-%h")
+    minHexInt should equal("-80000000")
+    val minHexIntMinusOne = "-80000001"
+
     def m(x: String) = x match {
       case Octet(n) => n
       case _ => Unmatched
@@ -81,16 +91,13 @@ class OctetSpec extends FlatSpec with Matchers {
     m(ExampleOctet.String) should equal(Some(ExampleOctet.Number))
     m("NaN") should be(Unmatched)
     m("41t") should be(Unmatched)
-    /* Int is signed 4 bytes: 11223344 */
-    /* 7fffffff */
-    val maxHexInt = Int.MaxValue.formatted("%h")
-    val maxHexIntPlusOne = "80000000"
     m("0fff") should equal(Some(0x0fff))
     m("0fffff") should equal(Some(0x0fffff))
     m("7fffffff") should equal(Some(0x7fffffff))
     m("11223344") should equal(Some(0x11223344))
     m(maxHexInt) should equal(Some(Int.MaxValue))
     m(maxHexIntPlusOne) should be(Unmatched)
+    m("aabbccdd") should be(Unmatched)
     m("0") should equal(Some(0))
     m("00") should equal(Some(0))
     m("054") should equal(Some(0x54))
@@ -99,10 +106,7 @@ class OctetSpec extends FlatSpec with Matchers {
     m("007fffffff") should equal(Some(0x7fffffff))
     /* Negative values */
     m("-1") should equal(Some(-0x1))
-    /* -80000000 */
-    val minHexInt = Int.MinValue.formatted("-%h")
     m(minHexInt) should equal(Some(Int.MinValue))
-    val minHexIntMinusOne = "-80000001"
     m(minHexIntMinusOne) should be(Unmatched)
   }
 

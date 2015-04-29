@@ -54,17 +54,6 @@ class OctetSpec extends FlatSpec with Matchers {
     Octet.opt(MaxOctetValue + 1) should be(None)
   }
 
-  it should "be usable in pattern matching" in {
-    def m(x: Int) = x match {
-      case Octet(p) => p
-      case _ => None
-    }
-    m(5) should equal(5)
-    m(255) should equal(255)
-    m(256) should be(None)
-    m(-1) should be(None)
-  }
-
   /* Construction from a string */
 
   it should "be constructed from a valid octet number string" in {
@@ -117,6 +106,17 @@ class OctetSpec extends FlatSpec with Matchers {
   }
 
   /* Pattern Matching */
+
+  it should "be usable in pattern matching" in {
+    def m(x: Int) = x match {
+      case Octet(p) => p
+      case _ => None
+    }
+    m(5) should equal(5)
+    m(255) should equal(255)
+    m(256) should be(None)
+    m(-1) should be(None)
+  }
 
   it should "be usable in string pattern matching" in {
     def m(x: String) = x match {
