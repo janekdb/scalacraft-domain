@@ -217,14 +217,14 @@ class OctetPairSpec extends FlatSpec with Matchers {
   it should "implicitly convert to an unconstrained Octet with hi and lo" in {
     val Some(octetPair) = OctetPair.opt(0x1122)
     val uncons: Unconstrained = octetPair
-    uncons.hi.value.octet should equal(0x11)
-    uncons.lo.value.octet should equal(0x22)
+    uncons.hi.value.octet should equal(Some(0x11))
+    uncons.lo.value.octet should equal(Some(0x22))
   }
 
   it should "implicitly convert to an unconstrained Octet with lo only" in {
     val Some(octetPair) = OctetPair.opt(0x22)
     val uncons: Unconstrained = octetPair
-    uncons.hi.value.octet should equal(0x00)
-    uncons.lo.value.octet should equal(0x22)
+    uncons.hi.value.octet should equal(Some(0x00))
+    uncons.lo.value.octet should equal(Some(0x22))
   }
 }
