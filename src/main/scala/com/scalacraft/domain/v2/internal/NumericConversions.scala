@@ -42,6 +42,13 @@ object NumericConversions {
      *         to convert the string to an integer.
      */
     def optHexInt: Option[Int] = catching(classOf[NumberFormatException]) opt Integer.parseInt(s, 0x10)
+
+    /**
+     * @return The `BigInt` value of the hex string or None if it was not possible
+     *         to convert the string to a `BigInt`.
+     */
+    def optHexBigInt: Option[BigInt] =
+      catching(classOf[NumberFormatException], classOf[NullPointerException]) opt BigInt(s, 0x10)
   }
 
 }

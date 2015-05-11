@@ -60,4 +60,25 @@ class NumericConversionsSpec extends FlatSpec with Matchers {
     "IX".optHexInt should be(None)
     "full fathom five thy father lies".optHexInt should be(None)
   }
+
+  it should "convert valid hex strings to BigInts" in {
+    "0".optHexBigInt.value.intValue should equal(0)
+    "100".optHexBigInt.value.intValue should equal(256)
+    "-ff".optHexBigInt.value.intValue should equal(-255)
+    "12345678".optHexBigInt.value.intValue should equal(0x12345678)
+    "-12345678".optHexBigInt.value.intValue should equal(-0x12345678)
+    /* More than 4 bytes */
+    "FF1020304050".optHexBigInt.value.toString(0x10) should equal("ff1020304050")
+    "-FF1020304050".optHexBigInt.value.toString(0x10) should equal("-ff1020304050")
+  }
+
+  it should "not convert invalid hex integer strings to BigInts" in {
+    (null: String).optHexBigInt should be(None)
+    "".optHexBigInt should be(None)
+    "NaN".optHexBigInt should be(None)
+    "0xG".optHexBigInt should be(None)
+    "0.1".optHexBigInt should be(None)
+    "IX".optHexBigInt should be(None)
+    "full fathom five thy father lies".optHexBigInt should be(None)
+  }
 }
