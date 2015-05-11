@@ -190,13 +190,19 @@ to have an invalid type when only valid instances of T are available.
 A consequence of Rule 3 being applied is an increase in the number of strings or alternative representations
 that will pattern match.
 
-##### Rule 4 - No Information Waste
+##### Rule 4 - Maximum Loss Free Information Conversion
+
+This rule has two parts related to the information taken when matching. The first part tells us to use all the
+information we take. The second part is an directive to consume as much information as possible. These two aspects
+are elaborated on in the text that follows.
+
+###### Full Information Utilisation
 
 When an alternative representation is matched and the extracted values are used to create an instance then
 it must be possible to create an alternative representation that contains the same information as the initial
 alternative representation.
 
-For example if  the string "2<3<5<7" is matched and if we regard the information that is present in this string as,
+For example if the string "2<3<5<7" is matched and if we regard the information that is present in this string as,
 
  - a set of integers
  - an ordering relationship between these integers
@@ -211,7 +217,7 @@ whereas some of this information is lost in both of these examples
  - "2<3<5"
  - 210
 
-Note: 210 = 2x3x5x7
+Note: 210 = 2 x 3 x 5 x 7
 
 Motivation. Given a type `Example(Option[E])` it would be possible to match every conceivable alternative
 representation because `Example(None)` is always a match when the match target does not map to an allowed value
@@ -225,13 +231,21 @@ If the first match case could match any value then later cases will never have t
 more usefully. There is a valid comparison to parsers that fail on input streams and then backtrack to allow
 the next parser to attempt a match.
 
-Another way of looking at this is to note that all the information is the target value is still available
+Another way of looking at this is to note that all the information in the target value is still available
 following the match. There is no loss of information.
 
 A consequence of this rule is a reduction to a subset of all possible alternative representations an
 unconstrained type can pattern match to.
 
 Whitespace is not regarded as useful information so can be dropped under this rule.
+
+###### Greedy Information Consumption
+
+This rule directs the matcher to use as much information while not conflicting with the full information utilisation
+rule.
+
+For example if an unconstrained octet has type `Octet[Option[Int]]` then both `127` and `4000100` should be
+matched despite the latter value being out of range for an octet.
 
 ### Implicit Conversions
 
@@ -262,6 +276,8 @@ to be omitted. For example given a Port an assignment to an int will compile,
   val port = Port(6006)
   val portNumber: Int = port
 ````
+
+TODO: Add note about unwrapping constructor lists to tuple. See unconstrainted.OctetPair for an example.
 
 ### Documentation Notes
 
