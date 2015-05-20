@@ -20,7 +20,7 @@ import org.scalatest.{Matchers, FlatSpec}
 
 import org.scalatest.OptionValues._
 
-//import com.scalacraft.domain.v2.binary.unconstrained.{OctetPair => Unconstrained}
+import com.scalacraft.domain.v2.binary.{OctetPair => Constrained}
 
 /**
  * Specification for an unconstrained `OctetPair`
@@ -170,53 +170,119 @@ class OctetPairSpec extends FlatSpec with Matchers {
     m(minFiveByteHexIntMinusOne) should be(None)
   }
 
-  //  /* Implicit Conversions */
-  //
-  //  it should "implicitly convert to some int" in {
-  //    val octet = Octet(Some(ExampleOctet.Number))
-  //    val i: Option[Int] = octet
-  //    i.value should equal(ExampleOctet.Number)
+  /* Implicit Conversions */
+
+  //  private type Octets = (Option[Octet], Option[Octet])
+
+  //  it should "implicitly convert to a tuple of some octets" in {
+  //    val lo = Octet(Some(0x01))
+  //    val hi = Octet(Some(0x2000))
+  //    val octets: Octets = new OctetPair(Some(hi), Some(lo))
+  //    octets should equal(Some(hi), Some(lo))
   //  }
+
+
+  //  it should "test pattern matching" in {
+  //    val lo = Octet(Some(0x01))
+  //    val hi = Octet(Some(0x2000))
+  //    val op = new OctetPair(Some(hi), Some(lo))
+  //    val OctetPair(hi2, lo2)  = op
+  ////    octets should equal(Some(hi), Some(lo))
+  //  }
+
   //
   //  it should "implicitly convert to none int" in {
   //    val octet = Octet(None)
   //    val i: Option[Int] = octet
   //    i should be(None)
   //  }
-  //
-  //  it should "implicitly convert to some string" in {
-  //    val octet = Octet(Some(ExampleOctet.Number))
-  //    val s: Option[String] = octet
-  //    s.value should equal(ExampleOctet.String)
-  //  }
-  //
-  //  it should "implicitly convert to some string when defined with more than 8 bits" in {
-  //    val octet = Octet(Some(0x4321))
-  //    val s: Option[String] = octet
-  //    s.value should equal("4321")
-  //  }
-  //
-  //  it should "implicitly convert to none string" in {
-  //    val octet = Octet(None)
-  //    val s: Option[String] = octet
-  //    s should be(None)
-  //  }
-  //
-  //  it should "implicitly convert to a constrained Octet when the octet is valid" in {
-  //    val octet = Octet(Some(ValidOctet))
-  //    val otherOpt: Option[Other] = octet
-  //    otherOpt.value.octet should equal(ValidOctet)
-  //  }
-  //
-  //  it should "implicitly convert to None when octet is defined but invalid" in {
-  //    val octet = Octet(Some(InvalidOctet))
-  //    val otherOpt: Option[Other] = octet
-  //    otherOpt should be(None)
-  //  }
-  //
-  //  it should "implicitly convert to None when octet is undefined" in {
-  //    val octet = Octet(None)
-  //    val otherOpt: Option[Other] = octet
-  //    otherOpt should be(None)
-  //  }
+
+  it should "have an implicit conversion to String equal to none from none + none" in {
+    val octetPair = OctetPair(None, None)
+    val s: Option[String] = octetPair
+    s should be(None)
+  }
+
+  it should "have an implicit conversion to String equal to none from none + some" in {
+    val octetPair = OctetPair(None, Some(Octet(0x17)))
+    val s: Option[String] = octetPair
+    s should be(None)
+  }
+
+  it should "have an implicit conversion to String equal to none from some + none" in {
+    val octetPair = OctetPair(Some(Octet(0x17)), None)
+    val s: Option[String] = octetPair
+    s should be(None)
+  }
+
+  it should "have an implicit conversion to String equal to some from some + some" in {
+    val octetPair = OctetPair(Some(Octet(0xab)), Some(Octet(0x17)))
+    val s: Option[String] = octetPair
+    s.value should be("ab17")
+  }
+
+  it should "have an implicit conversion to String equal to some with padding from some + some" in {
+    val octetPair = OctetPair(Some(Octet(0x00)), Some(Octet(0x0c)))
+    val s: Option[String] = octetPair
+    s.value should be("000c")
+  }
+
+  it should "have an implicit conversion to String equal to none when each octet is larger than 0xff" in {
+    val octetPair = OctetPair(Some(Octet(0x77abcd00)), Some(Octet(0x1734)))
+    val s: Option[String] = octetPair
+    s.value should be("77abcd1734")
+  }
+
+  it should "have an implicit conversion to constrained OctetPair when the octets are valid" in {
+    val hi = Octet(Some(0xdd))
+    val lo = Octet(Some(0x11))
+    val octetPair = OctetPair(hi, lo)
+    val otherOpt: Option[Constrained] = octetPair
+    otherOpt.value.lo.octet should be(0x11)
+    otherOpt.value.hi.octet should be(0xdd)
+  }
+
+  it should "have an implicit conversion to constrained OctetPair equal to none when the lo octet has an undefined value" in {
+    val hi = Octet(Some(0xdd))
+    val lo = Octet(None)
+    val octetPair = OctetPair(hi, lo)
+    val otherOpt: Option[Constrained] = octetPair
+    otherOpt should be(None)
+  }
+
+  it should "have an implicit conversion to constrained OctetPair equal to none when the lo octet is undefined" in {
+    val hi = Some(Octet(Some(0xdd)))
+    val lo = None
+    val octetPair = OctetPair(hi, lo)
+    val otherOpt: Option[Constrained] = octetPair
+    otherOpt should be(None)
+  }
+
+  it should "have an implicit conversion to constrained OctetPair equal to none when the hi octet has an undefined value" in {
+    val hi = Octet(None)
+    val lo = Octet(Some(0x11))
+    val octetPair = OctetPair(hi, lo)
+    val otherOpt: Option[Constrained] = octetPair
+    otherOpt should be(None)
+  }
+
+  it should "have an implicit conversion to constrained OctetPair equal to one when the hi octet is undefined" in {
+    val hi = None
+    val lo = Some(Octet(Some(0x11)))
+    val octetPair = OctetPair(hi, lo)
+    val otherOpt: Option[Constrained] = octetPair
+    otherOpt should be(None)
+  }
+
+  it should "have an implicit conversion to constrained OctetPair equal to none when either octet is out of range" in {
+    val hi = Octet(Some(0xdd))
+    val lo = Octet(Some(0x22))
+    val octetPair = OctetPair(hi, lo)
+    def otherOpt(octetPair: OctetPair): Option[Constrained] = octetPair
+    otherOpt(OctetPair(hi, lo)) should be('defined)
+    otherOpt(OctetPair(Octet(Some(-1)), lo)) should be(None)
+    otherOpt(OctetPair(Octet(Some(0x100)), lo)) should be(None)
+    otherOpt(OctetPair(hi, Octet(Some(-1)))) should be(None)
+    otherOpt(OctetPair(hi, Octet(Some(0x100)))) should be(None)
+  }
 }

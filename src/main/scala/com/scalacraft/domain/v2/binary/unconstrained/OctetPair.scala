@@ -17,7 +17,10 @@ package com.scalacraft.domain.v2.binary.unconstrained
 
 import com.scalacraft.domain.v2.internal.{Information, RejectNullConstructorArgument}
 
-import scala.util.control.Exception._
+import com.scalacraft.domain.v2.internal.NumericConversions.FromString
+
+import com.scalacraft.domain.v2.binary.{OctetPair => Constrained}
+import com.scalacraft.domain.v2.binary.{Octet => ConstrainedOctet}
 
 /**
  * TODO: Documentation
@@ -70,10 +73,46 @@ case class OctetPair(hi: Option[Octet], lo: Option[Octet]) {
  */
 object OctetPair {
 
+  //  implicit def `to-Int`(octetPair: OctetPair): Int = octetPair.hi * 256 + octetPair.lo
+
+  /**
+   * @example Given OctetPair(Some(Octet(Some(47))), Some(Octet(Some(128)))) this will return `2f80`
+   * @param octetPair The instance to extract a value from
+   * @return A string representation of the octet pair as four or more hex characters without any prefix
+   */
+  implicit def `to-String`(octetPair: OctetPair): Option[String] =
+    for {
+      hiOctet <- octetPair.hi
+      hiInt <- hiOctet.octet
+      loOctet <- octetPair.lo
+      loInt <- loOctet.octet
+    } yield {
+      (BigInt(hiInt) * HiOctetMultiplier + BigInt(loInt)).formatted("%04x")
+    }
+
+  //  /**
+  //   * Unwrap one level. Do not unwrap the pair of `Option[Octet]` to Option[BigInt] because this will
+  //   * have little use.
+  //   * @param octetPair The octet pair to unwrap
+  //   * @return A pair of [[Octet]] options
+  //   */
+  //  implicit def `to-Octets`(octetPair: OctetPair): (Option[Octet], Option[Octet]) =
+  //    (octetPair.hi, octetPair.lo)
+
+  implicit def `to-Option[OctetPair]`(octetPair: OctetPair): Option[Constrained] = {
+    for {
+      hiOctet <- octetPair.hi
+      consHiOctet <- Octet.`to-Option[Octet]`(hiOctet)
+      loOctet <- octetPair.lo
+      consLoOctet <- Octet.`to-Option[Octet]`(loOctet)
+      consOctetPair <- Constrained.opt(consHiOctet, consLoOctet)
+    } yield consOctetPair
+  }
+
   /**
    * @param hi A octet. Can be null.
    * @param lo A octet. Can be null.
-   * @return A new instance using `None` when null was supplied.
+   * @return A new instance using `None` for the octet value when null was supplied.
    */
   def apply(hi: Octet, lo: Octet) = new OctetPair(Option(hi), Option(lo))
 
@@ -82,10 +121,6 @@ object OctetPair {
     val lo = Octet(x % 256)
     Some((Some(hi), Some(lo)))
   }
-
-  //  private val ZeroOctet = Octet(0)
-
-  //  import com.scalacraft.domain.v2.internal.NumericConversions.FromString
 
   private val HiOctetMultiplier = BigInt(0x100)
 
@@ -115,14 +150,10 @@ object OctetPair {
    */
   def unapply(x: String): Option[(Option[Octet], Option[Octet])] = {
 
-    // TODO: Move to NumericConversions.FromString
-    def optBigInt(n: String): Option[BigInt] =
-      catching(classOf[NumberFormatException]) opt BigInt(n, 0x10)
-
     x match {
       case Information.Zero() => None
       case n =>
-        optBigInt(n) match {
+        n.optHexBigInt match {
           case Some(i) if Min.FiveOctets <= i && i <= Max.FiveOctets =>
 
             val hi = (i / 0x100)
