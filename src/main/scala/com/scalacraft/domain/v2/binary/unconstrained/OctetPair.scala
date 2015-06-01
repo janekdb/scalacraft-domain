@@ -23,8 +23,67 @@ import com.scalacraft.domain.v2.binary.{OctetPair => Constrained}
 import com.scalacraft.domain.v2.binary.{Octet => ConstrainedOctet}
 
 /**
- * TODO: Documentation
- * `OctetPair`
+ * An unconstrained `OctetPair` represents two [[Octet]]s which are themselves unconstrained.
+ *
+ * In addition to using unconstrained octets each octet is optional. This allows an invalid pair to
+ * be created when we have only valid octets to select from.
+ *
+ * When interpreted as recording a single integer value using this expression 256 * hi + lo the allowable
+ * range has a minimum of -0x8080000000 and maximum equalling 0x807ffffeff.
+ *
+ * In decimal the representable range is [-551903297536, 551903297279].
+ *
+ * === Pattern Matching ===
+ *
+ * Pattern matching is supported as the following examples demonstrate,
+ * {{{
+ *   0x3490 match {
+ *     case OctetPair(hi, lo) => (hi, lo) // (Some(Octet(Some(0x34))), Some(Octet(Some(0x90)))
+ *     case _ => None
+ *   }
+ * }}}
+ *
+ * Matching will succeed against integer values larger than the range of two constrained octets,
+ * {{{
+ *   0x4251d match {
+ *     case OctetPair(hi, lo) => (hi, lo) // (Some(Octet(Some(0x425))), Some(Octet(Some(0x1d)))
+ *     case _ => None
+ *   }
+ * }}}
+ *
+ * Negative values are matched,
+ * {{{
+ *   -257 match {
+ *     case OctetPair(hi, lo) => (hi, lo) // (Some(Octet(Some(-1))), Some(Octet(Some(-1)))
+ *     case _ => None
+ *   }
+ * }}}
+ *
+ * The match target can be a string,
+ * {{{
+ * val s: String = "4020"
+ *
+ * s match {
+ *   case OctetPair(hi, lo) => (hi, lo) // (Some(Octet(Some(0x40))), Some(Octet(Some(0x20)))
+ *   case _ => None
+ * }
+ * }}}
+ *
+ * === Implicit Conversions ===
+ *
+ * An implicit conversion is supplied which allows an instance of `OctetPair` to be used where `Option[String]` is
+ * required.
+ *
+ * {{{
+ *  val octetPair = OctetPair(Some(Octet(0xab)), Some(Octet(0x17)))
+ *  val s: Option[String] = octetPair
+ *  s foreach(println) // ab17
+ * }}}
+ *
+ * A conversion to an option of the constrained version of this class is also available.
+ *
+ * @param hi non-null octet option representing the high order octet in this pair
+ * @param lo non-null octet option representing the low order octet in this pair
  */
 case class OctetPair(hi: Option[Octet], lo: Option[Octet]) {
   RejectNullConstructorArgument(hi, "hi")
@@ -69,7 +128,7 @@ case class OctetPair(hi: Option[Octet], lo: Option[Octet]) {
  * max-int-value
  * }}}
  *
- * ==TODO: Add match examples==
+ * ==TODO: Add match examples for value distribution==
  */
 object OctetPair {
 
@@ -115,6 +174,8 @@ object OctetPair {
    * @return A new instance using `None` for the octet value when null was supplied.
    */
   def apply(hi: Octet, lo: Octet) = new OctetPair(Option(hi), Option(lo))
+
+  // TODO: Add apply(hi: Int, lo: Int)
 
   def unapply(x: Int): Option[(Option[Octet], Option[Octet])] = {
     val hi = Octet(x / 256)

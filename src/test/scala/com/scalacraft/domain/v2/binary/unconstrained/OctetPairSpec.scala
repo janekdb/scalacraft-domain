@@ -49,7 +49,7 @@ class OctetPairSpec extends FlatSpec with Matchers {
       new OctetPair(None, null)
     } should have('paramName("lo"))
 
-    an[NullConstructorArgumentException] should be thrownBy new OctetPair(null, null)
+    a[NullConstructorArgumentException] should be thrownBy new OctetPair(null, null)
   }
 
   it should "accept option constructor args" in {
@@ -87,6 +87,7 @@ class OctetPairSpec extends FlatSpec with Matchers {
     m(256) should be((1.o, 0.o))
     m(-1) should be((0.o, (-1).o))
     m(-256) should be(((-1).o, 0.o))
+    m(-257) should be(((-1).o, (-1).o))
     m(-0x45fa) should be(((-0x45).o, (-0xfa).o))
     m(0xffff) should be((0xff.o, 0xff.o))
     m(0x10000) should be((0x100.o, 0.o))
@@ -168,6 +169,8 @@ class OctetPairSpec extends FlatSpec with Matchers {
     m(minFourByteHexIntMinusOne) should equal((-0x800000.o, (-1).o))
     m(minFiveByteHexInt) should equal((-0x80000000.o, -0x80000000.o))
     m(minFiveByteHexIntMinusOne) should be(None)
+    /* Hex prefix does not match */
+    m("0x01") should be(None)
   }
 
   /* Implicit Conversions */
