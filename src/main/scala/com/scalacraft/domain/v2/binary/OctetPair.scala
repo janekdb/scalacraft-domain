@@ -67,7 +67,7 @@ import com.scalacraft.domain.v2.internal.Information
  * Invalid octet pairs are not matched,
  * {{{
  *   -129 match {
- *     case OctetPair(hi, log) => (hi, lo)
+ *     case OctetPair(hi, lo) => (hi, lo)
  *     case _ => None // None
  *   }
  * }}}
@@ -88,6 +88,7 @@ import com.scalacraft.domain.v2.internal.Information
  * }}}
  *
  * A conversion to the unconstrained version of this class is also available.
+ *
  * @param hi A valid octet representing the high byte
  * @param lo A valid octet representing the low byte
  */
