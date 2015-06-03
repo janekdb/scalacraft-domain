@@ -143,6 +143,13 @@ class OctetPairSpec extends FlatSpec with Matchers {
     con.isPrivate should be(true)
   }
 
+  it should "not allow direct instantiation" in {
+    val Some(pair) = OctetPair.opt(0x0)
+    val hi = pair.hi
+    val lo = pair.lo
+    "new OctetPair(hi, lo)" shouldNot compile
+  }
+
   /* Pattern Matching */
 
   it should "be usable in integer pattern matching" in {
