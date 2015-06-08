@@ -9,11 +9,14 @@ A collection of case classes covering common domains
 
 ### Design Objectives
 
-- No dependencies outside of the platform libraries
 - Functional
-  - Complete immutability
-  - No exceptions thrown from public api
-    - Except when rejecting null constructor args for unconstrained types
+- No exceptions thrown from public api
+  - Except when rejecting null constructor args for unconstrained types
+
+### Implementation Objectives
+
+- No dependencies outside of the platform libraries
+- Complete immutability
 - No if statements
 
 ### Class Overview
