@@ -171,6 +171,16 @@ class OctetPairSpec extends FlatSpec with Matchers {
     m(minFiveByteHexIntMinusOne) should be(None)
     /* Hex prefix does not match */
     m("0x01") should be(None)
+    /* Documentation examples */
+    m("0") should equal((0.o, 0.o))
+    m("10000") should equal((0x100.o, 0.o))
+    m("100ff") should equal((0x100.o, 0xff.o))
+    m("10100") should equal((0x101.o, 0.o))
+    m(maxFourByteHexInt) should equal((0x7fffff.o, 0xff.o))
+    m("7fffffffff") should equal((0x7fffffff.o, 0xff.o))
+    m("8000000000") should equal((0x7fffffff.o, 0x100.o))
+    m("8000000201") should equal((0x7fffffff.o, 0x301.o))
+    m("807fffff00") should equal((0x7fffffff.o, 0x7fffffff.o))
   }
 
   /* Implicit Conversions */
@@ -191,13 +201,6 @@ class OctetPairSpec extends FlatSpec with Matchers {
   //    val op = new OctetPair(Some(hi), Some(lo))
   //    val OctetPair(hi2, lo2)  = op
   ////    octets should equal(Some(hi), Some(lo))
-  //  }
-
-  //
-  //  it should "implicitly convert to none int" in {
-  //    val octet = Octet(None)
-  //    val i: Option[Int] = octet
-  //    i should be(None)
   //  }
 
   it should "have an implicit conversion to String equal to none from none + none" in {

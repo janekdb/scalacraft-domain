@@ -82,15 +82,6 @@ import com.scalacraft.domain.v2.binary.{Octet => ConstrainedOctet}
  *
  * A conversion to an option of the constrained version of this class is also available.
  *
- * @param hi non-null octet option representing the high order octet in this pair
- * @param lo non-null octet option representing the low order octet in this pair
- */
-case class OctetPair(hi: Option[Octet], lo: Option[Octet]) {
-  RejectNullConstructorArgument(hi, "hi")
-  RejectNullConstructorArgument(lo, "lo")
-}
-
-/**
  * ==Value distribution between hi and lo octets==
  *
  * With a `hi` and `lo` octet the range of representable values is bounded below by
@@ -103,7 +94,7 @@ case class OctetPair(hi: Option[Octet], lo: Option[Octet]) {
  * 256 * max-int-value + max-int-value
  * }}}
  *
- * When matching against a value that is inside this inclusive range,
+ * When matching against values included in this sub-range,
  * {{{
  * [256 * min-int-value - 255, 256 * max-int-value + 255]
  * }}}
@@ -128,11 +119,43 @@ case class OctetPair(hi: Option[Octet], lo: Option[Octet]) {
  * max-int-value
  * }}}
  *
- * ==TODO: Add match examples for value distribution==
+ * Notionally the `hi` octet overflows or underflows before the `lo` octet.
+ *
+ * ==Value Distribution Examples==
+ *
+ * When `OctetPair` is called on to match a value outside of the normal range for two octets
+ * it will use the full range of the hi and lo octets. This involves a design choice around
+ * which octet exceeds 0xff first. The choice here is to fill the hi octet first
+ * and move onto the lo octet only when the hi octct can no longer be incremented.
+ *
+ * `"0"` matches to `(0x0, 0x0)`. The table below shows how other value are distributed across the
+ * `hi` and `lo` octets.
+ * {{{
+ * Target        Match                    Notes
+ * ------        -----                    -----
+ * "10000"       (0x100, 0x0)             The equal valued alternative (0xff, 0x100) is not used because the hi octet should be incremented out of range first.
+ * "100ff"       (0x100, 0xff)
+ * "10100"       (0x101, 0x0)
+ * "7fffffff"    (0x7fffff, 0xff)
+ * "7fffffffff"  (0x7fffffff, 0xff)
+ * "8000000000"  (0x7fffffff, 0x100)      This shows the lo octet being incremented out of range when the hi octet has arrived at the integer maximum.
+ * "8000000201"  (0x7fffffff, 0x301)      This shows the lo octet continuing to increase while the hi octet remains fixed.
+ * "807ffffeff"  (0x7fffffff, 0x7fffffff) At this point we cannot increase the match target any further and still match.
+ * "807fffff00"                           This is not matched because both the hi and lo octet were maxed out representing "807ffffeff".
+ * }}}
+ *
+ * Equivalent choices are made as the match target decrements towards the minimum value
+ * representable by two integers.
+ *
+ * @param hi non-null octet option representing the high order octet in this pair
+ * @param lo non-null octet option representing the low order octet in this pair
  */
-object OctetPair {
+case class OctetPair(hi: Option[Octet], lo: Option[Octet]) {
+  RejectNullConstructorArgument(hi, "hi")
+  RejectNullConstructorArgument(lo, "lo")
+}
 
-  //  implicit def `to-Int`(octetPair: OctetPair): Int = octetPair.hi * 256 + octetPair.lo
+object OctetPair {
 
   /**
    * @example Given OctetPair(Some(Octet(Some(47))), Some(Octet(Some(128)))) this will return `2f80`
@@ -148,15 +171,6 @@ object OctetPair {
     } yield {
       (BigInt(hiInt) * HiOctetMultiplier + BigInt(loInt)).formatted("%04x")
     }
-
-  //  /**
-  //   * Unwrap one level. Do not unwrap the pair of `Option[Octet]` to Option[BigInt] because this will
-  //   * have little use.
-  //   * @param octetPair The octet pair to unwrap
-  //   * @return A pair of [[Octet]] options
-  //   */
-  //  implicit def `to-Octets`(octetPair: OctetPair): (Option[Octet], Option[Octet]) =
-  //    (octetPair.hi, octetPair.lo)
 
   implicit def `to-Option[OctetPair]`(octetPair: OctetPair): Option[Constrained] = {
     for {
@@ -222,7 +236,7 @@ object OctetPair {
 
             /**
              * At this point we are range checked so it is safe to transfer the
-             * overflow or underway from the high octet to the low octet
+             * overflow or underflow from the high octet to the low octet
              */
             val overflow = (hi - Max.FourOctets) max 0
             val (hi2, lo2) = (hi - overflow, lo + overflow * 0x100)
