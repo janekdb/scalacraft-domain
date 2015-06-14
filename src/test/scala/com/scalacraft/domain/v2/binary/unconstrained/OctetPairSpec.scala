@@ -180,7 +180,7 @@ class OctetPairSpec extends FlatSpec with Matchers {
     m("7fffffffff") should equal((0x7fffffff.o, 0xff.o))
     m("8000000000") should equal((0x7fffffff.o, 0x100.o))
     m("8000000201") should equal((0x7fffffff.o, 0x301.o))
-    m("807fffff00") should equal((0x7fffffff.o, 0x7fffffff.o))
+    m("807fffff00") should be(None)
   }
 
   /* Implicit Conversions */
