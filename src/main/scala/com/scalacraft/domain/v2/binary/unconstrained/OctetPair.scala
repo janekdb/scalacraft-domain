@@ -15,12 +15,10 @@
 */
 package com.scalacraft.domain.v2.binary.unconstrained
 
-import com.scalacraft.domain.v2.internal.{Information, RejectNullConstructorArgument}
-
-import com.scalacraft.domain.v2.internal.NumericConversions.FromString
-
-import com.scalacraft.domain.v2.binary.{OctetPair => Constrained}
 import com.scalacraft.domain.v2.binary.{Octet => ConstrainedOctet}
+import com.scalacraft.domain.v2.binary.{OctetPair => Constrained}
+import com.scalacraft.domain.v2.internal.{Information, RejectNullConstructorArgument}
+import com.scalacraft.domain.v2.internal.NumericConversions.FromString
 
 /**
  * An unconstrained `OctetPair` represents two [[Octet]]s which are themselves unconstrained.
@@ -183,14 +181,17 @@ object OctetPair {
   }
 
   /**
-   * @param hi A octet. Can be null.
-   * @param lo A octet. Can be null.
+   * @param hi An octet. Can be null.
+   * @param lo An octet. Can be null.
    * @return A new instance using `None` for the octet value when null was supplied.
    */
   def apply(hi: Octet, lo: Octet) = new OctetPair(Option(hi), Option(lo))
 
-  // TODO: Add apply(hi: Int, lo: Int)
-
+  /**
+   * Matching on an [[Int]] will always succeed.
+   * @param x The match target
+   * @return A breakdown of `x` across hi and lo octets.
+   */
   def unapply(x: Int): Option[(Option[Octet], Option[Octet])] = {
     val hi = Octet(x / 256)
     val lo = Octet(x % 256)
@@ -220,8 +221,8 @@ object OctetPair {
    * Max: max-int-value * 256 + max-int-value
    * Min: min-int-value * 256 + min-int-value
    * }}}
-   * @param x
-   * @return
+   * @param x The match target
+   * @return None or a breakdown of `x` across hi and lo octets.
    */
   def unapply(x: String): Option[(Option[Octet], Option[Octet])] = {
 

@@ -185,24 +185,6 @@ class OctetPairSpec extends FlatSpec with Matchers {
 
   /* Implicit Conversions */
 
-  //  private type Octets = (Option[Octet], Option[Octet])
-
-  //  it should "implicitly convert to a tuple of some octets" in {
-  //    val lo = Octet(Some(0x01))
-  //    val hi = Octet(Some(0x2000))
-  //    val octets: Octets = new OctetPair(Some(hi), Some(lo))
-  //    octets should equal(Some(hi), Some(lo))
-  //  }
-
-
-  //  it should "test pattern matching" in {
-  //    val lo = Octet(Some(0x01))
-  //    val hi = Octet(Some(0x2000))
-  //    val op = new OctetPair(Some(hi), Some(lo))
-  //    val OctetPair(hi2, lo2)  = op
-  ////    octets should equal(Some(hi), Some(lo))
-  //  }
-
   it should "have an implicit conversion to String equal to none from none + none" in {
     val octetPair = OctetPair(None, None)
     val s: Option[String] = octetPair
