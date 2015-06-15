@@ -15,12 +15,11 @@
 */
 package com.scalacraft.domain.v2.binary.unconstrained
 
-import com.scalacraft.domain.v2.internal.ex.NullConstructorArgumentException
-import org.scalatest.{Matchers, FlatSpec}
-
-import org.scalatest.OptionValues._
-
 import com.scalacraft.domain.v2.binary.{OctetPair => Constrained}
+import com.scalacraft.domain.v2.internal.ex.NullConstructorArgumentException
+
+import org.scalatest.{Matchers, FlatSpec}
+import org.scalatest.OptionValues._
 
 /**
  * Specification for an unconstrained `OctetPair`
