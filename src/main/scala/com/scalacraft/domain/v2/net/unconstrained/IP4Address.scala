@@ -58,6 +58,7 @@ object IP4Address {
    * @param ip4Address The instance to use.
    * @return A dotted quad. For example "192.168.0.23"
    */
+  @deprecated(since = "2.1.0")
   implicit def `to-String`(ip4Address: IP4Address): String =
     ip4Address.tuple.productIterator.mkString(".")
 

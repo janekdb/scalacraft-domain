@@ -70,6 +70,7 @@ object CountryCodeA3 {
    * @param countryCode The instance to use.
    * @return The country code. For example "POL"
    */
+  @deprecated(since = "2.1.0")
   implicit def `to-String`(countryCode: CountryCodeA3): String = countryCode.countryCode
 
   implicit def `to-Option[CountryCodeA3]`(countryCode: CountryCodeA3): Option[ConstrainedCountryCodeA3] =

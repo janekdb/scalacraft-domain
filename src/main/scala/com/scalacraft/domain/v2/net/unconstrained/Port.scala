@@ -57,8 +57,10 @@ case class Port(portNumber: Int)
 
 object Port {
 
+  @deprecated(since = "2.1.0")
   implicit def `to-Int`(port: Port): Int = port.portNumber
 
+  @deprecated(since = "2.1.0")
   implicit def `to-String`(port: Port): String = port.portNumber.toString
 
   implicit def `to-Option[Port]`(port: Port): Option[ConstrainedPort] = ConstrainedPort.opt(port.portNumber)

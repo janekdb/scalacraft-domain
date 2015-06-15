@@ -77,6 +77,7 @@ object DomainName {
    * @param domainName The instance to use
    * @return A domain name as a string
    */
+  @deprecated(since = "2.1.0")
   implicit def `to-String`(domainName: DomainName): String = domainName.labels mkString LabelSeparator.toString
 
   /**
@@ -84,6 +85,7 @@ object DomainName {
    * @param domainName The instance to use
    * @return The domain name labels
    */
+  @deprecated(since = "2.1.0")
   implicit def `to-Seq[String]`(domainName: DomainName): Seq[String] = domainName.labels
 
   implicit def `to-DomainName`(domainName: DomainName): UnconstrainedDomainName =

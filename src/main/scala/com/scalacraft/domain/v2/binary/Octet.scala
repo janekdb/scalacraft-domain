@@ -88,6 +88,7 @@ case class Octet private(octet: Int)
 // TODO: Add trait to allow merge with Port following CountryCode regex example
 object Octet {
 
+  @deprecated(since = "2.1.0")
   implicit def `to-Int`(octet: Octet): Int = octet.octet
 
   /**
@@ -95,6 +96,7 @@ object Octet {
    * @param octet The instance to extract a value from
    * @return A string representation of the octet as two hex character without any prefix
    */
+  @deprecated(since = "2.1.0")
   implicit def `to-String`(octet: Octet): String = octet.octet.formatted("%02x")
 
   /**

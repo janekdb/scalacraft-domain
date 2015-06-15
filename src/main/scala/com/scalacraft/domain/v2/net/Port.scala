@@ -77,8 +77,10 @@ case class Port private(portNumber: Int)
 
 object Port {
 
+  @deprecated(since = "2.1.0")
   implicit def `to-Int`(port: Port): Int = port.portNumber
 
+  @deprecated(since = "2.1.0")
   implicit def `to-String`(port: Port): String = port.portNumber.toString
 
   implicit def `to-Port`(port: Port): unconstrained.Port = unconstrained.Port(port.portNumber)

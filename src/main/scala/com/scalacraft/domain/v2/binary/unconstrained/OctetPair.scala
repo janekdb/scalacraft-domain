@@ -160,6 +160,7 @@ object OctetPair {
    * @param octetPair The instance to extract a value from
    * @return A string representation of the octet pair as four or more hex characters without any prefix
    */
+  @deprecated(since = "2.1.0")
   implicit def `to-String`(octetPair: OctetPair): Option[String] =
     for {
       hiOctet <- octetPair.hi

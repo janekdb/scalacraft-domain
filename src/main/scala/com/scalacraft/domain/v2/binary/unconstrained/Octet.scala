@@ -81,6 +81,7 @@ case class Octet(octet: Option[Int]) {
 
 object Octet {
 
+  @deprecated(since = "2.1.0")
   implicit def `to-Option-Int`(octet: Octet): Option[Int] = octet.octet
 
   /**
@@ -89,6 +90,7 @@ object Octet {
    * @return A string representation of the octet as at least two hex characters with no `0x` prefix.
    * @example `f00f` or `0b`
    */
+  @deprecated(since = "2.1.0")
   implicit def `to-Option-String`(octet: Octet): Option[String] = octet.octet.map(_.formatted("%02x"))
 
   implicit def `to-Option[Octet]`(octet: Octet): Option[ConstrainedOctet] =

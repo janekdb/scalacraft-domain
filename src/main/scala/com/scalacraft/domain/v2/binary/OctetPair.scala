@@ -96,6 +96,7 @@ case class OctetPair private(hi: Octet, lo: Octet)
 
 object OctetPair {
 
+  @deprecated(since = "2.1.0")
   implicit def `to-Int`(octetPair: OctetPair): Int = octetPair.hi * 256 + octetPair.lo
 
   /**
@@ -103,6 +104,7 @@ object OctetPair {
    * @param octetPair The instance to extract a value from
    * @return A string representation of the octet pair as four hex character without any prefix
    */
+  @deprecated(since = "2.1.0")
   implicit def `to-String`(octetPair: OctetPair): String =
     Octet.`to-String`(octetPair.hi) + Octet.`to-String`(octetPair.lo)
 
