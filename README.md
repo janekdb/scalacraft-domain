@@ -27,7 +27,8 @@ This sections summarises the available domain classes.
 
 Class | Purpose | Example
 ---- | ---- | ----
-Octet | Integer in the range [0, 255] | 129
+Octet | Integers in the range [0, 255] | 129
+OctetPair | Integers in the range [0, 65535] | 0x4043
 
 #### Country
 
@@ -41,9 +42,9 @@ CountryCodeNumeric | Numeric Country Codes | 732
 
 Class | Purpose | Example
 ---- | ---- | ----
-Port | A port number | 8080
-IPAddress | An IP address | 192.162.0.83
-DomainName | A DNS name | scalacraft.com
+Port | Port numbers | 8080
+IPAddress | IP addresses | 192.162.0.83
+DomainName | DNS names | scalacraft.com
 
 ### Maven
 
@@ -280,8 +281,6 @@ to be omitted. For example given a Port an assignment to an int will compile,
   val portNumber: Int = port
 ````
 
-TODO: Add note about unwrapping constructor lists to tuple. See unconstrainted.OctetPair for an example.
-
 ### Documentation Notes
 
 ##### Numeric Ranges
@@ -295,7 +294,7 @@ The notation [m, n] denotes the inclusive range m <= x <= n. For example [0, 655
 - [ ] Address: Add US zip code
 - [ ] Address: Add UK postcode
 - [x] Binary: Octet
-- [ ] Binary: OctetPair
+- [x] Binary: OctetPair
 - [x] Country: Add ISO country codes for alpha-2
 - [x] Country: Add ISO country codes for alpha-3
 - [x] Country: Add ISO country codes for numeric
