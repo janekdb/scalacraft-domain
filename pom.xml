@@ -59,7 +59,7 @@
 
     <properties>
         <scala.version>2.11.6</scala.version>
-        <scalatest.version>2.2.2</scalatest.version>
+        <scalatest.version>2.2.4</scalatest.version>
     </properties>
 
     <dependencies>
