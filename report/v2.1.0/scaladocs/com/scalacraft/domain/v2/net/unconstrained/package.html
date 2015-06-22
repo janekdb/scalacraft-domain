@@ -1,0 +1,271 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>unconstrained - ScalaCraft Domain 2.1.0 API - com.scalacraft.domain.v2.net.unconstrained</title>
+          <meta name="description" content="unconstrained - ScalaCraft Domain 2.1.0 API - com.scalacraft.domain.v2.net.unconstrained" />
+          <meta name="keywords" content="unconstrained ScalaCraft Domain 2.1.0 API com.scalacraft.domain.v2.net.unconstrained" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../../../index.html';
+            var hash = 'com.scalacraft.domain.v2.net.unconstrained.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../../../package.html" class="extype" name="com">com</a>.<a href="../../../../package.html" class="extype" name="com.scalacraft">scalacraft</a>.<a href="../../../package.html" class="extype" name="com.scalacraft.domain">domain</a>.<a href="../../package.html" class="extype" name="com.scalacraft.domain.v2">v2</a>.<a href="../package.html" class="extype" name="com.scalacraft.domain.v2.net">net</a></p>
+        <h1>unconstrained</h1><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.net.unconstrained.package" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">unconstrained</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="com.scalacraft.domain.v2.net.unconstrained.DomainName" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="DomainNameextendsProductwithSerializable"></a>
+      <a id="DomainName:DomainName"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="DomainName.html"><span class="name">DomainName</span></a><span class="params">(<span name="labels">labels: <span class="extype" name="scala.Predef.String">String</span>*</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.net.unconstrained.package@DomainNameextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A <code>DomainName</code> represents a name in the domain name system.</p><div class="fullcomment"><div class="comment cmt"><p>A <code>DomainName</code> represents a name in the domain name system.</p><p>This class does not constrain the value of the domain name in anyway.</p><p>Unlike the example in Programming in Scala/2e the elements of the domain name are stored in the same order
+as used, i.e. as <code>www.scalacraft.com</code>, not reversed.</p><p>This implementation is case sensitive which is at variance with the Wikipedia specification. If a convincing
+use case for case insensitivity arises this could be reconsidered. Expressed in code we have,</p><pre>DomainName(<span class="lit">"WWW"</span>) != DomainName(<span class="lit">"www"</span>)</pre><h5> Pattern Matching </h5><p>Pattern matching is supported as the following example demonstrates,</p><pre><span class="lit">"example.com"</span> <span class="kw">match</span> {
+<span class="kw">case</span> DomainName(label1, label2) <span class="kw">=&gt;</span> label1 :: label2 :: Nil  <span class="cmt">// List("example", "com")</span>
+<span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span>
+}</pre><p>Domain names with invalid labels will also be matched because this class is unconstrained,</p><pre><span class="lit">"a.b-"</span> <span class="kw">match</span> {
+<span class="kw">case</span> DomainName(label1, label2) <span class="kw">=&gt;</span> label1 :: label2 :: Nil  <span class="cmt">// List("a", "b-")</span>
+<span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span>
+}</pre><p>To match an arbitrary number of domain name labels use a pattern sequence,</p><pre><span class="lit">"www.example.com"</span> <span class="kw">match</span> {
+<span class="kw">case</span> DomainName(label, labels@_*) <span class="kw">=&gt;</span> labels  <span class="cmt">// "example"::"com"::Nil</span>
+}</pre><h5> Implicit Conversions </h5><p>Implicit conversions exist which allow an instance of <code>DomainName</code> to be used when either a <code>String</code>
+or <code>Seq[String]</code> is required.</p><pre><span class="kw">def</span> countElements(seq: <span class="std">Seq</span>[<span class="std">String</span>]) = seq.length
+
+<span class="kw">val</span> dn = DomainName(<span class="lit">"www"</span>, <span class="lit">"example"</span>, <span class="lit">"com"</span>)
+<span class="kw">val</span> elemNo = countElements(dn) <span class="cmt">// 3</span></pre><p>A conversion to an option of the constrained version of this class is also available.
+</p></div></div>
+    </li><li name="com.scalacraft.domain.v2.net.unconstrained.IP4Address" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="IP4AddressextendsProductwithSerializable"></a>
+      <a id="IP4Address:IP4Address"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="IP4Address.html"><span class="name">IP4Address</span></a><span class="params">(<span name="byte1">byte1: <span class="extype" name="scala.Int">Int</span></span>, <span name="byte2">byte2: <span class="extype" name="scala.Int">Int</span></span>, <span name="byte3">byte3: <span class="extype" name="scala.Int">Int</span></span>, <span name="byte4">byte4: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.net.unconstrained.package@IP4AddressextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An <code>IP4Address</code> represents an IP4 address.</p><div class="fullcomment"><div class="comment cmt"><p>An <code>IP4Address</code> represents an IP4 address.</p><p>This class does not constrain the value of the address components.</p><h5> Pattern Matching </h5><p>Pattern matching is supported as the following example demonstrates,</p><pre><span class="lit">"192.162.0.9"</span> <span class="kw">match</span> {
+<span class="kw">case</span> IP4Address(b1, b2, _, _) <span class="kw">=&gt;</span> <span class="std">Some</span>(b1, b2) <span class="cmt">// Some(192, 162)</span>
+<span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span>
+}</pre><h5> Implicit Conversions </h5><p>Implicit conversions exist which allow an instance of <code>IP4Address</code> when a <code>String</code> is required.</p><pre><span class="kw">val</span> ipa = IP4Address(b1, b2, b3, b4)
+<span class="kw">val</span> inet = java.v2.InetAddress.getByName(ipa)</pre><p>A conversion to an option of the constrained version of this class is also available.
+</p></div></div>
+    </li><li name="com.scalacraft.domain.v2.net.unconstrained.IP6Address" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IP6AddressextendsProductwithSerializable"></a>
+      <a id="IP6Address:IP6Address"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="IP6Address.html"><span class="name">IP6Address</span></a><span class="params">(<span name="octetPair1">octetPair1: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="octetPair2">octetPair2: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="octetPair3">octetPair3: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="octetPair4">octetPair4: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="octetPair5">octetPair5: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="octetPair6">octetPair6: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="octetPair7">octetPair7: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="octetPair8">octetPair8: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.net.unconstrained.package@IP6AddressextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>IP6Address</code>
+TODO: Documentation
+</p>
+    </li><li name="com.scalacraft.domain.v2.net.unconstrained.Port" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="PortextendsProductwithSerializable"></a>
+      <a id="Port:Port"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Port.html"><span class="name">Port</span></a><span class="params">(<span name="portNumber">portNumber: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.net.unconstrained.package@PortextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A <code>Port</code> represents an IP port.</p><div class="fullcomment"><div class="comment cmt"><p>A <code>Port</code> represents an IP port.</p><p>This class does not constrain the value of the port in anyway.</p><h5> Pattern Matching </h5><p>Pattern matching is supported as the following examples demonstrate,</p><pre><span class="num">7</span> <span class="kw">match</span> {
+  <span class="kw">case</span> Port(p) <span class="kw">=&gt;</span> p <span class="cmt">// 7</span>
+  <span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span>
+}</pre><p>The match target can be a string,</p><pre><span class="kw">val</span> s: <span class="std">String</span> = ...
+  s <span class="kw">match</span> {
+    <span class="kw">case</span> Port(p) <span class="kw">=&gt;</span> p
+    <span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span>
+  }</pre><h5> Implicit Conversions </h5><p>Implicit conversions exists which allow an instance of <code>Port</code> to be used when an <code>Int</code> or <code>String</code> is required.</p><pre><span class="kw">val</span> port = Port(<span class="num">6006</span>)
+<span class="kw">val</span> isa = <span class="kw">new</span> InetSocketAddress(p)</pre><p>A conversion to an option of the constrained version of this class is also available.
+</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="com.scalacraft.domain.v2.net.unconstrained.DomainName" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DomainName"></a>
+      <a id="DomainName:DomainName"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="DomainName$.html"><span class="name">DomainName</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.net.unconstrained.package@DomainName" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="com.scalacraft.domain.v2.net.unconstrained.IP4Address" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IP4Address"></a>
+      <a id="IP4Address:IP4Address"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="IP4Address$.html"><span class="name">IP4Address</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.net.unconstrained.package@IP4Address" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="com.scalacraft.domain.v2.net.unconstrained.IP6Address" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IP6Address"></a>
+      <a id="IP6Address:IP6Address"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="IP6Address$.html"><span class="name">IP6Address</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.net.unconstrained.package@IP6Address" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="com.scalacraft.domain.v2.net.unconstrained.Port" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Port"></a>
+      <a id="Port:Port"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Port$.html"><span class="name">Port</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#com.scalacraft.domain.v2.net.unconstrained.package@Port" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

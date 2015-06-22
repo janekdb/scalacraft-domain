@@ -1,0 +1,229 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>binary - ScalaCraft Domain 2.1.0 API - com.scalacraft.domain.v2.binary</title>
+          <meta name="description" content="binary - ScalaCraft Domain 2.1.0 API - com.scalacraft.domain.v2.binary" />
+          <meta name="keywords" content="binary ScalaCraft Domain 2.1.0 API com.scalacraft.domain.v2.binary" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../../index.html';
+            var hash = 'com.scalacraft.domain.v2.binary.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../../package.html" class="extype" name="com">com</a>.<a href="../../../package.html" class="extype" name="com.scalacraft">scalacraft</a>.<a href="../../package.html" class="extype" name="com.scalacraft.domain">domain</a>.<a href="../package.html" class="extype" name="com.scalacraft.domain.v2">v2</a></p>
+        <h1>binary</h1><span class="permalink">
+      <a href="../../../../../index.html#com.scalacraft.domain.v2.binary.package" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">binary</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="com.scalacraft.domain.v2.binary.Octet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="OctetextendsProductwithSerializable"></a>
+      <a id="Octet:Octet"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Octet.html"><span class="name">Octet</span></a><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#com.scalacraft.domain.v2.binary.package@OctetextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An <code>Octet</code> represents an integer in the range [0, 255].</p><div class="fullcomment"><div class="comment cmt"><p>An <code>Octet</code> represents an integer in the range [0, 255].</p><p>The following constraints hold for instances of this class,</p><p>- <code>octet</code> is in the range [0, 255]</p><p>An instance can be created using a suitable overload of the <code>opt</code> method.</p><pre><span class="kw">val</span> octetOpt1: <span class="std">Option</span>[Octet] = Octet.opt(<span class="num">117</span>)
+<span class="kw">val</span> octetOpt2: <span class="std">Option</span>[Octet] = Octet.opt(<span class="num">0</span>x75)
+<span class="kw">val</span> octetOpt3: <span class="std">Option</span>[Octet] = Octet.opt(<span class="lit">"fe"</span>) <span class="cmt">// Decimal 254</span>
+<span class="kw">val</span> octetOpt4: <span class="std">Option</span>[Octet] = Octet.opt(<span class="lit">"d"</span>) <span class="cmt">// Decimal 13</span>
+<span class="kw">val</span> octetOpt5: <span class="std">Option</span>[Octet] = Octet.opt(<span class="lit">"12"</span>) <span class="cmt">// Decimal 18</span></pre><p>Note that the string variant takes either one or two hex characters.</p><p>When any class constraint is violated the result is <code>None</code>.</p><pre><span class="kw">val</span> octetOpt: <span class="std">Option</span>[Octet] = Octet.opt(<span class="lit">"NaN"</span>) <span class="cmt">// None</span></pre><h5> Pattern Matching </h5><p>Pattern matching is supported as the following examples demonstrate,</p><pre><span class="num">7</span> <span class="kw">match</span> {
+  <span class="kw">case</span> Octet(n) <span class="kw">=&gt;</span> n <span class="cmt">// 7</span>
+  <span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span>
+}</pre><p>The match target can be a string,</p><pre><span class="kw">val</span> s: <span class="std">String</span> = <span class="lit">"20"</span>
+
+s <span class="kw">match</span> {
+  <span class="kw">case</span> Octet(n) <span class="kw">=&gt;</span> n  <span class="cmt">// 32</span>
+  <span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span>
+}</pre><p>Invalid octets are not matched,</p><pre>-<span class="num">129</span> <span class="kw">match</span> {
+  <span class="kw">case</span> Octet(n) <span class="kw">=&gt;</span> n
+  <span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span> <span class="cmt">// None</span>
+}</pre><h5> Implicit Conversions </h5><p>Implicit conversions exists which allow an instance of <code>Octet</code> to be used when an <code>Int</code> or <code>String</code> is
+required.</p><pre><span class="kw">val</span> <span class="std">Some</span>(hi) = Octet.opt(<span class="num">4</span>)
+<span class="kw">val</span> <span class="std">Some</span>(lo) = Octet.opt(<span class="num">3</span>)
+<span class="kw">val</span> w: <span class="std">Int</span> = <span class="num">256</span> * hi + lo <span class="cmt">// 0x0403</span></pre><p>A conversion to the unconstrained version of this class is also available.</p></div></div>
+    </li><li name="com.scalacraft.domain.v2.binary.OctetPair" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="OctetPairextendsProductwithSerializable"></a>
+      <a id="OctetPair:OctetPair"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="OctetPair.html"><span class="name">OctetPair</span></a><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#com.scalacraft.domain.v2.binary.package@OctetPairextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An <code>OctetPair</code> represents two <a href="Octet.html" class="extype" name="com.scalacraft.domain.v2.binary.Octet">Octet</a>s.</p><div class="fullcomment"><div class="comment cmt"><p>An <code>OctetPair</code> represents two <a href="Octet.html" class="extype" name="com.scalacraft.domain.v2.binary.Octet">Octet</a>s.</p><p>The following constraints hold for instances of this class,</p><p>- <code>hi</code> is not null
+- <code>lo</code> is not null</p><p>An instance can be created using a suitable overload of the <code>opt</code> method.</p><pre><span class="kw">val</span> op1: <span class="std">Option</span>[OctetPair] = OctetPair.opt(<span class="num">34540</span>)  <span class="cmt">// OctetPair(134, 236) = 34540</span>
+<span class="kw">val</span> op2: <span class="std">Option</span>[OctetPair] = OctetPair.opt(<span class="num">0</span>x86ec) <span class="cmt">// OctetPair(134, 236) = 34540</span>
+<span class="kw">val</span> op3: <span class="std">Option</span>[OctetPair] = OctetPair.opt(<span class="lit">"d"</span>) <span class="cmt">// OctetPair(0, 13)</span>
+<span class="kw">val</span> op3: <span class="std">Option</span>[OctetPair] = OctetPair.opt(<span class="lit">"fe"</span>) <span class="cmt">// OctetPair(0, 254)</span>
+<span class="kw">val</span> op5: <span class="std">Option</span>[OctetPair] = OctetPair.opt(<span class="lit">"012"</span>) <span class="cmt">// Decimal 18</span>
+<span class="kw">val</span> op4: <span class="std">Option</span>[OctetPair] = OctetPair.opt(<span class="lit">"f11d"</span>) <span class="cmt">// Decimal 61725</span></pre><p>Note that the string variant takes between one to four hex characters.</p><p>When any class constraint is violated the result is <code>None</code>.</p><pre><span class="kw">val</span> op1: <span class="std">Option</span>[OctetPair] = OctetPair.opt(<span class="lit">"NaN"</span>) <span class="cmt">// None</span>
+<span class="kw">val</span> op2: <span class="std">Option</span>[OctetPair] = OctetPair.opt(<span class="num">0</span>xf1234) <span class="cmt">// None</span></pre><h5> Pattern Matching </h5><p>Pattern matching is supported as the following examples demonstrate,</p><pre><span class="num">0</span>x3490 <span class="kw">match</span> {
+  <span class="kw">case</span> OctetPair(hi, lo) <span class="kw">=&gt;</span> (hi, lo) <span class="cmt">// (Octet(0x34), Octet(0x90)</span>
+  <span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span>
+}</pre><p>The match target can be a string,</p><pre><span class="kw">val</span> s: <span class="std">String</span> = <span class="lit">"4020"</span>
+
+s <span class="kw">match</span> {
+  <span class="kw">case</span> OctetPair(hi, lo) <span class="kw">=&gt;</span> (hi, lo) <span class="cmt">// (Octet(0x40), Octet(0x20)</span>
+  <span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span>
+}</pre><p>Invalid octet pairs are not matched,</p><pre>-<span class="num">129</span> <span class="kw">match</span> {
+  <span class="kw">case</span> OctetPair(hi, lo) <span class="kw">=&gt;</span> (hi, lo)
+  <span class="kw">case</span> _ <span class="kw">=&gt;</span> <span class="std">None</span> <span class="cmt">// None</span>
+}</pre><h5> Implicit Conversions </h5><p>Implicit conversions are supplied which allow an instance of <code>OctetPair</code> to be used when an <code>Int</code> or <code>String</code> is
+required.</p><pre><span class="kw">val</span> <span class="std">Some</span>(pair) = OctetPair.opt(<span class="num">0</span>x40cc)
+<span class="kw">val</span> w: <span class="std">Int</span> = <span class="num">1</span> + pair <span class="cmt">// 0x40cd</span></pre><pre><span class="kw">val</span> <span class="std">Some</span>(pair) = OctetPair.opt(<span class="lit">"f"</span>)
+<span class="kw">val</span> s: <span class="std">String</span> = pair: <span class="std">String</span> <span class="cmt">// 000f</span></pre><p>A conversion to the unconstrained version of this class is also available.
+</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="com.scalacraft.domain.v2.binary.Octet" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Octet"></a>
+      <a id="Octet:Octet"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Octet$.html"><span class="name">Octet</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#com.scalacraft.domain.v2.binary.package@Octet" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="com.scalacraft.domain.v2.binary.OctetPair" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="OctetPair"></a>
+      <a id="OctetPair:OctetPair"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="OctetPair$.html"><span class="name">OctetPair</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#com.scalacraft.domain.v2.binary.package@OctetPair" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="com.scalacraft.domain.v2.binary.unconstrained" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="unconstrained"></a>
+      <a id="unconstrained:unconstrained"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="unconstrained/package.html"><span class="name">unconstrained</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#com.scalacraft.domain.v2.binary.package@unconstrained" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
