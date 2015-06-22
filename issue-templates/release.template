@@ -6,3 +6,5 @@
   - [ ] Deploy release tagged project with mvn clean deploy -P distribution
   - [ ] Modify version to (X.Y.Z)+1-SNAPSHOT
   - [ ] Check Central Repository later
+  - [ ] Publish ScalaDoc to gh-pages
+  - [ ] Update notes on gh-pages
