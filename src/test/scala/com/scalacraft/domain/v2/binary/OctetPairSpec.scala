@@ -165,7 +165,7 @@ class OctetPairSpec extends FlatSpec with Matchers {
     m(0x10000) should be(None)
   }
 
-  private val ZeroOctet = Octet.opt(0).get
+  private val ZeroOctet = Octet.Zero
 
   it should "be usable in string pattern matching" in {
     def m(x: String) = x match {

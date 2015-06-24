@@ -116,9 +116,6 @@ object OctetPair {
   implicit def `to-OctetPair`(octetPair: OctetPair): unconstrained.OctetPair =
     unconstrained.OctetPair(octetPair.hi, octetPair.lo)
 
-  // TODO: Move this to Octet.Zero
-  private val ZeroOctet = Octet.opt(0).get
-
   def opt(x: Int): Option[OctetPair] = unapply(x) map { case (hi, lo) => OctetPair(hi, lo)}
 
   def opt(x: String): Option[OctetPair] = unapply(x) map { case (hi, lo) => OctetPair(hi, lo)}
@@ -133,7 +130,7 @@ object OctetPair {
   def unapply(x: String): Option[(Octet, Octet)] = {
     val octets = extractOctets(x, Nil)
     octets match {
-      case Some(lo :: Nil) => Some(ZeroOctet, lo)
+      case Some(lo :: Nil) => Some(Octet.Zero, lo)
       case Some(hi :: lo :: Nil) => Some(hi, lo)
       case _ => None
     }

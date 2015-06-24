@@ -133,4 +133,6 @@ object Octet {
   def unapply(x: String): Option[Int] =
     opt(x) map (_.octet)
 
+  private[binary] val Zero = Octet(0)
+
 }
