@@ -105,6 +105,10 @@ class OctetSpec extends FlatSpec with Matchers {
     con.isPrivate should be(true)
   }
 
+  it should "not allow direct instantiation" in {
+    "new Octet(55)" shouldNot compile
+  }
+
   /* Pattern Matching */
 
   it should "be usable in pattern matching" in {

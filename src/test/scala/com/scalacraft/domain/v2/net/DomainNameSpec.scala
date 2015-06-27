@@ -15,6 +15,7 @@
 */
 package com.scalacraft.domain.v2.net
 
+import com.scalacraft.domain.v2.internal.Reflections
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers
 import org.scalatest.OptionValues._
@@ -128,6 +129,21 @@ class DomainNameSpec extends FlatSpec with Matchers {
 
   it should "be constructed from two multi-label strings and one other string" in {
     DomainName.opt("a.b", "c", "example.com").value.labels should equal("a" :: "b" :: "c" :: "example" :: "com" :: Nil)
+  }
+
+  /* Constructor access */
+
+  it should "not have a public constructor" in {
+    val constructors = Reflections.declaredConstructors[DomainName]
+    constructors should have size 1
+    val con = constructors.head
+    con.isPrivate should be(true)
+  }
+
+  it should "not allow direct instantiation" in {
+    val label1 = "scalacraft"
+    val label2 = "org"
+    "new DomainName(label1, label2)" shouldNot compile
   }
 
   /* Pattern Matching */

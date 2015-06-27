@@ -15,6 +15,7 @@
 */
 package com.scalacraft.domain.v2.net
 
+import com.scalacraft.domain.v2.internal.Reflections
 import org.scalatest.FlatSpec
 
 import org.scalatest.Matchers
@@ -93,6 +94,19 @@ class PortSpec extends FlatSpec with Matchers {
   it should "not be constructed from a negative integer string" in {
     val n = -1
     Port.opt(n.toString) should be(None)
+  }
+
+  /* Constructor access */
+
+  it should "not have a public constructor" in {
+    val constructors = Reflections.declaredConstructors[Port]
+    constructors should have size 1
+    val con = constructors.head
+    con.isPrivate should be(true)
+  }
+
+  it should "not allow direct instantiation" in {
+    "new Port(9418)" shouldNot compile
   }
 
   /* Pattern Matching */

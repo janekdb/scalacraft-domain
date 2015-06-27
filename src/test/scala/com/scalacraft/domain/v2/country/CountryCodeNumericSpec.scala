@@ -68,6 +68,10 @@ class CountryCodeNumericSpec extends FlatSpec with Matchers {
     con.isPrivate should be(true)
   }
 
+  it should "not allow direct instantiation" in {
+    "new CountryCodeNumeric(908)" shouldNot compile
+  }
+
   /* Pattern Matching */
 
   it should "be usable in string pattern matching" in {

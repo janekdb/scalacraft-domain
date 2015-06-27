@@ -15,6 +15,7 @@
 */
 package com.scalacraft.domain.v2.net
 
+import com.scalacraft.domain.v2.internal.Reflections
 import org.scalatest.FlatSpec
 
 import org.scalatest.Matchers
@@ -96,6 +97,20 @@ class IP4AddressSpec extends FlatSpec with Matchers {
 
   it should "not be constructed from an empty string" in {
     IP4Address.opt("") should be(None)
+  }
+
+  /* Constructor access */
+
+  it should "not have a public constructor" in {
+    val constructors = Reflections.declaredConstructors[IP4Address]
+    constructors should have size 1
+    val con = constructors.head
+    con.isPrivate should be(true)
+  }
+
+  it should "not allow direct instantiation" in {
+    val (b1, b2, b3, b4) = ValidDottedQuad
+    "new IP4Address(b1, b2, b3, b4)" shouldNot compile
   }
 
   /* Pattern Matching */

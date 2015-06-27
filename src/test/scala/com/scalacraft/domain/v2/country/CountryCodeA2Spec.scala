@@ -68,6 +68,11 @@ class CountryCodeA2Spec extends FlatSpec with Matchers {
     con.isPrivate should be(true)
   }
 
+  it should "not allow direct instantiation" in {
+    val cc = ValidCountryCode
+    "new CountryCodeA2(cc)" shouldNot compile
+  }
+
   /* Pattern Matching */
 
   it should "be usable in string pattern matching" in {
