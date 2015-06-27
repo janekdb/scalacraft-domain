@@ -105,7 +105,7 @@ class IP4AddressSpec extends FlatSpec with Matchers {
     val constructors = Reflections.declaredConstructors[IP4Address]
     constructors should have size 1
     val con = constructors.head
-    con.isPrivate should be(true)
+    con shouldBe 'private
   }
 
   it should "not allow direct instantiation" in {

@@ -45,7 +45,7 @@ class ReflectionsSpec extends FlatSpec with Matchers {
     cons should have size 1
     val con = cons.head
     con.name.toString should equal("<init>")
-    con.isPrivate should be(true)
+    con shouldBe 'private
   }
 
   it should "extract multiple constructors" in {

@@ -102,7 +102,7 @@ class PortSpec extends FlatSpec with Matchers {
     val constructors = Reflections.declaredConstructors[Port]
     constructors should have size 1
     val con = constructors.head
-    con.isPrivate should be(true)
+    con shouldBe 'private
   }
 
   it should "not allow direct instantiation" in {
