@@ -120,12 +120,8 @@ object OctetPair {
 
   def opt(x: String): Option[OctetPair] = unapply(x) map { case (hi, lo) => OctetPair(hi, lo)}
 
-  // TODO: Support this null checking pattern in Information object
   def opt(a: Octet, b: Octet): Option[OctetPair] =
-    for {
-      _ <- Option(a)
-      _ <- Option(b)
-    } yield OctetPair(a, b)
+    Information.whenNotNull(a, b)(OctetPair.apply)
 
   def unapply(x: String): Option[(Octet, Octet)] = {
     val octets = extractOctets(x, Nil)

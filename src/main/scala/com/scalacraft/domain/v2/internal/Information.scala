@@ -57,4 +57,20 @@ object Information {
       case _ => info(data)
     }
   }
+
+  /**
+   * When all parameters are not null invoke `f` and return the result as a `Some`
+   * otherwise when any parameter is null return `None`
+   * @param v1 A possibly null value
+   * @param v2 A possibly null value
+   * @param f The function to call with `v1` and `v2` when both are not null
+   * @return A some of the result of applying `f` to the parameters when none are
+   *         null
+   */
+  def whenNotNull[T1, T2, U](v1: T1, v2: T2)(f: (T1, T2) => U): Option[U] =
+    for {
+      _ <- Option(v1)
+      _ <- Option(v2)
+    } yield f(v1, v2)
+
 }

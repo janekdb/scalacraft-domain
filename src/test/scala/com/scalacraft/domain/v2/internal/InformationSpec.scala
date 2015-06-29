@@ -65,4 +65,16 @@ class InformationSpec extends FlatSpec with Matchers {
     val result = Information.whenSome("A", X) { case x => None}
     result should be(None)
   }
+
+  behavior of "Information.whenNotNull"
+
+  it should "call f only when both arguments are not null" in {
+    val A = "a"
+    val B = "b"
+    def add(i: String, j: String): String = i + j
+    Information.whenNotNull(null, null)(add) should be(None)
+    Information.whenNotNull(A, null)(add) should be(None)
+    Information.whenNotNull(null, B)(add) should be(None)
+    Information.whenNotNull(A, B)(add) should be(Some(A + B))
+  }
 }
