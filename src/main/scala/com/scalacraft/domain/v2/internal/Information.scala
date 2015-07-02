@@ -73,4 +73,34 @@ object Information {
       _ <- Option(v2)
     } yield f(v1, v2)
 
+  /**
+   * When all parameters are not null invoke `f` and return the result as a `Some`
+   * otherwise when any parameter is null return `None`
+   * @param v1 A possibly null value
+   * @param v2 A possibly null value
+   * @param v3 A possibly null value
+   * @param v4 A possibly null value
+   * @param v5 A possibly null value
+   * @param v6 A possibly null value
+   * @param v7 A possibly null value
+   * @param v8 A possibly null value
+   * @param f The function to call with all args when none are null
+   * @return A some of the result of applying `f` to the parameters when none are
+   *         null
+   */
+  def whenNotNull
+  [T1, T2, T3, T4, T5, T6, T7, T8, U]
+  (v1: T1, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, v7: T7, v8: T8)
+  (f: (T1, T2, T3, T4, T5, T6, T7, T8) => U): Option[U] =
+    for {
+      _ <- Option(v1)
+      _ <- Option(v2)
+      _ <- Option(v3)
+      _ <- Option(v4)
+      _ <- Option(v5)
+      _ <- Option(v6)
+      _ <- Option(v7)
+      _ <- Option(v8)
+    } yield f(v1, v2, v3, v4, v5, v6, v7, v8)
+
 }

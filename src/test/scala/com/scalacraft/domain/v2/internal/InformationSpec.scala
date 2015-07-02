@@ -16,13 +16,14 @@
 package com.scalacraft.domain.v2.internal
 
 import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.OptionValues._
 
 /**
  * Specification for `Information` object
  */
 class InformationSpec extends FlatSpec with Matchers {
 
-  behavior of "An Information object"
+  behavior of "Information.whenSome"
 
   it should "convert null to Some(None)" in {
     val result = Information.whenSome(null) { case x => throw new RuntimeException}
@@ -76,5 +77,18 @@ class InformationSpec extends FlatSpec with Matchers {
     Information.whenNotNull(A, null)(add) should be(None)
     Information.whenNotNull(null, B)(add) should be(None)
     Information.whenNotNull(A, B)(add) should be(Some(A + B))
+  }
+
+  it should "call f only when all arguments are not null" in {
+    def add(i1: String, i2: String, i3: String, i4: String, i5: String, i6: String, i7: String, i8: String): String =
+      i1 + i2 + i3 + i4 + i5 + i6 + i7 + i8
+    val letters = "abcdefgh"
+    val vs = letters.sliding(1).toList
+    (0 until vs.size) foreach {
+      case i =>
+        val args = vs.updated(i, null)
+        Information.whenNotNull(args(0), args(1), args(2), args(3), args(4), args(5), args(6), args(7))(add) should be(None)
+    }
+    Information.whenNotNull(vs(0), vs(1), vs(2), vs(3), vs(4), vs(5), vs(6), vs(7))(add).value should be(letters)
   }
 }
