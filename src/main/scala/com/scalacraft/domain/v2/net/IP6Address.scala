@@ -82,7 +82,7 @@ object IP6Address {
 
   private def parseTokens(x: String, acc: List[Token]): List[Token] = {
     nextToken(x) match {
-      case Some((token, rest)) => addTokens(rest, token :: acc)
+      case Some((token, rest)) => parseTokens(rest, token :: acc)
       case None => acc
     }
   }
