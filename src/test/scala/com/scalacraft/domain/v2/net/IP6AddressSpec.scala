@@ -97,6 +97,12 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     val Ascending = "0102:0304:0506:0708:090A:0B0C:0D0E:0F10"
     val Lowercase = Ascending.toLowerCase
     val Uppercase = Ascending.toUpperCase
+    val InternalZeroGroup = "ff::1"
+
+    // "::"
+    // "::1"
+    // "b::"
+
     //    val ValidQuad = "240.1.255.7"
     //    val InvalidQuad = "240.1.255.B"
     //    val RangeExceededByte = "240.256.234.7"
@@ -106,9 +112,11 @@ class IP6AddressSpec extends FlatSpec with Matchers {
 
   private object InvalidStrings {
     val FiveDigits = "0:0:0:0:0:0:12345:0"
+    // two zero groups
+    // "1::1::"
   }
 
-  it should "be constructed from a valid string representation" in {
+  it should "be constructed from a valid full string representation" in {
     IP6Address.opt(ValidStrings.AllZeros).value should have(
       'field1(zero),
       'field2(zero),
@@ -151,15 +159,36 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     )
   }
 
-  private def op(x: Int): OctetPair = {
-    OctetPair.opt(x).get
+  it should "be constructed from a valid zero group string representation" in {
+    IP6Address.opt(ValidStrings.InternalZeroGroup).value should have(
+      'field1(op(0xff)),
+      'field2(zero),
+      'field3(zero),
+      'field4(zero),
+      'field5(zero),
+      'field6(zero),
+      'field7(zero),
+      'field8(op(0x1))
+    )
+  }
+
+  it should "not be constructed when groups missing and multiple shorteners" in {
+    val invalid = "77:ff::ee::0"
+    IP6Address.opt(invalid) should be(None)
+  }
+
+  it should "not be constructed from an unnecessary zero group string representation" in {
+    /* This already has 8 groups defined. Do not accept :: */
+    val invalid1 = "ff::" + "0:" * 6 + "0"
+    IP6Address.opt(invalid1) should be(None)
+    /* Using :: to add one 0 group is not accepted. */
+    val invalid2 = "ff::" + "0:" * 6
+    IP6Address.opt(invalid2) should be(None)
   }
 
   it should "not be constructed from a invalid string representation" in {
     val validSuffix = ":1" * 7
 
-    IP6Address.opt(null) should be(None)
-    IP6Address.opt("") should be(None)
     IP6Address.opt(" ") should be(None)
     IP6Address.opt(" " + ValidStrings.AllZeros) should be(None)
     IP6Address.opt("$" + validSuffix) should be(None)
@@ -170,11 +199,11 @@ class IP6AddressSpec extends FlatSpec with Matchers {
   }
 
   it should "not be constructed from a null string" in {
-    //    IP4Address.opt(null: String) should be(None)
+    IP6Address.opt(null) should be(None)
   }
 
   it should "not be constructed from an empty string" in {
-    //    IP4Address.opt("") should be(None)
+    IP6Address.opt("") should be(None)
   }
 
   /* Constructor access */
@@ -232,4 +261,9 @@ class IP6AddressSpec extends FlatSpec with Matchers {
   it should "xxxxx" in {
 
   }
+
+  private def op(x: Int): OctetPair = {
+    OctetPair.opt(x).get
+  }
+
 }

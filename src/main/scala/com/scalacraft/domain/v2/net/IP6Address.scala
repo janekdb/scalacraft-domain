@@ -58,14 +58,50 @@ object IP6Address {
            ): Option[IP6Address] =
     Information.whenNotNull(o1, o2, o3, o4, o5, o6, o7, o8)(apply)
 
+  private val RequiredGroupCount = 8
+
+  private def countDigitGroups(tokens: Seq[Token]): Int = {
+    tokens.count {
+      case D(_) => true
+      case _ => false
+    }
+  }
+
+  private def countShorteners(tokens: Seq[Token]): Int = {
+    tokens.count {
+      case SS => true
+      case _ => false
+    }
+  }
+
+  private def makeZeroes(count: Int): List[Token] =
+    ((1 to (RequiredGroupCount - count)) flatMap { case _ => D("0") :: S :: Nil}).toList
+
   def opt(x: String): Option[IP6Address] = {
-    val tokens: Option[List[Token]] = x match {
+    val allTokens: Option[List[Token]] = x match {
       case Information.Zero() => None
       case _ => Some(parseTokens(x.toLowerCase, Nil))
     }
+    //    val missingDigits =
+    println("x: '" + x + "'")
+    println(s"allTokens: $allTokens")
     // TODO: tokenise :: as a new case SS and then replace all SS occurrences with the missing
     // zeros. This will prevent use of more than one :: because the list will be too long in
     // that case.
+    val tokens = for {
+      ts <- allTokens
+      digitsCount = countDigitGroups(ts)
+      zeros = S :: makeZeroes(digitsCount)
+      shortenerCount = countShorteners(ts)
+      /* Do not allow a shortener to be used unnecessarily */
+      if shortenerCount == 0 || digitsCount < RequiredGroupCount - 1
+      ss = ts.flatMap {
+        case SS => zeros
+        case t => t :: Nil
+      }
+    } yield ss
+    println(s"tokens: $tokens")
+
     for {
       D(d1) :: S :: D(d2) :: S :: D(d3) :: S :: D(d4) :: S :: D(d5) :: S :: D(d6) :: S :: D(d7) :: S :: D(d8) :: Nil <- tokens
       op8 <- OctetPair.opt(d1)
@@ -87,12 +123,13 @@ object IP6Address {
     }
   }
 
-  //  private val ColonColon = "::([^:]*)".r
+  private val ColonColon = "::(.*)".r
   private val Colon = ":(.*)".r
   private val Digits = "([0-9a-f]+)(.*)".r
 
   private def nextToken(x: String): Option[(Token, String)] = {
     x match {
+      case ColonColon(rest) => Some((SS, rest))
       case Colon(rest) => Some((S, rest))
       case Digits(digits, rest) => Some((D(digits), rest))
       case _ => None
