@@ -85,33 +85,41 @@ object IP6Address {
     //    val missingDigits =
     println("x: '" + x + "'")
     println(s"allTokens: $allTokens")
-    // TODO: tokenise :: as a new case SS and then replace all SS occurrences with the missing
-    // zeros. This will prevent use of more than one :: because the list will be too long in
-    // that case.
     val tokens = for {
       ts <- allTokens
       digitsCount = countDigitGroups(ts)
-      zeros = S :: makeZeroes(digitsCount)
+      zeros = makeZeroes(digitsCount)
       shortenerCount = countShorteners(ts)
       /* Do not allow a shortener to be used unnecessarily */
       if shortenerCount == 0 || digitsCount < RequiredGroupCount - 1
-      ss = ts.flatMap {
-        case SS => zeros
+      vs = ts match {
+        case SS:: Nil => zeros.init
+        case SS :: rest => zeros ++ rest
+        case other => other
+      }
+      us = vs.reverse match {
+        case SS :: rest => zeros ++ rest
+        case other => other
+      }
+      /* Replace internal shorteners */
+      ss = us.flatMap {
+        case SS => S :: zeros
         case t => t :: Nil
       }
     } yield ss
+
     println(s"tokens: $tokens")
 
     for {
       D(d1) :: S :: D(d2) :: S :: D(d3) :: S :: D(d4) :: S :: D(d5) :: S :: D(d6) :: S :: D(d7) :: S :: D(d8) :: Nil <- tokens
-      op8 <- OctetPair.opt(d1)
-      op7 <- OctetPair.opt(d2)
-      op6 <- OctetPair.opt(d3)
-      op5 <- OctetPair.opt(d4)
-      op4 <- OctetPair.opt(d5)
-      op3 <- OctetPair.opt(d6)
-      op2 <- OctetPair.opt(d7)
-      op1 <- OctetPair.opt(d8)
+      op1 <- OctetPair.opt(d1)
+      op2 <- OctetPair.opt(d2)
+      op3 <- OctetPair.opt(d3)
+      op4 <- OctetPair.opt(d4)
+      op5 <- OctetPair.opt(d5)
+      op6 <- OctetPair.opt(d6)
+      op7 <- OctetPair.opt(d7)
+      op8 <- OctetPair.opt(d8)
     }
     yield IP6Address(op1, op2, op3, op4, op5, op6, op7, op8)
   }

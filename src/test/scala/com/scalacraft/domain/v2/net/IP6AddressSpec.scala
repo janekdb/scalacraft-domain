@@ -97,7 +97,10 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     val Ascending = "0102:0304:0506:0708:090A:0B0C:0D0E:0F10"
     val Lowercase = Ascending.toLowerCase
     val Uppercase = Ascending.toUpperCase
-    val InternalZeroGroup = "ff::1"
+    val InternalZeroShortener = "ff::1"
+    val LeftZeroShortener = "::1"
+    val RightZeroShortener = "ff::"
+    val StandaloneShortener = "::"
 
     // "::"
     // "::1"
@@ -160,7 +163,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
   }
 
   it should "be constructed from a valid zero group string representation" in {
-    IP6Address.opt(ValidStrings.InternalZeroGroup).value should have(
+    IP6Address.opt(ValidStrings.InternalZeroShortener).value should have(
       'field1(op(0xff)),
       'field2(zero),
       'field3(zero),
@@ -172,9 +175,53 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     )
   }
 
+  it should "be constructed from a left zero group string representation" in {
+    IP6Address.opt(ValidStrings.LeftZeroShortener).value should have(
+      'field1(zero),
+      'field2(zero),
+      'field3(zero),
+      'field4(zero),
+      'field5(zero),
+      'field6(zero),
+      'field7(zero),
+      'field8(op(0x1))
+    )
+  }
+
+  it should "be constructed from a right zero group string representation" in {
+    IP6Address.opt(ValidStrings.RightZeroShortener).value should have(
+      'field1(op(0xff)),
+      'field2(zero),
+      'field3(zero),
+      'field4(zero),
+      'field5(zero),
+      'field6(zero),
+      'field7(zero),
+      'field8(zero)
+    )
+  }
+
+  it should "be constructed from a standalone zero group string representation" in {
+    IP6Address.opt("::23af:cc91::") should be(None) // TODO: Delete me
+    IP6Address.opt(ValidStrings.StandaloneShortener).value should have(
+      'field1(zero),
+      'field2(zero),
+      'field3(zero),
+      'field4(zero),
+      'field5(zero),
+      'field6(zero),
+      'field7(zero),
+      'field8(zero)
+    )
+    IP6Address.opt("::23af:0091::") should be(None)
+  }
+
   it should "not be constructed when groups missing and multiple shorteners" in {
-    val invalid = "77:ff::ee::0"
-    IP6Address.opt(invalid) should be(None)
+    /* internal, left, right, both */
+    IP6Address.opt("77:ff::ee::0") should be(None)
+    IP6Address.opt("::23be::0091") should be(None)
+    IP6Address.opt("24ae::0091::") should be(None)
+    IP6Address.opt("::27ae:0091::") should be(None)
   }
 
   it should "not be constructed from an unnecessary zero group string representation" in {
