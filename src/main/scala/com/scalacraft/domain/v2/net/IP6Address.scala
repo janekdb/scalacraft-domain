@@ -60,19 +60,13 @@ object IP6Address {
 
   private val RequiredGroupCount = 8
 
-  private def countDigitGroups(tokens: Seq[Token]): Int = {
+  private def countDigitGroups(tokens: Seq[Token]) =
     tokens.count {
       case D(_) => true
       case _ => false
     }
-  }
 
-  private def countShorteners(tokens: Seq[Token]): Int = {
-    tokens.count {
-      case SS => true
-      case _ => false
-    }
-  }
+  private def countShorteners(tokens: Seq[Token]) = tokens.count(_ == SS)
 
   private def makeZeroes(count: Int): List[Token] =
     ((1 to (RequiredGroupCount - count)) flatMap { case _ => D("0") :: S :: Nil}).toList
@@ -82,7 +76,6 @@ object IP6Address {
       case Information.Zero() => None
       case _ => Some(parseTokens(x.toLowerCase, Nil))
     }
-    //    val missingDigits =
     println("x: '" + x + "'")
     println(s"allTokens: $allTokens")
     val tokens = for {
@@ -93,7 +86,7 @@ object IP6Address {
       /* Do not allow a shortener to be used unnecessarily */
       if shortenerCount == 0 || digitsCount < RequiredGroupCount - 1
       vs = ts match {
-        case SS:: Nil => zeros.init
+        case SS :: Nil => zeros.init
         case SS :: rest => zeros ++ rest
         case other => other
       }
@@ -124,12 +117,11 @@ object IP6Address {
     yield IP6Address(op1, op2, op3, op4, op5, op6, op7, op8)
   }
 
-  private def parseTokens(x: String, acc: List[Token]): List[Token] = {
+  private def parseTokens(x: String, acc: List[Token]): List[Token] =
     nextToken(x) match {
       case Some((token, rest)) => parseTokens(rest, token :: acc)
       case None => acc
     }
-  }
 
   private val ColonColon = "::(.*)".r
   private val Colon = ":(.*)".r

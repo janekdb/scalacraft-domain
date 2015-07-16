@@ -102,10 +102,6 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     val RightZeroShortener = "ff::"
     val StandaloneShortener = "::"
 
-    // "::"
-    // "::1"
-    // "b::"
-
     //    val ValidQuad = "240.1.255.7"
     //    val InvalidQuad = "240.1.255.B"
     //    val RangeExceededByte = "240.256.234.7"
@@ -202,7 +198,6 @@ class IP6AddressSpec extends FlatSpec with Matchers {
   }
 
   it should "be constructed from a standalone zero group string representation" in {
-    IP6Address.opt("::23af:cc91::") should be(None) // TODO: Delete me
     IP6Address.opt(ValidStrings.StandaloneShortener).value should have(
       'field1(zero),
       'field2(zero),
