@@ -66,7 +66,7 @@ object IP6Address {
       case _ => false
     }
 
-  private def countShorteners(tokens: Seq[Token]) = tokens.count(_ == SS)
+  private def countAbbreviations(tokens: Seq[Token]) = tokens.count(_ == SS)
 
   private def makeZeroes(count: Int): List[Token] =
     ((1 to (RequiredGroupCount - count)) flatMap { case _ => D("0") :: S :: Nil}).toList
@@ -82,9 +82,9 @@ object IP6Address {
       ts <- allTokens
       digitsCount = countDigitGroups(ts)
       zeros = makeZeroes(digitsCount)
-      shortenerCount = countShorteners(ts)
-      /* Do not allow a shortener to be used unnecessarily */
-      if shortenerCount == 0 || digitsCount < RequiredGroupCount - 1
+      abbreviationCount = countAbbreviations(ts)
+      /* Do not allow an abbreviation to be used unnecessarily */
+      if abbreviationCount == 0 || digitsCount < RequiredGroupCount - 1
       vs = ts match {
         case SS :: Nil => zeros.init
         case SS :: rest => zeros ++ rest
@@ -94,7 +94,7 @@ object IP6Address {
         case SS :: rest => zeros ++ rest
         case other => other
       }
-      /* Replace internal shorteners */
+      /* Replace internal abbreviations */
       ss = us.flatMap {
         case SS => S :: zeros
         case t => t :: Nil
