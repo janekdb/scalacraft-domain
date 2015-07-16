@@ -106,7 +106,7 @@ object Octet {
    */
   implicit def `to-Octet`(octet: Octet): unconstrained.Octet = unconstrained.Octet(Some(octet.octet))
 
-  private val HexPat = "^([0-9a-f]{1,2})$" r
+  private val HexPat = "^([0-9a-f]{1,2})$".r
 
   private val inRange = Range(0, 255 + 1).contains _
 

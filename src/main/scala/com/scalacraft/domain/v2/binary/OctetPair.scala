@@ -142,18 +142,17 @@ object OctetPair {
   /**
    * No assumptions are made about the format acceptable to [[Octet]]
    */
-  private def extractOctets(x: String, accum: List[Octet]): Option[List[Octet]] = {
+  private def extractOctets(x: String, accum: List[Octet]): Option[List[Octet]] =
     Information.whenSome(x, accum) {
       longestRightMatch(_) match {
         case Some((unused, octet)) => extractOctets(unused, octet :: accum)
         case None => None
       }
     }
-  }
 
   private def longestRightMatch(x: String): Option[(String, Octet)] = {
     /* For example: (,250d), (2,50d), (25,0d), (250,d) */
-    val spans: Seq[(String, String)] = (0 until x.size).toList.map(x splitAt _)
+    val spans: Seq[(String, String)] = (0 until x.size).toList.map(x splitAt)
     val candidates: Seq[(String, Option[Octet])] = spans.map {
       case (unused, target) => (unused, Octet.opt(target))
     }

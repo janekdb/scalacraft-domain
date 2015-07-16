@@ -233,8 +233,8 @@ object OctetPair {
         n.optHexBigInt match {
           case Some(i) if Min.FiveOctets <= i && i <= Max.FiveOctets =>
 
-            val hi = (i / 0x100)
-            val lo = (i - hi * 0x100)
+            val hi = i / 0x100
+            val lo = i - hi * 0x100
 
             /**
              * At this point we are range checked so it is safe to transfer the

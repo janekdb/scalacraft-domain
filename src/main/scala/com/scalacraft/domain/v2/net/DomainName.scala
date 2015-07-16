@@ -108,9 +108,9 @@ object DomainName {
    * A pattern that does not match leading or trailing hyphens
    * See: http://www.regular-expressions.info/lookaround.html
    **/
-  private val LabelPat = "^(?!-)[-a-zA-Z0-9]++(?<!-)$" r
+  private val LabelPat = "^(?!-)[-a-zA-Z0-9]++(?<!-)$".r
 
-  private def labelMatchesPattern(label: String) = LabelPat findFirstIn label isDefined
+  private def labelMatchesPattern(label: String) = (LabelPat findFirstIn label).isDefined
 
   private val LabelRange = 1 to 63
 
@@ -120,7 +120,7 @@ object DomainName {
   private def overallLengthInRange(labels: Seq[String]) =
     labels.map(_.length).sum + labels.size - 1 <= MaxOverallLength
 
-  private def split(labels: Seq[String]): Seq[String] = labels map (_.split(LabelSeparator)) flatten
+  private def split(labels: Seq[String]): Seq[String] = (labels map (_.split(LabelSeparator))).flatten
 
   /**
    * If `labels` is a collection of valid labels or a single string with embedded label separators then
