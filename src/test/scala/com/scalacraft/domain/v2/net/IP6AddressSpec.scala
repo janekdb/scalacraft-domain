@@ -97,10 +97,10 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     val Ascending = "0102:0304:0506:0708:090A:0B0C:0D0E:0F10"
     val Lowercase = Ascending.toLowerCase
     val Uppercase = Ascending.toUpperCase
-    val InternalZeroShortener = "ff::1"
-    val LeftZeroShortener = "::1"
-    val RightZeroShortener = "ff::"
-    val StandaloneShortener = "::"
+    val InternalZeroAbbreviation = "ff::1"
+    val LeftZeroAbbreviation = "::1"
+    val RightZeroAbbreviation = "ff::"
+    val StandaloneAbbreviation = "::"
     val OneZeroGroupAbbreviatedRight = "0:1:2:3:4:5:6::"
     val OneZeroGroupAbbreviatedLeft = "::1:2:3:4:5:6:7"
     val OneZeroGroupAbbreviatedInternal = "0:1:2::4:5:6:7"
@@ -162,7 +162,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
   }
 
   it should "be constructed from a valid zero group string representation" in {
-    IP6Address.opt(ValidStrings.InternalZeroShortener).value should have(
+    IP6Address.opt(ValidStrings.InternalZeroAbbreviation).value should have(
       'field1(op(0xff)),
       'field2(zero),
       'field3(zero),
@@ -175,7 +175,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
   }
 
   it should "be constructed from a left zero group string representation" in {
-    IP6Address.opt(ValidStrings.LeftZeroShortener).value should have(
+    IP6Address.opt(ValidStrings.LeftZeroAbbreviation).value should have(
       'field1(zero),
       'field2(zero),
       'field3(zero),
@@ -188,7 +188,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
   }
 
   it should "be constructed from a right zero group string representation" in {
-    IP6Address.opt(ValidStrings.RightZeroShortener).value should have(
+    IP6Address.opt(ValidStrings.RightZeroAbbreviation).value should have(
       'field1(op(0xff)),
       'field2(zero),
       'field3(zero),
@@ -201,7 +201,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
   }
 
   it should "be constructed from a standalone zero group string representation" in {
-    IP6Address.opt(ValidStrings.StandaloneShortener).value should have(
+    IP6Address.opt(ValidStrings.StandaloneAbbreviation).value should have(
       'field1(zero),
       'field2(zero),
       'field3(zero),
@@ -247,7 +247,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     )
   }
 
-  it should "not be constructed when groups missing and multiple shorteners" in {
+  it should "not be constructed when groups missing and multiple abbreviations" in {
     /* internal, left, right, both */
     IP6Address.opt("77:ff::ee::0") should be(None)
     IP6Address.opt("::23be::0091") should be(None)
