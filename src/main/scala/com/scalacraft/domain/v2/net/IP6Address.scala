@@ -69,7 +69,7 @@ object IP6Address {
       case _ => false
     }
 
-  private def countAbbreviations(tokens: Seq[Token]) = tokens.count(_ == SS)
+  private def countAbbreviations(tokens: Seq[Token]) = tokens.count(_ == AB)
 
   private def makeZeroes(count: Int): List[Token] =
     ((1 to (RequiredGroupCount - count)) flatMap { case _ => D("0") :: S :: Nil}).toList
@@ -89,17 +89,17 @@ object IP6Address {
       /* Do not allow an abbreviation to be used unnecessarily */
       if abbreviationCount == 0 || digitsCount < RequiredGroupCount
       vs = ts match {
-        case SS :: Nil => zeros.init
-        case SS :: rest => zeros ++ rest
+        case AB :: Nil => zeros.init
+        case AB :: rest => zeros ++ rest
         case other => other
       }
       us = vs.reverse match {
-        case SS :: rest => zeros ++ rest
+        case AB :: rest => zeros ++ rest
         case other => other
       }
       /* Replace internal abbreviations */
       ss = us.flatMap {
-        case SS => S :: zeros
+        case AB => S :: zeros
         case t => t :: Nil
       }
     } yield ss
@@ -132,7 +132,7 @@ object IP6Address {
 
   private def nextToken(x: String): Option[(Token, String)] = {
     x match {
-      case ColonColon(rest) => Some((SS, rest))
+      case ColonColon(rest) => Some((AB, rest))
       case Colon(rest) => Some((S, rest))
       case Digits(digits, rest) => Some((D(digits), rest))
       case _ => None
@@ -141,13 +141,12 @@ object IP6Address {
 
   sealed trait Token
 
-  // :
+  /* The colon separator between octet pairs */
   case object S extends Token
 
-  // ::
-  case object SS extends Token
+  /* The abbreviation used to represent a group of zero or more zeroes */
+  case object AB extends Token
 
-  // 1-4 digits
   case class D(digits: String) extends Token
 
   //  unapply(x) map { case (hi, lo) => OctetPair(hi, lo)}
