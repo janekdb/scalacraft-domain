@@ -28,6 +28,9 @@ import com.scalacraft.domain.v2.internal.Information
  Hexadecimal digits are expressed as lower-case letters. For example, 2001:db8::1 is preferred over 2001:DB8::1.
 */
 
+// http://en.wikipedia.org/wiki/IPv6_address
+// Convert to documentation
+// One or more consecutive groups of zero value may be replaced with a single empty group using two consecutive colons (::)
 /**
  * `IP6Address`
  */
@@ -84,7 +87,7 @@ object IP6Address {
       zeros = makeZeroes(digitsCount)
       abbreviationCount = countAbbreviations(ts)
       /* Do not allow an abbreviation to be used unnecessarily */
-      if abbreviationCount == 0 || digitsCount < RequiredGroupCount - 1
+      if abbreviationCount == 0 || digitsCount < RequiredGroupCount
       vs = ts match {
         case SS :: Nil => zeros.init
         case SS :: rest => zeros ++ rest

@@ -101,6 +101,9 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     val LeftZeroShortener = "::1"
     val RightZeroShortener = "ff::"
     val StandaloneShortener = "::"
+    val OneZeroGroupAbbreviatedRight = "0:1:2:3:4:5:6::"
+    val OneZeroGroupAbbreviatedLeft = "::1:2:3:4:5:6:7"
+    val OneZeroGroupAbbreviatedInternal = "0:1:2::4:5:6:7"
 
     //    val ValidQuad = "240.1.255.7"
     //    val InvalidQuad = "240.1.255.B"
@@ -209,6 +212,39 @@ class IP6AddressSpec extends FlatSpec with Matchers {
       'field8(zero)
     )
     IP6Address.opt("::23af:0091::") should be(None)
+  }
+
+  it should "be constructed from an single zero group abbreviation representation" in {
+    IP6Address.opt(ValidStrings.OneZeroGroupAbbreviatedRight).value should have(
+      'field1(zero),
+      'field2(one),
+      'field3(two),
+      'field4(three),
+      'field5(four),
+      'field6(five),
+      'field7(six),
+      'field8(zero)
+    )
+    IP6Address.opt(ValidStrings.OneZeroGroupAbbreviatedLeft).value should have(
+      'field1(zero),
+      'field2(one),
+      'field3(two),
+      'field4(three),
+      'field5(four),
+      'field6(five),
+      'field7(six),
+      'field8(seven)
+    )
+    IP6Address.opt(ValidStrings.OneZeroGroupAbbreviatedInternal).value should have(
+      'field1(zero),
+      'field2(one),
+      'field3(two),
+      'field4(zero),
+      'field5(four),
+      'field6(five),
+      'field7(six),
+      'field8(seven)
+    )
   }
 
   it should "not be constructed when groups missing and multiple shorteners" in {
