@@ -22,6 +22,7 @@ http://janekdb.github.io/scalacraft-domain/
 - No dependencies outside of the platform libraries
 - Complete immutability
 - No if statements
+  - Except as filters in for comprehensions
 
 ### Class Overview
 
