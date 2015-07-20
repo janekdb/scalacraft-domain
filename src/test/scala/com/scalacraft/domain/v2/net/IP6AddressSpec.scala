@@ -114,8 +114,10 @@ class IP6AddressSpec extends FlatSpec with Matchers {
 
   private object InvalidStrings {
     val FiveDigits = "0:0:0:0:0:0:12345:0"
-    // two zero groups
-    // "1::1::"
+    val Negative = "0:0:0:0:0:0:-99aa:0"
+    val TwoZeroGroupAbbreviations = "1::1::"
+    val TrailingDot = "1:2:3:4:5:6:7:8."
+    val NonNumeric = "1k:2:3:4:5:6:7:8"
   }
 
   it should "be constructed from a valid full string representation" in {
@@ -271,9 +273,10 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     IP6Address.opt(" " + ValidStrings.AllZeros) should be(None)
     IP6Address.opt("$" + validSuffix) should be(None)
     IP6Address.opt(InvalidStrings.FiveDigits) should be(None)
-    //    IP4Address.opt(Strings.RangeExceededByte) should be(None)
-    //    IP4Address.opt(Strings.TrailingDot) should be(None)
-    //    IP4Address.opt(Strings.NonNumeric) should be(None)
+    IP6Address.opt(InvalidStrings.Negative) should be(None)
+    IP6Address.opt(InvalidStrings.TwoZeroGroupAbbreviations) should be(None)
+    IP4Address.opt(InvalidStrings.TrailingDot) should be(None)
+    IP4Address.opt(InvalidStrings.NonNumeric) should be(None)
   }
 
   it should "not be constructed from a null string" in {
