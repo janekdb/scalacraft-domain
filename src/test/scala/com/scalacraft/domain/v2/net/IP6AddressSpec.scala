@@ -118,6 +118,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     val TwoZeroGroupAbbreviations = "1::1::"
     val TrailingDot = "1:2:3:4:5:6:7:8."
     val NonNumeric = "1k:2:3:4:5:6:7:8"
+    val FourGroups = "1:22:333:4444"
   }
 
   it should "be constructed from a valid full string representation" in {
@@ -277,6 +278,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     IP6Address.opt(InvalidStrings.TwoZeroGroupAbbreviations) should be(None)
     IP4Address.opt(InvalidStrings.TrailingDot) should be(None)
     IP4Address.opt(InvalidStrings.NonNumeric) should be(None)
+    IP4Address.opt(InvalidStrings.FourGroups) should be(None)
   }
 
   it should "not be constructed from a null string" in {
@@ -303,13 +305,16 @@ class IP6AddressSpec extends FlatSpec with Matchers {
   /* Pattern Matching */
 
   it should "be usable in string pattern matching" in {
-    //    def m(x: String) = x match {
-    //      case IP4Address(b1, b2, b3, b4) => Some(b1, b2, b3, b4)
-    //      case _ => None
-    //    }
-    //    m(Strings.InvalidQuad) should be(None)
-    //    m(Strings.NonNumeric) should be(None)
-    //    m(Strings.ValidQuad).value should equal((240, 1, 255, 7))
+    def m(x: String) = x match {
+      case IP6Address(op1, op2, op3, op4, op5, op6, op7, op8) =>
+        (op1, op2, op3, op4, op5, op6, op7, op8)
+      case _ => None
+    }
+    m(InvalidStrings.FourGroups) should be(None)
+    m("0:01:02:03:04:0005:0006:0007") should be(
+      (zero, one, two, three, four, five, six, seven))
+    m(ValidStrings.StandaloneAbbreviation) should be(
+      (zero, zero, zero, zero, zero, zero, zero, zero))
   }
 
   /* Implicit Conversions */

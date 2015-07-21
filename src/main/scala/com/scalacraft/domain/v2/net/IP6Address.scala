@@ -105,7 +105,19 @@ object IP6Address {
     yield IP6Address(op1, op2, op3, op4, op5, op6, op7, op8)
   }
 
-  def unapply(candidate: String): Option[(String,String,String,String,String,String,String,String)] = None
+  def unapply(candidate: String): Option[(OctetPair, OctetPair, OctetPair, OctetPair, OctetPair, OctetPair, OctetPair, OctetPair)] =
+    opt(candidate) map {
+      ip6 => (
+        ip6.field1,
+        ip6.field2,
+        ip6.field3,
+        ip6.field4,
+        ip6.field5,
+        ip6.field6,
+        ip6.field7,
+        ip6.field8
+        )
+    }
 
   private val Some(zero) = OctetPair.opt(0)
 
