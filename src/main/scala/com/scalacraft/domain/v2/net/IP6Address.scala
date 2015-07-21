@@ -47,8 +47,6 @@ case class IP6Address private(
 
 object IP6Address {
 
-  private val Some(zero) = OctetPair.opt(0)
-
   def opt(
            o1: OctetPair,
            o2: OctetPair,
@@ -60,19 +58,6 @@ object IP6Address {
            o8: OctetPair
            ): Option[IP6Address] =
     Information.whenNotNull(o1, o2, o3, o4, o5, o6, o7, o8)(apply)
-
-  private val RequiredGroupCount = 8
-
-  private def countDigitGroups(tokens: Seq[Token]) =
-    tokens.count {
-      case D(_) => true
-      case _ => false
-    }
-
-  private def countAbbreviations(tokens: Seq[Token]) = tokens.count(_ == AB)
-
-  private def makeZeroes(count: Int): List[Token] =
-    ((1 to (RequiredGroupCount - count)) flatMap { case _ => D("0") :: S :: Nil}).toList
 
   def opt(x: String): Option[IP6Address] = {
     val allTokens: Option[List[Token]] = x match {
@@ -120,6 +105,23 @@ object IP6Address {
     yield IP6Address(op1, op2, op3, op4, op5, op6, op7, op8)
   }
 
+  def unapply(candidate: String): Option[(String,String,String,String,String,String,String,String)] = None
+
+  private val Some(zero) = OctetPair.opt(0)
+
+  private val RequiredGroupCount = 8
+
+  private def countDigitGroups(tokens: Seq[Token]) =
+    tokens.count {
+      case D(_) => true
+      case _ => false
+    }
+
+  private def countAbbreviations(tokens: Seq[Token]) = tokens.count(_ == AB)
+
+  private def makeZeroes(count: Int): List[Token] =
+    ((1 to (RequiredGroupCount - count)) flatMap { case _ => D("0") :: S :: Nil}).toList
+
   private def parseTokens(x: String, acc: List[Token]): List[Token] =
     nextToken(x) match {
       case Some((token, rest)) => parseTokens(rest, token :: acc)
@@ -148,7 +150,5 @@ object IP6Address {
   case object AB extends Token
 
   case class D(digits: String) extends Token
-
-  //  unapply(x) map { case (hi, lo) => OctetPair(hi, lo)}
 
 }
