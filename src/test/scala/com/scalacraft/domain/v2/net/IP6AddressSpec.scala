@@ -317,9 +317,14 @@ class IP6AddressSpec extends FlatSpec with Matchers {
       (zero, zero, zero, zero, zero, zero, zero, zero))
   }
 
-  /* Implicit Conversions */
+  /* Explicit Conversions */
 
-  it should "implicitly convert to a string" in {
+  it should "convert to a string" in {
+    val Some(zeros) = IP6Address.opt("::")
+    zeros.toStringForm should be("0000:0000:0000:0000:0000:0000:0000:0000")
+    val Some(mixed) = IP6Address.opt("1:23:456:789f::ffea")
+    mixed.toStringForm should be("0001:0023:0456:789f:0000:0000:0000:ffea")
+
     //    val ip4Opt: Option[IP4Address] = IP4Address.opt(
     //      ValidDottedQuad._1,
     //      ValidDottedQuad._2,
@@ -331,7 +336,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     //    s should equal(FormattedValidDottedQuad)
   }
 
-  it should "implicitly convert to an unconstrained IP4Address" in {
+  it should "convert to an unconstrained IP6Address" in {
     //    val ipa: IP4Address = IP4Address.opt(88, 0, 2, 119).get
     //    val other: Other = ipa
     //    other should have(
@@ -342,7 +347,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     //    )
   }
 
-  /* Representation shortening */
+  /* zero groups abbreviations in toStringForm */
 
   it should "xxxxx" in {
 

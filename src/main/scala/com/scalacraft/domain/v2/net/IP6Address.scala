@@ -43,7 +43,17 @@ case class IP6Address private(
                                field6: OctetPair,
                                field7: OctetPair,
                                field8: OctetPair
-                               )
+                               ) {
+
+  // TODO: Select a better name suitable for addition to all domain classes
+  def toStringForm: String = {
+    // TODO: Delegate to OctetPair.toStringForm
+    val s = OctetPair.`to-String` _
+    val fs = field1 :: field2 :: field3 :: field4 :: field5 :: field6 :: field7 :: field8 :: Nil
+    fs.map(s) mkString IP6Address.GroupSeparator
+  }
+
+}
 
 object IP6Address {
 
@@ -163,4 +173,5 @@ object IP6Address {
 
   case class D(digits: String) extends Token
 
+  private val GroupSeparator = ":"
 }
