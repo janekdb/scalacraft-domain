@@ -308,13 +308,15 @@ class IP6AddressSpec extends FlatSpec with Matchers {
 
   /* Explicit Conversions */
 
-  it should "convert to a string" in {
-    val Some(zeros) = IP6Address.opt("::")
-    zeros.toStringForm should be("0000:0000:0000:0000:0000:0000:0000:0000")
-    val Some(mixed) = IP6Address.opt("1:23:456:789f::ffea")
-    mixed.toStringForm should be("0001:0023:0456:789f:0000:0000:0000:ffea")
-    val Some(leftAbbreviation) = IP6Address.opt("::fedc")
-    leftAbbreviation.toStringForm should be("0000:0000:0000:0000:0000:0000:0000:fedc")
+  it should "convert to a string representation" in {
+    IP6Address.opt("::").value should have(
+      'representation("0000:0000:0000:0000:0000:0000:0000:0000"))
+
+    IP6Address.opt("1:23:456:789f::ffea").value should have(
+      'representation("0001:0023:0456:789f:0000:0000:0000:ffea"))
+
+    IP6Address.opt("::fedc").value should have(
+      'representation("0000:0000:0000:0000:0000:0000:0000:fedc"))
   }
 
   it should "convert to an unconstrained IP6Address" in {

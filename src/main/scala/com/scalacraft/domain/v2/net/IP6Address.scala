@@ -45,8 +45,8 @@ case class IP6Address private(
                                field8: OctetPair
                                ) {
 
-  // TODO: Select a better name suitable for addition to all domain classes
-  def toStringForm: String = {
+  // TODO: Documentation
+  def representation: String = {
     // TODO: Delegate to OctetPair.toStringForm
     val s = OctetPair.`to-String` _
     val fs = field1 :: field2 :: field3 :: field4 :: field5 :: field6 :: field7 :: field8 :: Nil
