@@ -25,17 +25,6 @@ import org.scalatest.OptionValues._
  */
 class IP6AddressSpec extends FlatSpec with Matchers {
 
-
-  //  private val ValidOctetPairs =
-  //    "0001" :: "0002" :: "0003" :: "0004" :: "0005" :: "0006" :: "0007" :: "0008" ::
-  //      Nil map (OctetPair.opt(_).get)
-
-  //  private val ValidDottedQuad = (192, 168, 0, 1)
-
-  //  private val FormattedValidDottedQuad = "192.168.0.1"
-
-  //  private val InvalidByte = 256
-
   private object Octets {
     val Some(zero) = OctetPair.opt(0)
     val Some(one) = OctetPair.opt(1)
@@ -324,16 +313,8 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     zeros.toStringForm should be("0000:0000:0000:0000:0000:0000:0000:0000")
     val Some(mixed) = IP6Address.opt("1:23:456:789f::ffea")
     mixed.toStringForm should be("0001:0023:0456:789f:0000:0000:0000:ffea")
-
-    //    val ip4Opt: Option[IP4Address] = IP4Address.opt(
-    //      ValidDottedQuad._1,
-    //      ValidDottedQuad._2,
-    //      ValidDottedQuad._3,
-    //      ValidDottedQuad._4
-    //    )
-    //    val s: String = ip4Opt.get
-    //    /* n.n.n.n */
-    //    s should equal(FormattedValidDottedQuad)
+    val Some(leftAbbreviation) = IP6Address.opt("::fedc")
+    leftAbbreviation.toStringForm should be("0000:0000:0000:0000:0000:0000:0000:fedc")
   }
 
   it should "convert to an unconstrained IP6Address" in {
@@ -353,8 +334,6 @@ class IP6AddressSpec extends FlatSpec with Matchers {
 
   }
 
-  private def op(x: Int): OctetPair = {
-    OctetPair.opt(x).get
-  }
+  private def op(x: Int): OctetPair = OctetPair.opt(x).get
 
 }
