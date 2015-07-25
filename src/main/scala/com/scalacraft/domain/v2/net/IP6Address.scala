@@ -18,21 +18,32 @@ package com.scalacraft.domain.v2.net
 import com.scalacraft.domain.v2.binary.OctetPair
 import com.scalacraft.domain.v2.internal.Information
 
-// http://en.wikipedia.org/wiki/IPv6_address
-/*
- In an attempt to simplify IPv6 addresses, the standards provides flexibility in their representation. However, this also complicates several common operations: searching for a specific address in a text file or stream, and comparing two addresses to determine their equivalence. To mitigate these problems, the IETF has proposed a standard in RFC 5952 for a canonical format for rendering IPv6 addresses in text. Its specific recommendations are:
-
- Leading zeros in each 16-bit field are suppressed. For example, 2001:0db8::0001 is rendered as 2001:db8::1, though any all-zero field that is explicitly presented is rendered as 0.
- "::" is not used to shorten just a single 0 field. For example, 2001:db8:0:0:0:0:2:1 is shortened to 2001:db8::2:1, but 2001:db8:0000:1:1:1:1:1 is rendered as 2001:db8:0:1:1:1:1:1.
- Representations are shortened as much as possible. The longest sequence of consecutive all-zero fields is replaced by double-colon. If there are multiple longest runs of all-zero fields, then it is the leftmost that is compressed. E.g., 2001:db8:0:0:1:0:0:1 is rendered as 2001:db8::1:0:0:1 rather than as 2001:db8:0:0:1::1.
- Hexadecimal digits are expressed as lower-case letters. For example, 2001:db8::1 is preferred over 2001:DB8::1.
-*/
-
-// http://en.wikipedia.org/wiki/IPv6_address
-// Convert to documentation
-// One or more consecutive groups of zero value may be replaced with a single empty group using two consecutive colons (::)
 /**
- * `IP6Address`
+ * An `IP6Address` represents an IP6 address.
+ *
+ * The address is comprised of 8 constrained octet pairs.
+ *
+ * The rules concerning valid string representations for ip6 addresses are taken from http://en.wikipedia.org/wiki/IPv6_address.
+ *
+ * === Pattern Matching ===
+ *
+ * Pattern matching is supported as the following example demonstrates,
+ * {{{
+ * &qt;01::0006:0010&qt; match {
+ *   case IP6Address(op1, op2, _, _, _, _, _, op8) =>
+ *   (op1, op2, op8) // 0x0001, 0x0000, 0x0010
+ *   case _ => None
+ * }
+ * }}}
+ *
+ * === Limitations ===
+ *
+ * The special format that allows for a trailing dotted quad for the rightmost two 16 bit fields is not supported.
+ *
+ *
+ * As shown in the example above the shortening of groups of zeros with a double colon is recognised.
+ *
+ * TODO: A conversion to the unconstrained version of this class is also available.
  */
 case class IP6Address private(
                                field1: OctetPair,
