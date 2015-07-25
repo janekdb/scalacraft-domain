@@ -18,8 +18,6 @@ package com.scalacraft.domain.v2.net
 import com.scalacraft.domain.v2.internal.NumericConversions.FromString
 import com.scalacraft.domain.v2.net.unconstrained.{IP4Address => UnconstrainedIP4Address}
 
-import scala.util.control.Exception._
-
 /**
  * An `IP4Address` represents an IP4 address.
  *
