@@ -304,19 +304,52 @@ class IP6AddressSpec extends FlatSpec with Matchers {
       (zero, one, two, three, four, five, six, seven))
     m(ValidStrings.StandaloneAbbreviation) should be(
       (zero, zero, zero, zero, zero, zero, zero, zero))
+    m("01::0006:0007") should be(
+      (one, zero, zero, zero, zero, zero, six, seven))
   }
 
   /* Explicit Conversions */
 
   it should "convert to a string representation" in {
-    IP6Address.opt("::").value should have(
-      'representation("0000:0000:0000:0000:0000:0000:0000:0000"))
 
-    IP6Address.opt("1:23:456:789f::ffea").value should have(
-      'representation("0001:0023:0456:789f:0000:0000:0000:ffea"))
+    /* No zero run */
+    IP6Address.opt("0001:0023:0356:489f:0505:00:7001:FFEA").value should have(
+      'representation("1:23:356:489f:505:0:7001:ffea"))
+
+    /* Left zero run */
+    IP6Address.opt("0:0:0:0:1:2:3:4").value should have(
+      'representation("::1:2:3:4"))
+
+    /* Right zero run */
+    IP6Address.opt("1:2:3:4:0:0:0:0").value should have(
+      'representation("1:2:3:4::"))
+
+    /* Internal zero run */
+    IP6Address.opt("7:0:0:0:0:1:2:3").value should have(
+      'representation("7::1:2:3"))
+
+    IP6Address.opt("::").value should have(
+      'representation("::"))
+
+    /* Single zeroes should not be abbreviated */
+
+    /* Internal */
+    IP6Address.opt("7:8:9:a:0:1:2:3").value should have(
+      'representation("7:8:9:a:0:1:2:3"))
+
+    /* Left */
+    IP6Address.opt("0:1:2:3:4:5:6:7").value should have(
+      'representation("0:1:2:3:4:5:6:7"))
+
+    /* Right */
+    IP6Address.opt("ff77:1:2:3:4:5:6:0").value should have(
+      'representation("ff77:1:2:3:4:5:6:0"))
 
     IP6Address.opt("::fedc").value should have(
-      'representation("0000:0000:0000:0000:0000:0000:0000:fedc"))
+      'representation("::fedc"))
+
+    IP6Address.opt("abc8::").value should have(
+      'representation("abc8::"))
   }
 
   it should "convert to an unconstrained IP6Address" in {

@@ -56,17 +56,76 @@ case class IP6Address private(
                                field8: OctetPair
                                ) {
 
-  // TODO: Documentation
-  def representation: String = {
-    // TODO: Delegate to OctetPair.toStringForm
-    val s = OctetPair.`to-String` _
-    val fs = field1 :: field2 :: field3 :: field4 :: field5 :: field6 :: field7 :: field8 :: Nil
-    fs.map(s) mkString IP6Address.GroupSeparator
-  }
+  /**
+   * Provide a string representation of this ip6 address in RFC5952 recommended form.
+   * - colon separator
+   * - lowercase hexadecimal digits
+   * - no leading zero digits
+   * - leftmost longest sequence of two or more zero groups abbreviated with double colon
+   * @example 0:10:20:::dd01:3
+   * @return A string representation using a colon separator, lowercase hexadecimal digits without leading
+   */
+  def representation: String = IP6Address.representation(this)
 
 }
 
 object IP6Address {
+
+  private case class Repeated(octetPair: OctetPair, repeatCount: Int)
+
+  private object Sentinel
+
+  private def representation(ip6Address: IP6Address): String = {
+    val s = (op: OctetPair) => OctetPair.`to-Int`(op).formatted("%x")
+    val fs =
+      ip6Address.field1 :: ip6Address.field2 :: ip6Address.field3 :: ip6Address.field4 ::
+        ip6Address.field5 :: ip6Address.field6 :: ip6Address.field7 :: ip6Address.field8 :: Nil
+    val runs = groupZeroes(fs, Nil)
+    val debugText = runs map {
+      case Repeated(`zero`, n) => s"($n x 0)"
+      case Repeated(group, 1) => s(group)
+    }
+    println("runs: " + runs)
+    println("debugText: " + debugText)
+
+    /**
+     * Create the representation without resorting to postprocessing.
+     *
+     * Split into groups of three to provide context.
+     * For each group examine the middle octetpair run.
+     * map to one of: "", ":", hexadecimal number.
+     * It is then enough to use mkString ":" to complete the representation.
+     */
+    val contexts = ((Sentinel :: (runs :+ Sentinel)) sliding 3).toList
+    contexts foreach (println)
+    val reps: List[String] = contexts map {
+      case Sentinel :: Repeated(`zero`, _) :: Sentinel :: Nil => "::"
+      case Sentinel :: Repeated(`zero`, n) :: _ if n > 1 => ":"
+      case _ :: Repeated(`zero`, n) :: Sentinel :: Nil if n > 1 => ":"
+      case Repeated(_, 1) :: Repeated(`zero`, n) :: Repeated(_, 1) :: Nil if n > 1 => ""
+      case _ :: Repeated(x, 1) :: _ => s(x)
+    }
+
+    reps mkString IP6Address.GroupSeparator
+  }
+
+  /**
+   * Replace runs of zeroes with an single object suitable for later expansion
+   * TODO: Documentation
+   * @param fields
+   * @return
+   */
+  private def groupZeroes(fields: List[OctetPair], acc: List[Repeated]): List[Repeated] = {
+    fields match {
+      case Nil => acc.reverse
+      case `zero` :: rest => acc match {
+        case Repeated(`zero`, n) :: accRest => groupZeroes(rest, Repeated(zero, n + 1) :: accRest)
+        case _ => groupZeroes(rest, Repeated(zero, 1) :: acc)
+      }
+      case f :: fs => groupZeroes(fs, Repeated(f, 1) :: acc)
+    }
+    //    fields map (f => Repeated(f, 1))
+  }
 
   def opt(
            o1: OctetPair,
