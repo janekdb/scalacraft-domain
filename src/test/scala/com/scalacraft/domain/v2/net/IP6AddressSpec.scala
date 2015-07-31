@@ -350,6 +350,50 @@ class IP6AddressSpec extends FlatSpec with Matchers {
 
     IP6Address.opt("abc8::").value should have(
       'representation("abc8::"))
+
+    /* Longest run is abbreviated with leftmost longest run winning */
+
+    /* Left, right, internal, no ties */
+    IP6Address.opt("0:0:3:4:0:0:0:0").value should have(
+      'representation("0:0:3:4::"))
+
+    IP6Address.opt("0:0:0:0:5:6:0:0").value should have(
+      'representation("::5:6:0:0"))
+
+    /* Internal left */
+    IP6Address.opt("1:0:0:0:5:0:0:8").value should have(
+      'representation("1::5:0:0:8"))
+
+    /* Internal right */
+    IP6Address.opt("1:0:0:4:0:0:0:8").value should have(
+      'representation("1:0:0:4::8"))
+
+    /* Ties */
+
+    /* Two twos */
+    IP6Address.opt("0:0:a:b:0:0:c:d").value should have(
+      'representation("::a:b:0:0:c:d"))
+
+    /* Three twos */
+    IP6Address.opt("0:0:a:0:0:c:0:0").value should have(
+      'representation("::a:0:0:c:0:0"))
+
+    /* Two threes, left */
+    IP6Address.opt("0:0:0:b:0:0:0:c").value should have(
+      'representation("::b:0:0:0:c"))
+
+    /* Two threes, right */
+    IP6Address.opt("a:0:0:0:b:0:0:0").value should have(
+      'representation("a::b:0:0:0"))
+
+    /* Other cases */
+
+    IP6Address.opt("0:0:0:0:b:0:0:0").value should have(
+      'representation("::b:0:0:0"))
+
+    IP6Address.opt("0:0:0:feef:0:0:0:0").value should have(
+      'representation("0:0:0:feef::"))
+
   }
 
   it should "convert to an unconstrained IP6Address" in {

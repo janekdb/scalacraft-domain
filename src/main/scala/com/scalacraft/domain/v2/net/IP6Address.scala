@@ -76,17 +76,45 @@ object IP6Address {
   private object Sentinel
 
   private def representation(ip6Address: IP6Address): String = {
+
     val s = (op: OctetPair) => OctetPair.`to-Int`(op).formatted("%x")
+
     val fs =
       ip6Address.field1 :: ip6Address.field2 :: ip6Address.field3 :: ip6Address.field4 ::
         ip6Address.field5 :: ip6Address.field6 :: ip6Address.field7 :: ip6Address.field8 :: Nil
+
     val runs = groupZeroes(fs, Nil)
-    val debugText = runs map {
-      case Repeated(`zero`, n) => s"($n x 0)"
-      case Repeated(group, 1) => s(group)
+
+    /* Convert all zero runs back to full runs except for the leftmost longest run */
+
+    val maxRunLength = runs.map { case Repeated(_, n) => n}.max
+
+    val maximumLengthRun = Repeated(zero, maxRunLength)
+
+    val leftmostLongestRun = runs indexOf maximumLengthRun
+
+    /**
+     * Isolate the winner to first group.
+     * For the cases when there is no winner or the winner is the head of the list the corresponding indcies are
+     * 0 or 1 and in both case the winner will not be in the second group.
+     */
+    val (winner, loser) = runs splitAt (leftmostLongestRun + 1)
+
+    val unrollAll: PartialFunction[Repeated, List[Repeated]] = {
+      case Repeated(op, n) => List.fill(n)(Repeated(op, 1))
     }
-    println("runs: " + runs)
-    println("debugText: " + debugText)
+
+    val preserveLongest: PartialFunction[Repeated, List[Repeated]] = {
+      case a@`maximumLengthRun` => a :: Nil
+    }
+
+    /* Convert all zero groups other than the first longest to a full run */
+
+    val left: List[Repeated] = winner flatMap (preserveLongest orElse unrollAll)
+
+    val right: List[Repeated] = loser flatMap unrollAll
+
+    val unrolledRuns = left ++ right
 
     /**
      * Create the representation without resorting to postprocessing.
@@ -96,8 +124,8 @@ object IP6Address {
      * map to one of: "", ":", hexadecimal number.
      * It is then enough to use mkString ":" to complete the representation.
      */
-    val contexts = ((Sentinel :: (runs :+ Sentinel)) sliding 3).toList
-    contexts foreach (println)
+    val contexts = ((Sentinel :: (unrolledRuns :+ Sentinel)) sliding 3).toList
+
     val reps: List[String] = contexts map {
       case Sentinel :: Repeated(`zero`, _) :: Sentinel :: Nil => "::"
       case Sentinel :: Repeated(`zero`, n) :: _ if n > 1 => ":"
