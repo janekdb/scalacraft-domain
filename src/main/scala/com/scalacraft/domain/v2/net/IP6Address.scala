@@ -137,10 +137,10 @@ object IP6Address {
   }
 
   /**
-   * Replace runs of zeroes with an single object suitable for later expansion
-   * TODO: Documentation
-   * @param fields
-   * @return
+   * Replace runs of zeroes with an single object counting the number of zeros in the run.
+   * @param fields The fields to accumulate into the runs
+   * @return A list containing one item per contiguous group of zeroes and one item for each non-zero
+   *         octet pair
    */
   private def groupZeroes(fields: List[OctetPair], acc: List[Repeated]): List[Repeated] = {
     fields match {
@@ -151,7 +151,6 @@ object IP6Address {
       }
       case f :: fs => groupZeroes(fs, Repeated(f, 1) :: acc)
     }
-    //    fields map (f => Repeated(f, 1))
   }
 
   def opt(
