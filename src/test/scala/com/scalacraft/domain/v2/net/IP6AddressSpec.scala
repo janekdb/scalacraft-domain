@@ -407,12 +407,6 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     //    )
   }
 
-  /* zero groups abbreviations in toStringForm */
-
-  it should "xxxxx" in {
-
-  }
-
   private def op(x: Int): OctetPair = OctetPair.opt(x).get
 
 }
