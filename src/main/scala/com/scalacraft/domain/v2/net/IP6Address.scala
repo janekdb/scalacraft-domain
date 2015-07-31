@@ -40,7 +40,6 @@ import com.scalacraft.domain.v2.internal.Information
  *
  * The special format that allows for a trailing dotted quad for the rightmost two 16 bit fields is not supported.
  *
- *
  * As shown in the example above the shortening of groups of zeros with a double colon is recognised.
  *
  * TODO: A conversion to the unconstrained version of this class is also available.
@@ -79,9 +78,8 @@ object IP6Address {
 
     val s = (op: OctetPair) => OctetPair.`to-Int`(op).formatted("%x")
 
-    val fs =
-      ip6Address.field1 :: ip6Address.field2 :: ip6Address.field3 :: ip6Address.field4 ::
-        ip6Address.field5 :: ip6Address.field6 :: ip6Address.field7 :: ip6Address.field8 :: Nil
+    import ip6Address._
+    val fs = field1 :: field2 :: field3 :: field4 :: field5 :: field6 :: field7 :: field8 :: Nil
 
     val runs = groupZeroes(fs, Nil)
 
@@ -94,11 +92,12 @@ object IP6Address {
     val leftmostLongestRun = runs indexOf maximumLengthRun
 
     /**
+     * The winner is the group that is the leftmost of the longest groups of zeroes.
      * Isolate the winner to first group.
      * For the cases when there is no winner or the winner is the head of the list the corresponding indcies are
      * 0 or 1 and in both case the winner will not be in the second group.
      */
-    val (winner, loser) = runs splitAt (leftmostLongestRun + 1)
+    val (winnerGroup, loserGroup) = runs splitAt (leftmostLongestRun + 1)
 
     val unrollAll: PartialFunction[Repeated, List[Repeated]] = {
       case Repeated(op, n) => List.fill(n)(Repeated(op, 1))
@@ -110,9 +109,9 @@ object IP6Address {
 
     /* Convert all zero groups other than the first longest to a full run */
 
-    val left: List[Repeated] = winner flatMap (preserveLongest orElse unrollAll)
+    val left: List[Repeated] = winnerGroup flatMap (preserveLongest orElse unrollAll)
 
-    val right: List[Repeated] = loser flatMap unrollAll
+    val right: List[Repeated] = loserGroup flatMap unrollAll
 
     val unrolledRuns = left ++ right
 
@@ -130,7 +129,7 @@ object IP6Address {
       case Sentinel :: Repeated(`zero`, _) :: Sentinel :: Nil => "::"
       case Sentinel :: Repeated(`zero`, n) :: _ if n > 1 => ":"
       case _ :: Repeated(`zero`, n) :: Sentinel :: Nil if n > 1 => ":"
-      case Repeated(_, 1) :: Repeated(`zero`, n) :: Repeated(_, 1) :: Nil if n > 1 => ""
+      case _ :: Repeated(`zero`, n) :: _ if n > 1 => ""
       case _ :: Repeated(x, 1) :: _ => s(x)
     }
 
