@@ -171,8 +171,6 @@ object IP6Address {
       case Information.Zero() => None
       case _ => Some(parseTokens(x.toLowerCase, Nil))
     }
-    println("x: '" + x + "'")
-    println(s"allTokens: $allTokens")
     val tokens = for {
       ts <- allTokens
       digitsCount = countDigitGroups(ts)
@@ -195,8 +193,6 @@ object IP6Address {
         case t => t :: Nil
       }
     } yield ss
-
-    println(s"tokens: $tokens")
 
     for {
       D(d1) :: S :: D(d2) :: S :: D(d3) :: S :: D(d4) :: S :: D(d5) :: S :: D(d6) :: S :: D(d7) :: S :: D(d8) :: Nil <- tokens
