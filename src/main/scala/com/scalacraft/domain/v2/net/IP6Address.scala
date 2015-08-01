@@ -66,6 +66,7 @@ case class IP6Address private(
    */
   def representation: String = IP6Address.representation(this)
 
+  private def fields = field1 :: field2 :: field3 :: field4 :: field5 :: field6 :: field7 :: field8 :: Nil
 }
 
 object IP6Address {
@@ -78,10 +79,7 @@ object IP6Address {
 
     val s = (op: OctetPair) => OctetPair.`to-Int`(op).formatted("%x")
 
-    import ip6Address._
-    val fs = field1 :: field2 :: field3 :: field4 :: field5 :: field6 :: field7 :: field8 :: Nil
-
-    val runs = groupZeroes(fs, Nil)
+    val runs = groupZeroes(ip6Address.fields, Nil)
 
     /* Convert all zero runs back to full runs except for the leftmost longest run */
 
