@@ -16,6 +16,7 @@
 package com.scalacraft.domain.v2.internal
 
 import com.scalacraft.domain.v2.internal.ex.NullConstructorArgumentException
+import com.scalacraft.domain.v2.internal.ex.NullElementException
 
 /**
  * Collection point for the necessary evil of rejecting nulls.
@@ -23,7 +24,13 @@ import com.scalacraft.domain.v2.internal.ex.NullConstructorArgumentException
 object RejectNullConstructorArgument {
 
   def apply(param: Any, paramName: String): Unit = {
-    if(param == null)
+    // TODO: Remove if statement
+    if (param == null)
       throw new NullConstructorArgumentException(paramName)
+  }
+
+  def rejectNullElement(param: List[Any], paramName: String): Unit = {
+    val firstNullIndex = param.zipWithIndex.collect { case (v, idx) if v == null => idx }.headOption
+    firstNullIndex foreach (idx => throw new NullElementException(paramName,idx))
   }
 }
