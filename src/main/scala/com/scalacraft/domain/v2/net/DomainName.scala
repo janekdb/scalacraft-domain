@@ -114,13 +114,13 @@ object DomainName {
 
   private val LabelRange = 1 to 63
 
-  private def labelSizeInRange(label: String) = LabelRange contains label.size
+  private def labelSizeInRange(label: String) = LabelRange contains label.length
 
   /** "www.scalacraft.com".length = "wwwscalacraftcom".length + 2 */
   private def overallLengthInRange(labels: Seq[String]) =
-    labels.map(_.length).sum + labels.size - 1 <= MaxOverallLength
+    labels.map(_.length).sum + labels.length - 1 <= MaxOverallLength
 
-  private def split(labels: Seq[String]): Seq[String] = (labels map (_.split(LabelSeparator))).flatten
+  private def split(labels: Seq[String]): Seq[String] = labels flatMap (_.split(LabelSeparator))
 
   /**
    * If `labels` is a collection of valid labels or a single string with embedded label separators then

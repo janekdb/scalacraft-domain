@@ -152,7 +152,7 @@ object OctetPair {
 
   private def longestRightMatch(x: String): Option[(String, Octet)] = {
     /* For example: (,250d), (2,50d), (25,0d), (250,d) */
-    val spans: Seq[(String, String)] = (0 until x.size).toList.map(x splitAt)
+    val spans: Seq[(String, String)] = (0 until x.length).toList map x.splitAt
     val candidates: Seq[(String, Option[Octet])] = spans.map {
       case (unused, target) => (unused, Octet.opt(target))
     }

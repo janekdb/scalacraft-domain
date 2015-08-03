@@ -84,7 +84,7 @@ class InformationSpec extends FlatSpec with Matchers {
       i1 + i2 + i3 + i4 + i5 + i6 + i7 + i8
     val letters = "abcdefgh"
     val vs = letters.sliding(1).toList
-    (0 until vs.size) foreach {
+    vs.indices foreach {
       case i =>
         val args = vs.updated(i, null)
         Information.whenNotNull(args(0), args(1), args(2), args(3), args(4), args(5), args(6), args(7))(add) should be(None)

@@ -65,7 +65,7 @@ object IP4Address {
   private val ValidRange = Range(0, 255 + 1)
 
   private implicit def ix(i: Int) = new {
-    def maybe: Option[Int] = Some(i) filter (ValidRange contains)
+    def maybe: Option[Int] = Some(i) filter ValidRange.contains
   }
 
   private val DottedQuadPat = {

@@ -103,7 +103,7 @@ class DomainNameSpec extends FlatSpec with Matchers {
 
   it should "be constructed when the overall size is at the maximum" in {
     val a = "a" * 49
-    assert(a.size <= MaxLabelLength)
+    assert(a.length <= MaxLabelLength)
     val b = "bcd"
     ((a + ".") * 5 + b) should have length MaxOverallLength
     DomainName.opt(a, a, a, a, a, b).value.labels should equal(a :: a :: a :: a :: a :: b :: Nil)
@@ -111,7 +111,7 @@ class DomainNameSpec extends FlatSpec with Matchers {
 
   it should "not be constructed when the overall size would be exceeded" in {
     val a = "a" * 49
-    assert(a.size <= MaxLabelLength)
+    assert(a.length <= MaxLabelLength)
     val b = "bcde"
     ((a + ".") * 5 + b) should have length (MaxOverallLength + 1)
     DomainName.opt(a, a, a, a, a, b) should be(None)
