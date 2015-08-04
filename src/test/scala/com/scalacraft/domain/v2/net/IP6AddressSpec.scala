@@ -16,6 +16,8 @@
 package com.scalacraft.domain.v2.net
 
 import com.scalacraft.domain.v2.binary.OctetPair
+import com.scalacraft.domain.v2.binary.unconstrained.{Octet => UnconstrainedOctet}
+import com.scalacraft.domain.v2.binary.unconstrained.{OctetPair => UnconstrainedOctetPair}
 import com.scalacraft.domain.v2.internal.Reflections
 import org.scalatest.{FlatSpec, Matchers}
 import org.scalatest.OptionValues._
@@ -397,16 +399,27 @@ class IP6AddressSpec extends FlatSpec with Matchers {
   }
 
   it should "convert to an unconstrained IP6Address" in {
-    //    val ipa: IP4Address = IP4Address.opt(88, 0, 2, 119).get
-    //    val other: Other = ipa
-    //    other should have(
-    //      'byte1(88),
-    //      'byte2(0),
-    //      'byte3(2),
-    //      'byte4(119)
-    //    )
+    val constrained = IP6Address.opt("f00d:ca73::119").value
+    val expected =
+      unconstrainedOctetPair(0xf0, 0x0d) ::
+        unconstrainedOctetPair(0xca, 0x73) ::
+        unconstrainedOctetPair(0, 0) ::
+        unconstrainedOctetPair(0, 0) ::
+        unconstrainedOctetPair(0, 0) ::
+        unconstrainedOctetPair(0, 0) ::
+        unconstrainedOctetPair(0, 0) ::
+        unconstrainedOctetPair(0x01, 0x19) ::
+        Nil
+
+    constrained.unconstrained.octetPairs should equal(expected)
   }
 
   private def op(x: Int): OctetPair = OctetPair.opt(x).get
+
+  private def unconstrainedOctetPair(hi: Int, lo: Int): UnconstrainedOctetPair =
+    UnconstrainedOctetPair(
+      UnconstrainedOctet(hi),
+      UnconstrainedOctet(lo)
+    )
 
 }

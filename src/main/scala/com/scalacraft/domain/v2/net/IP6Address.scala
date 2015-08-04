@@ -17,6 +17,7 @@ package com.scalacraft.domain.v2.net
 
 import com.scalacraft.domain.v2.binary.OctetPair
 import com.scalacraft.domain.v2.internal.Information
+import com.scalacraft.domain.v2.net.unconstrained.{IP6Address => Unconstrained}
 
 /**
  * An `IP6Address` represents an IP6 address.
@@ -42,7 +43,7 @@ import com.scalacraft.domain.v2.internal.Information
  *
  * As shown in the example above the shortening of groups of zeros with a double colon is recognised.
  *
- * TODO: A conversion to the unconstrained version of this class is also available.
+ * A conversion to the unconstrained version of this class is also available.
  */
 case class IP6Address private(
                                field1: OctetPair,
@@ -54,6 +55,13 @@ case class IP6Address private(
                                field7: OctetPair,
                                field8: OctetPair
                                ) {
+
+  // TODO: Add and use OctetPair.unconstrained
+  /**
+   * Convert to the unconstrained version of ip6 address.
+   * @return An unconstrained instance of ip6 address
+   */
+  def unconstrained: Unconstrained = new Unconstrained(fields.map(OctetPair.`to-OctetPair`))
 
   /**
    * Provide a string representation of this ip6 address in RFC5952 recommended form.
