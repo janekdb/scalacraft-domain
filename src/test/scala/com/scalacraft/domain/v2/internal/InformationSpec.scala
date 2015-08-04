@@ -26,44 +26,44 @@ class InformationSpec extends FlatSpec with Matchers {
   behavior of "Information.whenSome"
 
   it should "convert null to Some(None)" in {
-    val result = Information.whenSome(null) { case x => throw new RuntimeException}
+    val result = Information.whenSome(null) { case x => throw new RuntimeException }
     result should equal(Some(None))
   }
 
   it should "convert a whitespace string to Some(None)" in {
-    val result = Information.whenSome(" " * 4) { case x => throw new RuntimeException}
+    val result = Information.whenSome(" " * 4) { case x => throw new RuntimeException }
     result should equal(Some(None))
   }
 
   it should "passthrough conversion of a number string to Some(Some(n))" in {
-    val result = Information.whenSome("5") { case x => Some(x.toInt)}
+    val result = Information.whenSome("5") { case x => Some(x.toInt) }
     result should equal(Some(Some(5)))
   }
 
   it should "passthrough conversion to None" in {
-    val result = Information.whenSome("five") { case x => None}
+    val result = Information.whenSome("five") { case x => None }
     result should be(None)
   }
 
   private val X = "X"
 
   it should "convert null to X when X is specified as the zero info conversion" in {
-    val result = Information.whenSome(null, X) { case x => throw new RuntimeException}
+    val result = Information.whenSome(null, X) { case x => throw new RuntimeException }
     result should equal(Some(X))
   }
 
   it should "convert a whitespace string to X when X is specified as the zero info conversion" in {
-    val result = Information.whenSome(" " * 4, X) { case x => throw new RuntimeException}
+    val result = Information.whenSome(" " * 4, X) { case x => throw new RuntimeException }
     result should equal(Some(X))
   }
 
   it should "passthrough conversion of A to Some(AA) when X is specified as the zero info conversion" in {
-    val result = Information.whenSome("A", X) { case x => Some(x * 2)}
+    val result = Information.whenSome("A", X) { case x => Some(x * 2) }
     result should equal(Some("AA"))
   }
 
   it should "passthrough conversion to None when X is specified as the zero info conversion" in {
-    val result = Information.whenSome("A", X) { case x => None}
+    val result = Information.whenSome("A", X) { case x => None }
     result should be(None)
   }
 

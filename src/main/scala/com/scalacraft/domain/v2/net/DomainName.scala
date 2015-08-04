@@ -145,7 +145,7 @@ object DomainName {
       if labels forall labelMatchesPattern
       if overallLengthInRange(labels)
     }
-    yield DomainName(labels: _*)
+      yield DomainName(labels: _*)
   }
 
   def unapplySeq(x: String): Option[Seq[String]] = opt(x) map (_.labels)

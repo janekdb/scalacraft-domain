@@ -91,7 +91,7 @@ object IP6Address {
 
     /* Convert all zero runs back to full runs except for the leftmost longest run */
 
-    val maxRunLength = runs.map { case Repeated(_, n) => n}.max
+    val maxRunLength = runs.map { case Repeated(_, n) => n }.max
 
     val maximumLengthRun = Repeated(zero, maxRunLength)
 
@@ -210,7 +210,7 @@ object IP6Address {
       op7 <- OctetPair.opt(d7)
       op8 <- OctetPair.opt(d8)
     }
-    yield IP6Address(op1, op2, op3, op4, op5, op6, op7, op8)
+      yield IP6Address(op1, op2, op3, op4, op5, op6, op7, op8)
   }
 
   def unapply(candidate: String): Option[(OctetPair, OctetPair, OctetPair, OctetPair, OctetPair, OctetPair, OctetPair, OctetPair)] =
@@ -240,7 +240,7 @@ object IP6Address {
   private def countAbbreviations(tokens: Seq[Token]) = tokens.count(_ == AB)
 
   private def makeZeroes(count: Int): List[Token] =
-    ((1 to (RequiredGroupCount - count)) flatMap { case _ => D("0") :: S :: Nil}).toList
+    ((1 to (RequiredGroupCount - count)) flatMap { case _ => D("0") :: S :: Nil }).toList
 
   private def parseTokens(x: String, acc: List[Token]): List[Token] =
     nextToken(x) match {

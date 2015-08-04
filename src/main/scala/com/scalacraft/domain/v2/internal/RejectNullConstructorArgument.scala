@@ -31,6 +31,6 @@ object RejectNullConstructorArgument {
 
   def rejectNullElement(param: List[Any], paramName: String): Unit = {
     val firstNullIndex = param.zipWithIndex.collect { case (v, idx) if v == null => idx }.headOption
-    firstNullIndex foreach (idx => throw new NullElementException(paramName,idx))
+    firstNullIndex foreach (idx => throw new NullElementException(paramName, idx))
   }
 }

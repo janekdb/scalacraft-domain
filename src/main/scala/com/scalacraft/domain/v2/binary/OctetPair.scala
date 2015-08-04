@@ -116,9 +116,9 @@ object OctetPair {
   implicit def `to-OctetPair`(octetPair: OctetPair): unconstrained.OctetPair =
     unconstrained.OctetPair(octetPair.hi, octetPair.lo)
 
-  def opt(x: Int): Option[OctetPair] = unapply(x) map { case (hi, lo) => OctetPair(hi, lo)}
+  def opt(x: Int): Option[OctetPair] = unapply(x) map { case (hi, lo) => OctetPair(hi, lo) }
 
-  def opt(x: String): Option[OctetPair] = unapply(x) map { case (hi, lo) => OctetPair(hi, lo)}
+  def opt(x: String): Option[OctetPair] = unapply(x) map { case (hi, lo) => OctetPair(hi, lo) }
 
   def opt(a: Octet, b: Octet): Option[OctetPair] =
     Information.whenNotNull(a, b)(OctetPair.apply)
@@ -156,6 +156,6 @@ object OctetPair {
     val candidates: Seq[(String, Option[Octet])] = spans.map {
       case (unused, target) => (unused, Octet.opt(target))
     }
-    candidates.collectFirst { case (unused, Some(octet)) => (unused, octet)}
+    candidates.collectFirst { case (unused, Some(octet)) => (unused, octet) }
   }
 }
