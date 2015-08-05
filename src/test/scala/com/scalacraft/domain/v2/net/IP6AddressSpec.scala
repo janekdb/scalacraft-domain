@@ -308,6 +308,11 @@ class IP6AddressSpec extends FlatSpec with Matchers {
       (zero, zero, zero, zero, zero, zero, zero, zero))
     m("01::0006:0007") should be(
       (one, zero, zero, zero, zero, zero, six, seven))
+
+    /* Implied zero length zero group expansion */
+    m("1:2:3:4:5:6:7:8::") should be(None)
+    m("::1:2:3:4:5:6:7:8") should be(None)
+    m("1:2::3:4:5:6:7:8") should be(None)
   }
 
   /* Explicit Conversions */
