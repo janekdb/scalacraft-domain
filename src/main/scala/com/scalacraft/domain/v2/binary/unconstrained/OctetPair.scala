@@ -181,6 +181,10 @@ object OctetPair {
     } yield consOctetPair
   }
 
+  def opt(x: String): Option[OctetPair] = unapply(x) map { case (hi, lo) => OctetPair(hi, lo) }
+
+  def opt(x: Int): Option[OctetPair] = unapply(x) map { case (hi, lo) => OctetPair(hi, lo) }
+
   /**
    * @param hi An octet. Can be null.
    * @param lo An octet. Can be null.

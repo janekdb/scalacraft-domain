@@ -72,6 +72,22 @@ class OctetPairSpec extends FlatSpec with Matchers {
     )
   }
 
+  /* Construction from a string */
+
+  it should "be constructed from a valid octet pair number string" in {
+    OctetPair.opt("CAF3").value should equal(OctetPair(0xca.o, 0xf3.o))
+  }
+
+  it should "not be constructed from a null string" in {
+    OctetPair.opt(null: String) should be(None)
+  }
+
+  /* Construction from an int */
+
+  it should "be constructed from an int" in {
+    OctetPair.opt(0xCAF3).value should equal(OctetPair(0xca.o, 0xf3.o))
+  }
+
   /* Pattern Matching */
 
   private object Unmatched
