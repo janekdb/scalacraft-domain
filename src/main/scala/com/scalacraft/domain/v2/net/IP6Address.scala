@@ -174,7 +174,7 @@ object IP6Address {
   def opt(x: String): Option[IP6Address] = {
     val allTokens: Option[List[Token]] = x match {
       case Information.Zero() => None
-      case _ => Some(parseTokens(x.toLowerCase, Nil))
+      case _ => parseTokens(x.toLowerCase, Nil)
     }
     val tokens = for {
       ts <- allTokens
@@ -242,22 +242,23 @@ object IP6Address {
   private def makeZeroes(count: Int): List[Token] =
     ((1 to (RequiredGroupCount - count)) flatMap { case _ => D("0") :: S :: Nil }).toList
 
-  private def parseTokens(x: String, acc: List[Token]): List[Token] =
+  private def parseTokens(x: String, acc: List[Token]): Option[List[Token]] =
     nextToken(x) match {
-      case Some((token, rest)) => parseTokens(rest, token :: acc)
-      case None => acc
+      case (Some(token), rest) => parseTokens(rest, token :: acc)
+      case (None, rest) if rest.isEmpty => Some(acc)
+      case (None, _) => None
     }
 
   private val ColonColon = "::(.*)".r
   private val Colon = ":(.*)".r
   private val Digits = "([0-9a-f]+)(.*)".r
 
-  private def nextToken(x: String): Option[(Token, String)] = {
+  private def nextToken(x: String): (Option[Token], String) = {
     x match {
-      case ColonColon(rest) => Some((AB, rest))
-      case Colon(rest) => Some((S, rest))
-      case Digits(digits, rest) => Some((D(digits), rest))
-      case _ => None
+      case ColonColon(rest) => (Some(AB), rest)
+      case Colon(rest) => (Some(S), rest)
+      case Digits(digits, rest) => (Some(D(digits)), rest)
+      case _ => (None, x)
     }
   }
 

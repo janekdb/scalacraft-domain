@@ -110,6 +110,8 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     val TrailingDot = "1:2:3:4:5:6:7:8."
     val NonNumeric = "1k:2:3:4:5:6:7:8"
     val FourGroups = "1:22:333:4444"
+    val InvalidSeparator = "1::0;1"
+    val NonHexadecimalCharacters = "0::t"
   }
 
   it should "be constructed from a valid full string representation" in {
@@ -301,7 +303,10 @@ class IP6AddressSpec extends FlatSpec with Matchers {
         (op1, op2, op3, op4, op5, op6, op7, op8)
       case _ => None
     }
+    m(InvalidStrings.InvalidSeparator) should be(None)
+    m(InvalidStrings.NonHexadecimalCharacters) should be(None)
     m(InvalidStrings.FourGroups) should be(None)
+
     m("0:01:02:03:04:0005:0006:0007") should be(
       (zero, one, two, three, four, five, six, seven))
     m(ValidStrings.StandaloneAbbreviation) should be(
