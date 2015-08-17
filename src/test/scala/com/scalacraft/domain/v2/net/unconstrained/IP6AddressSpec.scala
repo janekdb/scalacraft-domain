@@ -17,15 +17,28 @@ package com.scalacraft.domain.v2.net.unconstrained
 
 import com.scalacraft.domain.v2.internal.ex.NullConstructorArgumentException
 import com.scalacraft.domain.v2.internal.ex.NullElementException
-import com.scalacraft.domain.v2.binary.unconstrained.OctetPair
+import com.scalacraft.domain.v2.binary.unconstrained.{Octet, OctetPair}
 
-import org.scalatest.{Ignore, FlatSpec, Matchers}
+import org.scalatest.{FlatSpec, Matchers}
 import org.scalatest.OptionValues._
 
 /**
  * Specification for an unconstrained `IP6Address`
  */
 class IP6AddressSpec extends FlatSpec with Matchers {
+
+  private object Octets {
+    val Some(zero) = OctetPair.opt(0)
+    val Some(one) = OctetPair.opt(1)
+    val Some(two) = OctetPair.opt(2)
+    val Some(three) = OctetPair.opt(3)
+    val Some(four) = OctetPair.opt(4)
+    val Some(five) = OctetPair.opt(5)
+    val Some(six) = OctetPair.opt(6)
+    val Some(seven) = OctetPair.opt(7)
+  }
+
+  import Octets._
 
   behavior of "An unconstrained IP6Address"
 
@@ -62,17 +75,40 @@ class IP6AddressSpec extends FlatSpec with Matchers {
   //  non-empty string then the extractor should do the same.
 
   it should "be usable in string pattern matching" in {
-    //    def m(x: String) = x match {
-    //      case IP6Address(repr) => repr
-    //      case _ => None
-    //    }
-    //    m("") should be ("")
-    //    m("xx") should be("xx")
-    //    m("55.66.77") should be("55.66.77")
+    def m(x: String) = x match {
+      case IP6Address(octetPairs) => octetPairs
+      case _ => None
+    }
+    m("") should be(None)
+    m("f") should be(op(0x0, 0xf) :: Nil)
+    /* Case insensitive */
+    m("FA77") should be(op(0xfa, 0x77) :: Nil)
+    /* Fewer than 8 octet pairs */
+    m("0:5") should be(zero :: five :: Nil)
+    m("0:1:2:3:4:5:6:7") should be(zero :: one :: two :: three :: four :: five :: six :: seven :: Nil)
+    /* Invalid separator */
+    m("0;1") should be(None)
+    m("0:1:2:3:4:5;6:7") should be(None)
+    m("55.66.77") should be(None)
+    /* Non-hexadecimal value */
+    m("0:t") should be(None)
+    m("xx") should be(None)
+    /* More than 8 octets */
+    m("0:1:2:3:4:5:6:7:0:1") should be(
+      zero :: one :: two :: three :: four :: five :: six :: seven :: zero :: one :: Nil)
     //    m("::") should be ("::")
-    //    m("0000:0000:0000:0000:0000:0000:0000:0000") should be ("0000:0000:0000:0000:0000:0000:0000:0000")
+    m("0000:0000:0000:0000:0000:0000:0000:0000") should be(List.fill(8)(zero))
+    /* Not alternating between digits and separators */
+    m("7:d:") should be(None)
+    m(":7:d") should be(None)
+
     //    m("fe80::2000:0aff:fea7:0f7c") should be ("fe80::2000:0aff:fea7:0f7c")
     //    m("fe80:0000:0000:0000:2000:0aff:fea7:0f7c") should be ("fe80:0000:0000:0000:2000:0aff:fea7:0f7c")
+//    fail("TODO")
   }
+
+  // TODO: Add issue line item to determine whether to implement unapplySeq
+
+  private def op(hi: Int, lo: Int): OctetPair = OctetPair(Octet(hi), Octet(lo))
 
 }
