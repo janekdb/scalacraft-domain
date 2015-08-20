@@ -185,7 +185,7 @@ Given a unconstrained domain type it must be possible to create an invalid insta
 args to pick from.
 
 The purpose of Rule 3 is to ensure the type is contributing to the unconstrained nature of the type at a higher
-level than the properties that comprise it. For example if the IP4Address type had a constructor that took four
+level than the components that comprise it. For example if the IP4Address type had a constructor that took four
 integers and we had only valid octets to work with (integers in the range [0,255]) then it would be impossible
 to construct an invalid IP4Address. In this case the validity of the IP4Address is implied by the validity of the
 constructor args therefore IP4Address is failing to provide any way of capturing a value that is invalid at a level
@@ -193,7 +193,7 @@ beyond invalid octet values. Possible corrections in this case would be to use o
 of octets thereby allowing an invalid IP4Address to be constructed entirely from valid octets.
 
 Note: IP4Address, Port and possibly others currently violate Rule 3. This is a defect requiring a breaking
-release to correct to change constructor signatures from `x: T` to `x: Option[T]` which introduces the ability
+release to correct. Changing constructor signatures from `x: T` to `x: Option[T]` introduces the ability
 to have an invalid type when only valid instances of T are available.
 
 A consequence of Rule 3 being applied is an increase in the number of strings or alternative representations
@@ -202,8 +202,8 @@ that will pattern match.
 ##### Rule 4 - Maximum Loss Free Information Conversion
 
 This rule has two parts related to the information taken when matching. The first part tells us to use all the
-information we take. The second part is an directive to consume as much information as possible. These two aspects
-are elaborated on in the text that follows.
+information we consume. The second part is a directive to consume as much information as possible. These two aspects
+are elaborated on in the following sections.
 
 ###### Full Information Utilisation
 
@@ -246,7 +246,25 @@ following the match. There is no loss of information.
 A consequence of this rule is a reduction to a subset of all possible alternative representations an
 unconstrained type can pattern match to.
 
-Whitespace is not regarded as useful information so can be dropped under this rule.
+Whitespace is not regarded as useful information so can be dropped under this rule. However domain extractors should
+not trim or remove whitespace to coerce a representation into an extractable form.
+
+There is another type of information that can be dropped and that is information not shared between different
+representations that match to the same value of the domain class.
+
+As a concrete example take these string representations of the same ip6 address,
+
+    repr-1: ::7:ab
+    repr-2: ::7:AB
+    repr-3: 0:0:0:0:0:0:7:ab
+
+These strings form an equivalence class which can be associated with this instance of the domain type,
+
+    new IP6Address(0x0::0x0::0x0::0x0::0x0::0x0::0x7::0xab::Nil)
+
+`repr-1`, `repr-2` and `repr-3` contain common information that can be extracted to create equal instances of
+the domain class but the differences in the representation are a type of information that cannot be used. The matcher
+is expected to drop this information on the floor.
 
 ###### Greedy Information Consumption
 
@@ -255,6 +273,9 @@ rule.
 
 For example if an unconstrained octet has type `Octet[Option[Int]]` then both `127` and `4000100` should be
 matched despite the latter value being out of range for an octet.
+
+However the full information utilisation rule forbids matching `1122334499` because this cannot be represented by
+the unconstrained octet so this is more information than can be used.
 
 ### Implicit Conversions
 
