@@ -183,11 +183,13 @@ object IP6Address {
       abbreviationCount = countAbbreviations(ts)
       /* Do not allow an abbreviation to be used unnecessarily */
       if abbreviationCount == 0 || digitsCount < RequiredGroupCount
+      /* Replace leading abbreviations */
       vs = ts match {
-        case AB :: Nil => zeros.init
+        case AB :: Nil => zeros.init // drop trailing separator
         case AB :: rest => zeros ++ rest
         case other => other
       }
+      /* Replace trailing abbreviations */
       us = vs.reverse match {
         case AB :: rest => zeros ++ rest
         case other => other
@@ -239,8 +241,13 @@ object IP6Address {
 
   private def countAbbreviations(tokens: Seq[Token]) = tokens.count(_ == AB)
 
-  private def makeZeroes(count: Int): List[Token] =
-    ((1 to (RequiredGroupCount - count)) flatMap { case _ => D("0") :: S :: Nil }).toList
+  /**
+   * @param digitsCount The number of digits group present
+   * @return A list of D(0), S, ... sufficiently long to ensure a list of 8 digit groups when
+   *         combined with the existing digit groups
+   */
+  private def makeZeroes(digitsCount: Int): List[Token] =
+    ((1 to (RequiredGroupCount - digitsCount)) flatMap { case _ => D("0") :: S :: Nil }).toList
 
   private def parseTokens(x: String, acc: List[Token]): Option[List[Token]] =
     nextToken(x) match {
