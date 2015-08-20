@@ -263,7 +263,7 @@ These strings form an equivalence class which can be associated with this instan
     new IP6Address(0x0::0x0::0x0::0x0::0x0::0x0::0x7::0xab::Nil)
 
 `repr-1`, `repr-2` and `repr-3` contain common information that can be extracted to create equal instances of
-the domain class but the differences in the representation are a type of information that cannot be used. The matcher
+the domain class but the differences across the representations are a type of information that cannot be used. The matcher
 is expected to drop this information on the floor.
 
 ###### Greedy Information Consumption
