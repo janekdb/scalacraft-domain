@@ -55,12 +55,10 @@ object IP6Address {
   }
 
   private object Alternating {
-    /** @return An octet pair list  iff `elems` is alternating sequence of digits and separators bookended with digits: D, S, D, S, ..., D */
+    /** @return An octet pair list iff `elems` is alternating sequence of digits and separators bookended with digits: D, S, D, S, ..., D */
     def unapply(elems: List[Any]): Option[List[OctetPair]] = collect(elems, Nil)
 
     private def collect(elems: List[Any], acc: List[OctetPair]): Option[List[OctetPair]] = {
-      println("collect: elems: " + elems)
-      println("collect:   acc: " + acc.map(OctetPair.`to-String`))
       elems match {
         case Nil => Some(acc.reverse)
         case Some(op: OctetPair) :: Nil => collect(Nil, op :: acc)
