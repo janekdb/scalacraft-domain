@@ -37,22 +37,68 @@ object IP6Address {
       case _ => parseTokens(x.toLowerCase, Nil)
     }
     println("allTokens: " + allTokens)
-    allTokens.map(_.reverse) flatMap opt
+    allTokens flatMap opt
   }
 
   private def opt(tokens: List[Token]): Option[IP6Address] = {
-    val tokensWithOctetPairs = tokens map {
+    val ts = tokens map {
       case D(x) => OctetPair.opt(x)
       case other => other
     }
-    println("tokensWithOctetPairs: " + tokensWithOctetPairs)
+    println("ts: " + ts)
+
+    // TODO: Refactor with constrained version
+    val digitsCount = countOctetPairs(ts)
+    val zeros = makeZeroes(digitsCount)
+    println("zeros: " + zeros)
+
+    /* Replace leading abbreviations */
+    val vs = ts match {
+      case AB :: Nil => zeros.init // drop trailing separator
+      case AB :: rest => zeros ++ rest
+      case other => other
+    }
+    println("vs: " + vs)
+    /* Replace trailing abbreviations */
+    val us = vs.reverse match {
+      case AB :: rest => zeros ++ rest
+      case other => other
+    }
+    println("us: " + us)
+        /* Replace internal abbreviations */
+    val ss = us.flatMap {
+      case AB => S :: zeros
+      case t => t :: Nil
+    }
+    println("ss: " + ss)
 
     // Need to match D [S D}*
-    tokensWithOctetPairs match {
+    ss match {
       case Alternating(octetPairs) => Some(IP6Address(octetPairs))
       case _ => None
     }
   }
+
+
+  private val zero = OctetPair.opt(0)
+
+  // TODO: Refactor with constrained version
+  private val RequiredGroupCount = 8
+
+  private def countOctetPairs(tokens: Seq[Any]) =
+    tokens.count {
+      case Some(_: OctetPair) => true
+      case _ => false
+    }
+
+  // TODO: Refactor with constrained version
+  /**
+   * @param digitsCount The number of digits group present
+   * @return A list of D(0), S, ... sufficiently long to ensure a list of 8 digit groups when
+   *         combined with the existing digit groups
+   */
+  private def makeZeroes(digitsCount: Int): List[Any] =
+    ((1 to (RequiredGroupCount - digitsCount)) flatMap { case _ => zero :: S :: Nil }).toList
 
   private object Alternating {
     /** @return An octet pair list iff `elems` is alternating sequence of digits and separators bookended with digits: D, S, D, S, ..., D */

@@ -36,6 +36,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     val Some(five) = OctetPair.opt(5)
     val Some(six) = OctetPair.opt(6)
     val Some(seven) = OctetPair.opt(7)
+    val Some(eight) = OctetPair.opt(8)
   }
 
   import Octets._
@@ -79,6 +80,8 @@ class IP6AddressSpec extends FlatSpec with Matchers {
       case IP6Address(octetPairs) => octetPairs
       case _ => None
     }
+    val eightZeroes = List.fill(8)(zero)
+
     m("") should be(None)
     m("f") should be(op(0x0, 0xf) :: Nil)
     /* Case insensitive */
@@ -96,15 +99,55 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     /* More than 8 octets */
     m("0:1:2:3:4:5:6:7:0:1") should be(
       zero :: one :: two :: three :: four :: five :: six :: seven :: zero :: one :: Nil)
-    //    m("::") should be ("::")
-    m("0000:0000:0000:0000:0000:0000:0000:0000") should be(List.fill(8)(zero))
+    m("0000:0000:0000:0000:0000:0000:0000:0000") should be(eightZeroes)
     /* Not alternating between digits and separators */
     m("7:d:") should be(None)
     m(":7:d") should be(None)
+    /* Zero groups abbreviations */
+    m("::") should be(eightZeroes)
+    m("0::") should be(eightZeroes)
+    m("7::") should be(seven :: zero :: zero :: zero :: zero :: zero :: zero :: zero :: Nil)
+    m("7::8") should be(seven :: zero :: zero :: zero :: zero :: zero :: zero :: eight :: Nil)
+    // todo: add further expansions
+    //    m("::1::") should be(None)
+    //    m("2::1::") should be(None)
+    //    m("::1::3") should be(None)
+    //    m("f::1::3") should be(None)
+    //    m("::::") should be(None)
+    val ExpectedDescending = eight :: seven :: six :: five :: four :: three :: two :: one :: Nil
+    val ExpectedDescendingPlus = eight :: seven :: six :: five :: four :: three :: two :: one :: eight :: six :: Nil
+    /* Abbreviations that make sense as empty. This consistent with Rule 1. */
+    m("::8:7:6:5:4:3:2:1") should be(ExpectedDescending)
+    m("::8:7:6:5:4:3:2:1:8:6") should be(ExpectedDescendingPlus)
+    m("8:7:6:5:4:3:2:1::") should be(ExpectedDescending)
+    m("8:7:6:5:4:3:2:1:8:6::") should be(ExpectedDescendingPlus)
+    m("8:7::6:5:4:3:2:1") should be(ExpectedDescending)
+    m("8:7::6:5:4:3:2:1:8:6") should be(ExpectedDescendingPlus)
+
+    /*
+    * Multiple abbreviations that make sense as empty but we chose to drop on the basis there is
+    * more information present than we can use. Some other extractor may be able to make better use of
+    * the information. For example :: might be a structural separator for some other domain type.
+    */
+    /* leading and internal */
+    m("::8:7:6:5:4::3:2:1") should be(None)
+    m("::8:7:6:5:4::3:2:1:8:6") should be(None)
+    /* internal and trailing */
+    m("8:7:6:5:4::3:2:1::") should be(None)
+    m("8:7:6:5:4::3:2:1:8:6::") should be(None)
+    /* internal and internal */
+    m("8:7:6::5:4::3:2::1") should be(None)
+    m("8::7::6:5:4::3:2:1:8:6") should be(None)
+    /* leading and trailing */
+    m("::8:7:6:5:4:3:2:1::") should be(None)
+    m("::8:7:6:5:4:3:2:1:8:6::") should be(None)
+    /* leading, internal and trailing */
+    m("::8:7:6:5::4:3:2:1::") should be(None)
+    m("::8:7:6:5::4:3:2:1:8:6::") should be(None)
 
     //    m("fe80::2000:0aff:fea7:0f7c") should be ("fe80::2000:0aff:fea7:0f7c")
     //    m("fe80:0000:0000:0000:2000:0aff:fea7:0f7c") should be ("fe80:0000:0000:0000:2000:0aff:fea7:0f7c")
-//    fail("TODO")
+    //    fail("TODO")
   }
 
   // TODO: Add issue line item to determine whether to implement unapplySeq
