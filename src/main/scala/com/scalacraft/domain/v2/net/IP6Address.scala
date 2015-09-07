@@ -179,10 +179,10 @@ object IP6Address {
     val tokens = for {
       ts <- allTokens
       digitsCount = countDigitGroups(ts)
-      zeros = makeZeroes(digitsCount)
       abbreviationCount = countAbbreviations(ts)
       /* Do not allow an abbreviation to be used unnecessarily */
       if abbreviationCount == 0 || digitsCount < RequiredGroupCount
+      zeros = makeZeroes(digitsCount)
       /* Replace leading abbreviations */
       vs = ts match {
         case AB :: Nil => zeros.init // drop trailing separator
@@ -229,6 +229,8 @@ object IP6Address {
         )
     }
 
+  private def countAbbreviations(tokens: Seq[Token]) = tokens.count(_ == AB)
+
   private val Some(zero) = OctetPair.opt(0)
 
   private val RequiredGroupCount = 8
@@ -238,8 +240,6 @@ object IP6Address {
       case D(_) => true
       case _ => false
     }
-
-  private def countAbbreviations(tokens: Seq[Token]) = tokens.count(_ == AB)
 
   /**
    * @param digitsCount The number of digits group present
