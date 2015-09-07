@@ -36,49 +36,51 @@ object IP6Address {
       case Information.Zero() => None
       case _ => parseTokens(x.toLowerCase, Nil)
     }
-    println("allTokens: " + allTokens)
-    allTokens flatMap opt
+    opt(allTokens)
   }
 
-  private def opt(tokens: List[Token]): Option[IP6Address] = {
-    val ts = tokens map {
-      case D(x) => OctetPair.opt(x)
-      case other => other
-    }
-    println("ts: " + ts)
-
-    // TODO: Refactor with constrained version
-    val digitsCount = countOctetPairs(ts)
-    val zeros = makeZeroes(digitsCount)
-    println("zeros: " + zeros)
-
-    /* Replace leading abbreviations */
-    val vs = ts match {
-      case AB :: Nil => zeros.init // drop trailing separator
-      case AB :: rest => zeros ++ rest
-      case other => other
-    }
-    println("vs: " + vs)
-    /* Replace trailing abbreviations */
-    val us = vs.reverse match {
-      case AB :: rest => zeros ++ rest
-      case other => other
-    }
-    println("us: " + us)
+  private def opt(allTokens: Option[List[Token]]): Option[IP6Address] = {
+    val elems: Option[List[Any]] =
+      for {
+        tokens <- allTokens
+        ts = tokens map {
+          case D(x) => OctetPair.opt(x)
+          case other => other
+        }
+        digitsCount = countOctetPairs(ts)
+        abbreviationCount = countAbbreviations(ts)
+        /* Do not allow abbreviations to be used when more than one possible expansion exists. */
+        if abbreviationCount <= 1
+        zeros = makeZeroes(digitsCount)
+        /* Replace leading abbreviations */
+        vs = ts match {
+          case AB :: Nil => zeros.init // drop trailing separator
+          case AB :: rest => zeros ++ rest
+          case other => other
+        }
+        /* Replace trailing abbreviations */
+        us = vs.reverse match {
+          case AB :: rest => zeros ++ rest
+          case other => other
+        }
         /* Replace internal abbreviations */
-    val ss = us.flatMap {
-      case AB => S :: zeros
-      case t => t :: Nil
-    }
-    println("ss: " + ss)
-
+        ss = us.flatMap {
+          case AB => S :: zeros
+          case t => t :: Nil
+        }
+      //      // Need to match D [S D}*
+      //      Alternating(octetPairs) <- ss
+      }
+        yield ss
     // Need to match D [S D}*
-    ss match {
-      case Alternating(octetPairs) => Some(IP6Address(octetPairs))
-      case _ => None
+    for {
+      Alternating(octetPairs) <- elems
     }
+      yield IP6Address(octetPairs)
   }
 
+  // TODO: Refactor with constrained version
+  private def countAbbreviations(tokens: Seq[Any]) = tokens.count(_ == AB)
 
   private val zero = OctetPair.opt(0)
 
@@ -147,5 +149,5 @@ object IP6Address {
 
   case class D(digits: String) extends Token
 
-  private val GroupSeparator = ":"
+//  private val GroupSeparator = ":"
 }

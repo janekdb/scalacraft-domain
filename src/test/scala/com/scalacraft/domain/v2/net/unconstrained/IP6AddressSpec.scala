@@ -108,12 +108,14 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     m("0::") should be(eightZeroes)
     m("7::") should be(seven :: zero :: zero :: zero :: zero :: zero :: zero :: zero :: Nil)
     m("7::8") should be(seven :: zero :: zero :: zero :: zero :: zero :: zero :: eight :: Nil)
-    // todo: add further expansions
-    //    m("::1::") should be(None)
-    //    m("2::1::") should be(None)
-    //    m("::1::3") should be(None)
-    //    m("f::1::3") should be(None)
-    //    m("::::") should be(None)
+    /* Two abbreviations with fewer than 8 groups is ambiguous */
+    m("::1:2::") should be(None)
+    m("1::2::") should be(None)
+    m("::1::2") should be(None)
+    m("f::1::2") should be(None)
+    m("::::") should be(None)
+    m("1::::2") should be(None)
+    m("f::1::2::3") should be(None)
     val ExpectedDescending = eight :: seven :: six :: five :: four :: three :: two :: one :: Nil
     val ExpectedDescendingPlus = eight :: seven :: six :: five :: four :: three :: two :: one :: eight :: six :: Nil
     /* Abbreviations that make sense as empty. This consistent with Rule 1. */
@@ -144,10 +146,6 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     /* leading, internal and trailing */
     m("::8:7:6:5::4:3:2:1::") should be(None)
     m("::8:7:6:5::4:3:2:1:8:6::") should be(None)
-
-    //    m("fe80::2000:0aff:fea7:0f7c") should be ("fe80::2000:0aff:fea7:0f7c")
-    //    m("fe80:0000:0000:0000:2000:0aff:fea7:0f7c") should be ("fe80:0000:0000:0000:2000:0aff:fea7:0f7c")
-    //    fail("TODO")
   }
 
   // TODO: Add issue line item to determine whether to implement unapplySeq
