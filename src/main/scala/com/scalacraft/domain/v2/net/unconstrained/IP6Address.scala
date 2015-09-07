@@ -126,7 +126,7 @@ object IP6Address {
 
   private val ColonColon = "::(.*)".r
   private val Colon = ":(.*)".r
-  private val Digits = "([0-9a-f]+)(.*)".r
+  private val Digits = "([0-9a-f]++)(.*)".r
 
   private def nextToken(x: String): (Option[Token], String) = {
     x match {
