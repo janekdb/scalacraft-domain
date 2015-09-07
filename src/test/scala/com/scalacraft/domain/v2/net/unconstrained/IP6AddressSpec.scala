@@ -66,6 +66,12 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     )
   }
 
+  it should "be constructed from valid inputs" in {
+    val ip6 = IP6Address(zero :: one :: two :: Nil)
+    // TODO: Use representation when available
+    ip6.octetPairs.map(OctetPair.`to-String`).map(_.get) mkString ":" should be("0000:0001:0002")
+  }
+
   /* Pattern Matching */
 
   //  IP6Address has less enforcement in it's constructor than IP4Address
