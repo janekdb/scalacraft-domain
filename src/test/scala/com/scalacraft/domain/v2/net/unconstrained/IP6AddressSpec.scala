@@ -79,6 +79,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     val Ascending = "0102:0304:0506:0708:090A:0B0C:0D0E:0F10"
     val Lowercase = Ascending.toLowerCase
     val Uppercase = Ascending.toUpperCase
+    val Negative = "0:0:0:0:0:0:-99aa:0"
     val InternalZeroAbbreviation = "ff::1"
     val LeftZeroAbbreviation = "::1"
     val RightZeroAbbreviation = "ff::"
@@ -102,6 +103,13 @@ class IP6AddressSpec extends FlatSpec with Matchers {
       'octetPairs(expected)
     )
     IP6Address.opt(ValidStrings.Ascending).value should have(
+      'octetPairs(expected)
+    )
+  }
+
+  it should "be constructed from a valid full string representation including a negative entry" in {
+    val expected = zero :: zero :: zero :: zero :: zero :: zero :: op(-0x99aa) :: zero :: Nil
+    IP6Address.opt(ValidStrings.Negative).value should have(
       'octetPairs(expected)
     )
   }
@@ -179,6 +187,36 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     IP6Address.opt(ValidLongStrings.Ascending).value should have(
       'octetPairs(expected)
     )
+  }
+
+  private object InvalidStrings {
+    val TwelveDigits = "0:0:0:0:0:0:123456789AB:0"
+    val TwoZeroGroupAbbreviations = "1::1::"
+    val TrailingDot = "1:2:3:4:5:6:7:8."
+    val NonNumeric = "1k:2:3:4:5:6:7:8"
+    val InvalidSeparator = "1::0;1"
+    val NonHexadecimalCharacters = "0::t"
+  }
+
+  it should "not be constructed from a invalid string representation" in {
+    val validSuffix = ":1" * 7
+
+    IP6Address.opt(" ") should be(None)
+    IP6Address.opt(" " + ValidStrings.AllZeros) should be(None)
+    IP6Address.opt("$" + validSuffix) should be(None)
+    IP6Address.opt(InvalidStrings.TwelveDigits) should be(None)
+    IP6Address.opt(InvalidStrings.TwoZeroGroupAbbreviations) should be(None)
+    IP6Address.opt(InvalidStrings.TrailingDot) should be(None)
+    IP6Address.opt(InvalidStrings.NonNumeric) should be(None)
+    IP6Address.opt(InvalidStrings.NonHexadecimalCharacters) should be(None)
+  }
+
+  it should "not be constructed from a null string" in {
+    IP6Address.opt(null) should be(None)
+  }
+
+  it should "not be constructed from an empty string" in {
+    IP6Address.opt("") should be(None)
   }
 
   /* Pattern Matching */
