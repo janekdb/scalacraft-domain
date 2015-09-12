@@ -269,9 +269,9 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     IP6Address.opt(InvalidStrings.FiveDigits) should be(None)
     IP6Address.opt(InvalidStrings.Negative) should be(None)
     IP6Address.opt(InvalidStrings.TwoZeroGroupAbbreviations) should be(None)
-    IP4Address.opt(InvalidStrings.TrailingDot) should be(None)
-    IP4Address.opt(InvalidStrings.NonNumeric) should be(None)
-    IP4Address.opt(InvalidStrings.FourGroups) should be(None)
+    IP6Address.opt(InvalidStrings.TrailingDot) should be(None)
+    IP6Address.opt(InvalidStrings.NonNumeric) should be(None)
+    IP6Address.opt(InvalidStrings.FourGroups) should be(None)
   }
 
   it should "not be constructed from a null string" in {
