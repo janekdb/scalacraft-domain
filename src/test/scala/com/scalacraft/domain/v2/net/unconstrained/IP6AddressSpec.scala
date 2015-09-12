@@ -72,6 +72,79 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     ip6.octetPairs.map(OctetPair.`to-String`).map(_.get) mkString ":" should be("0000:0001:0002")
   }
 
+  /* Construction from a string */
+
+  private object ValidStrings {
+    val AllZeros = "0000:" * 7 + "0000"
+    val Ascending = "0102:0304:0506:0708:090A:0B0C:0D0E:0F10"
+    val Lowercase = Ascending.toLowerCase
+    val Uppercase = Ascending.toUpperCase
+    val InternalZeroAbbreviation = "ff::1"
+    val LeftZeroAbbreviation = "::1"
+    val RightZeroAbbreviation = "ff::"
+    val StandaloneAbbreviation = "::"
+    val OneZeroGroupAbbreviatedRight = "0:1:2:3:4:5:6::"
+    val OneZeroGroupAbbreviatedLeft = "::1:2:3:4:5:6:7"
+    val OneZeroGroupAbbreviatedInternal = "0:1:2::4:5:6:7"
+    // TODO: Add longer and shorter sequences
+  }
+
+  it should "be constructed from a valid full string representation" in {
+    IP6Address.opt(ValidStrings.AllZeros).value should have(
+      'octetPairs(List.fill(8)(zero))
+    )
+
+    val expected = op(0x0102) :: op(0x0304) :: op(0x0506) :: op(0x0708) :: op(0x090A) :: op(0x0B0C) :: op(0x0D0E) :: op(0x0F10) :: Nil
+
+    IP6Address.opt(ValidStrings.Lowercase).value should have(
+      'octetPairs(expected)
+    )
+    IP6Address.opt(ValidStrings.Uppercase).value should have(
+      'octetPairs(expected)
+    )
+    IP6Address.opt(ValidStrings.Ascending).value should have(
+      'octetPairs(expected)
+    )
+  }
+
+  it should "be constructed from a valid zero group string representation" in {
+    IP6Address.opt(ValidStrings.InternalZeroAbbreviation).value should have(
+      'octetPairs(op(0x00ff) :: zero :: zero :: zero :: zero :: zero :: zero :: op(0x0001) :: Nil)
+    )
+  }
+
+  it should "be constructed from a left zero group string representation" in {
+    IP6Address.opt(ValidStrings.LeftZeroAbbreviation).value should have(
+      'octetPairs(zero :: zero :: zero :: zero :: zero :: zero :: zero :: op(0x0001) :: Nil)
+    )
+  }
+
+  it should "be constructed from a right zero group string representation" in {
+    IP6Address.opt(ValidStrings.RightZeroAbbreviation).value should have(
+      'octetPairs(op(0x00ff) :: zero :: zero :: zero :: zero :: zero :: zero :: zero :: Nil)
+    )
+  }
+
+  it should "be constructed from a standalone zero group string representation" in {
+    IP6Address.opt(ValidStrings.StandaloneAbbreviation).value should have(
+      'octetPairs(List.fill(8)(zero))
+    )
+    IP6Address.opt("::23af:0091::") should be(None)
+  }
+
+  it should "be constructed from an single zero group abbreviation representation" in {
+    IP6Address.opt(ValidStrings.OneZeroGroupAbbreviatedRight).value should have(
+      'octetPairs(zero :: one :: two :: three :: four :: five :: six :: zero :: Nil)
+
+    )
+    IP6Address.opt(ValidStrings.OneZeroGroupAbbreviatedLeft).value should have(
+      'octetPairs(zero :: one :: two :: three :: four :: five :: six :: seven :: Nil)
+    )
+    IP6Address.opt(ValidStrings.OneZeroGroupAbbreviatedInternal).value should have(
+      'octetPairs(zero :: one :: two :: zero :: four :: five :: six :: seven :: Nil)
+    )
+  }
+
   /* Pattern Matching */
 
   //  IP6Address has less enforcement in it's constructor than IP4Address

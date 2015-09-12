@@ -31,7 +31,7 @@ case class IP6Address(
 
 object IP6Address {
 
-  private def opt(x: String): Option[IP6Address] = {
+  def opt(x: String): Option[IP6Address] = {
     val allTokens: Option[List[Token]] = x match {
       case Information.Zero() => None
       case _ => parseTokens(x.toLowerCase, Nil)
