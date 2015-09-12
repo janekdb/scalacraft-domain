@@ -154,8 +154,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     m("::8:7:6:5::4:3:2:1:8:6::") should be(None)
   }
 
-  // TODO: Add issue line item to determine whether to implement unapplySeq
-
   private def op(hi: Int, lo: Int): OctetPair = OctetPair(Octet(hi), Octet(lo))
 
+  private def op(v: Int): OctetPair = OctetPair(Octet(v / 0x100), Octet(v % 0x100))
 }
