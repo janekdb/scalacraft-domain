@@ -86,7 +86,6 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     val OneZeroGroupAbbreviatedRight = "0:1:2:3:4:5:6::"
     val OneZeroGroupAbbreviatedLeft = "::1:2:3:4:5:6:7"
     val OneZeroGroupAbbreviatedInternal = "0:1:2::4:5:6:7"
-    // TODO: Add longer and shorter sequences
   }
 
   it should "be constructed from a valid full string representation" in {
@@ -142,6 +141,43 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     )
     IP6Address.opt(ValidStrings.OneZeroGroupAbbreviatedInternal).value should have(
       'octetPairs(zero :: one :: two :: zero :: four :: five :: six :: seven :: Nil)
+    )
+  }
+
+  private object ValidShortStrings {
+    val AllZeros = "0000:" * 3 + "0000"
+    val Ascending = "0102:0304:0506"
+  }
+
+  it should "be constructed from a valid short string representation" in {
+    IP6Address.opt(ValidShortStrings.AllZeros).value should have(
+      'octetPairs(List.fill(4)(zero))
+    )
+
+    val expected = op(0x0102) :: op(0x0304) :: op(0x0506) :: Nil
+
+    IP6Address.opt(ValidShortStrings.Ascending).value should have(
+      'octetPairs(expected)
+    )
+  }
+
+  private object ValidLongStrings {
+    val AllZeros = "0000:" * 17 + "0000"
+    val Ascending = "0102:0304:0506:0708:090A:0B0C:0D0E:0F10:9080:9070:9060"
+  }
+
+  it should "be constructed from a valid long string representation" in {
+    IP6Address.opt(ValidLongStrings.AllZeros).value should have(
+      'octetPairs(List.fill(18)(zero))
+    )
+
+    val expected =
+      op(0x0102) :: op(0x0304) :: op(0x0506) :: op(0x0708) ::
+        op(0x090A) :: op(0x0B0C) :: op(0x0D0E) :: op(0x0F10) ::
+        op(0x9080) :: op(0x9070) :: op(0x9060) :: Nil
+
+    IP6Address.opt(ValidLongStrings.Ascending).value should have(
+      'octetPairs(expected)
     )
   }
 
