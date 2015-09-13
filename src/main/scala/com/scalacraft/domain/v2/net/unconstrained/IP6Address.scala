@@ -37,7 +37,7 @@ case class IP6Address(
    *         does not convert to a constrained instance
    */
   def constrained: Option[Constrained] = {
-    val constrainedOctetPairs: List[Option[ConstrainedOctetPair]] = octetPairs map (OctetPair.`to-Option[OctetPair]`(_))
+    val constrainedOctetPairs: List[Option[ConstrainedOctetPair]] = octetPairs map OctetPair.`to-Option[OctetPair]`
     type C = ConstrainedOctetPair
     for {
       Some(o1: C) :: Some(o2: C) :: Some(o3: C) :: Some(o4: C) :: Some(o5: C) :: Some(o6: C) :: Some(o7: C) :: Some(o8: C) :: Nil <- Some(constrainedOctetPairs)
