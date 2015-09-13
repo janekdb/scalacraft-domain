@@ -15,8 +15,10 @@
 */
 package com.scalacraft.domain.v2.net.unconstrained
 
+import com.scalacraft.domain.v2.binary.{OctetPair => ConstrainedOctetPair}
 import com.scalacraft.domain.v2.binary.unconstrained.OctetPair
 import com.scalacraft.domain.v2.internal.{Information, RejectNullConstructorArgument}
+import com.scalacraft.domain.v2.net.{IP6Address => Constrained}
 
 /**
  * `IP6Address`
@@ -27,6 +29,23 @@ case class IP6Address(
                        ) {
   RejectNullConstructorArgument(octetPairs, "octetPairs")
   RejectNullConstructorArgument.rejectNullElement(octetPairs, "octetPairs")
+
+  // TODO: Add and use OctetPair.constrained
+  /**
+   * Convert to the constrained version of ip6 address.
+   * @return An constrained instance of ip6 address as a some or none if this instance
+   *         does not convert to a constrained instance
+   */
+  def constrained: Option[Constrained] = {
+    val constrainedOctetPairs: List[Option[ConstrainedOctetPair]] = octetPairs map (OctetPair.`to-Option[OctetPair]`(_))
+    type C = ConstrainedOctetPair
+    for {
+      Some(o1: C) :: Some(o2: C) :: Some(o3: C) :: Some(o4: C) :: Some(o5: C) :: Some(o6: C) :: Some(o7: C) :: Some(o8: C) :: Nil <- Some(constrainedOctetPairs)
+      ip6Address <- Constrained.opt(o1, o2, o3, o4, o5, o6, o7, o8)
+    }
+      yield ip6Address
+  }
+
 }
 
 object IP6Address {

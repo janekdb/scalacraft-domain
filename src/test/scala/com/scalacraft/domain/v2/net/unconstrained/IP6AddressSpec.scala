@@ -15,9 +15,12 @@
 */
 package com.scalacraft.domain.v2.net.unconstrained
 
+//import com.scalacraft.domain.v2.binary.{Octet => ConstrainedOctet}
+
+import com.scalacraft.domain.v2.binary.{OctetPair => ConstrainedOctetPair}
+import com.scalacraft.domain.v2.binary.unconstrained.{Octet, OctetPair}
 import com.scalacraft.domain.v2.internal.ex.NullConstructorArgumentException
 import com.scalacraft.domain.v2.internal.ex.NullElementException
-import com.scalacraft.domain.v2.binary.unconstrained.{Octet, OctetPair}
 
 import org.scalatest.{FlatSpec, Matchers}
 import org.scalatest.OptionValues._
@@ -301,7 +304,42 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     m("::8:7:6:5::4:3:2:1:8:6::") should be(None)
   }
 
+
+  it should "convert a convertable unconstrained IP6Address to a constrained IP6Address" in {
+    val unconstrained = IP6Address.opt("f00d:ca73::119").value
+
+    unconstrained.constrained.value should have(
+      'field1(constrainedOctetPair(0xf00d)),
+      'field2(constrainedOctetPair(0xca73)),
+      'field3(constrainedOctetPair(0)),
+      'field4(constrainedOctetPair(0)),
+      'field5(constrainedOctetPair(0)),
+      'field6(constrainedOctetPair(0)),
+      'field7(constrainedOctetPair(0)),
+      'field8(constrainedOctetPair(0x0119))
+    )
+
+  }
+
+  private val emptyOctetPair = OctetPair(None, None)
+
+  private object UnconvertibleAddresses {
+    val TooShort = IP6Address.opt("f001:ca72:113").value
+    val TooLong = IP6Address.opt("f001:ca72:113:4:5:6:7:8:9").value
+    val IncompleteOctetPair = IP6Address(zero :: emptyOctetPair :: two :: Nil)
+  }
+
+  it should "not convert unconvertable unconstrained IP6Addresses to a constrained IP6Addresses" in {
+    UnconvertibleAddresses.TooShort.constrained should be(None)
+    UnconvertibleAddresses.TooLong.constrained should be(None)
+    UnconvertibleAddresses.IncompleteOctetPair.constrained should be(None)
+  }
+
   private def op(hi: Int, lo: Int): OctetPair = OctetPair(Octet(hi), Octet(lo))
 
   private def op(v: Int): OctetPair = OctetPair(Octet(v / 0x100), Octet(v % 0x100))
+
+  private def constrainedOctetPair(v: Int): ConstrainedOctetPair = ConstrainedOctetPair.opt(v).value
+
+
 }
