@@ -1,4 +1,5 @@
 # See http://about.travis-ci.org/docs/user/build-configuration/
+sudo: false
 language: scala
 scala:
    - 2.11.5
