@@ -9,6 +9,8 @@ A collection of case classes covering common domains
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.scalacraft.domain/scalacraft-domain/badge.svg?style=flat)](http://mvnrepository.com/artifact/com.scalacraft.domain/scalacraft-domain)
 
+![Awesomeness](https://img.shields.io/badge/awesomeness-100%25-red.svg)
+
 ### API Documentation
 
 http://janekdb.github.io/scalacraft-domain/
