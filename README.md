@@ -208,7 +208,7 @@ to have an invalid type when only valid instances of T are available.
 A consequence of Rule 3 being applied is an increase in the number of strings or alternative representations
 that will pattern match.
 
-##### Rule 4 - Maximum Loss Free Information Conversion
+##### Rule 4 - Maximum Loss-Free Information Conversion
 
 This rule has two parts related to the information taken when matching. The first part tells us to use all the
 information we consume. The second part is a directive to consume as much information as possible. These two aspects
@@ -287,6 +287,7 @@ However the full information utilisation rule forbids matching `1122334499` beca
 the unconstrained octet so this is more information than can be used.
 
 ### Implicit Conversions
+Deprecation: Implicit conversions are being removed.
 
 #### Between domain types
 
@@ -340,3 +341,5 @@ The notation [m, n] denotes the inclusive range m <= x <= n. For example [0, 655
 - [ ] Payment: PAN
 - [ ] Payment: CVV
 - [ ] Payment: Expiry date
+- [ ] Banking: Swift Code
+- [ ] Banking: IBAN
