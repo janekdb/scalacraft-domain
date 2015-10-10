@@ -177,8 +177,9 @@ representations) onto the set of all possible domain type instances.
 
 ##### Rule 2 - Instance For All Alternative Representations
 
-This rule complements Rule 1: There is no alternative representation including any string representation
-that will pattern match to a list of values that cannot be used as constructor args.
+This rule complements Rule 1: Every alternative representation that pattern matches produces a list of values that can
+be used as constructor args. For example if string `s` matches to `Example(a, b, c)` then `Example(a, b, c)` produces
+an instance of `Example`.
 
 Rule 1 allows that two strings could be equivalent to the same value of a type, while Rule 2 precludes the
 possibility of extracting values from a representation that do not equate to a possible instance.
