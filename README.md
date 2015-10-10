@@ -162,18 +162,22 @@ utility will be enhanced.
 Terminology. In the following rules an alternative representation is a value of some type which is pattern
 matched to. Often this will be string but other types maybe fulfil this role.
 
-##### Rule 1 - Instances Have Alternative Representations
+##### Deprecated: Rule 1 - Instances Have Alternative Representations
 
-Every instance of the type obtained by direct constructor use must have at least one alternative
-representation that will pattern match to the same constructor args.
+This rule proved impractical to comply with. As an example of an instance for which the is no desirable alternative
+representation take `OctetPair(Some(Octet(0x11)), None)`. For a fully specified `OctetPair` we have a simple representation
+`abcd` but at the point optionally enters the picture this is no longer sufficient.
 
-Note: This rule led to the requirement for null constructor args to be rejected. If nulls were accepted then
+~~Every instance of the type obtained by direct constructor use must have at least one alternative
+representation that will pattern match to the same constructor args.~~
+
+~~Note: This rule led to the requirement for null constructor args to be rejected. If nulls were accepted then
 it would be necessary under this rule to extract nulls from alternative representations. It would have been
 possible to have a private constructor restricting object creation to the companion object. This was rejected
-because the it would result in this pattern of use: `MyUnconstrained.opt(nonNull).get`.
+because the it would result in this pattern of use: `MyUnconstrained.opt(nonNull).get`.~~
 
-In mathematical parlance this defines a function from a subset of all possible strings (or alternative
-representations) onto the set of all possible domain type instances.
+~~In mathematical parlance this defines a function from a subset of all possible strings (or alternative
+representations) onto the set of all possible domain type instances.~~
 
 ##### Rule 2 - Instance For All Alternative Representations
 
