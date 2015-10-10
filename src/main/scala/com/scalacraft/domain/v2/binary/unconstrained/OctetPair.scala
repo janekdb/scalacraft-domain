@@ -215,8 +215,6 @@ object OctetPair {
     val FiveOctets = FourOctets * HiOctetMultiplier + FourOctets
   }
 
-  private val range = Min.FiveOctets to Max.FiveOctets
-
   /**
    * The numeric value of an octet is `hi*256 + lo`. Following a principle that requires the
    * unconstrained types to use as much information as possible without losing any information
