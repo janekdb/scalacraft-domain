@@ -423,16 +423,99 @@ class IP6AddressSpec extends FlatSpec with Matchers {
 
     IP6Address.opt("0:0:0:0:0:b").value should have(
       'representation(Some("0:0:0:0:0:b")))
-
-    fail("TODO: Add other case specific to unconstrained")
   }
 
   it should "convert to a string representation when some octet pairs are greater than the constrained maximum size" in {
-    fail("TODO")
+
+    /* No zero run */
+    IP6Address.opt("0001:0023:0356:489f:0505:00:7001:FFEAb").value should have(
+      'representation(Some("1:23:356:489f:505:0:7001:ffeab")))
+
+    IP6Address.opt("ff00B").value should have(
+      'representation(Some("ff00b")))
+
+    val longInput = (10100 to 10190) map ("0" + _) mkString ":"
+    val longExpected = (10100 to 10190) map (_.toString) mkString ":"
+    IP6Address.opt(longInput).value should have(
+      'representation(Some(longExpected)))
+
+    /* Left zero run */
+    IP6Address.opt("0:0:0:0:1:2:3:12345").value should have(
+      'representation(Some("::1:2:3:12345")))
+
+    /* Right zero run */
+    IP6Address.opt("12345:2:3:4:0:0:0:0").value should have(
+      'representation(Some("12345:2:3:4::")))
+
+    /* Internal zero run */
+    IP6Address.opt("77222:0:0:0:0:1:2:3").value should have(
+      'representation(Some("77222::1:2:3")))
+
+    /* Longest run is abbreviated with leftmost longest run winning */
+
+    /* Left, right, internal, no ties */
+    IP6Address.opt("0:0:30222:4:0:0:0:0").value should have(
+      'representation(Some("0:0:30222:4::")))
+
+    /* Ties */
+
+    /* Two twos */
+    IP6Address.opt("0:0:a:b:0:0:c1234:d").value should have(
+      'representation(Some("::a:b:0:0:c1234:d")))
+
+    /* Two threes, right */
+    IP6Address.opt("1002a:0:0:0:b00ff:0:0:0").value should have(
+      'representation(Some("1002a::b00ff:0:0:0")))
+
+    /* Other cases */
+
+    /* More than eight octet pairs with zero runs should not have any abbreviations */
+
+    IP6Address.opt("0:0:0:0:0:b9876:0:0:0").value should have(
+      'representation(Some("0:0:0:0:0:b9876:0:0:0")))
+
+    /* Less than eight octet pairs with zero runs should not have any abbreviations */
+
+    IP6Address.opt("0:0:0:0:0:b77aa").value should have(
+      'representation(Some("0:0:0:0:0:b77aa")))
   }
 
   it should "convert to a string representation when some octet pairs are negative" in {
-    fail("TODO")
+
+    /* No zero run */
+    IP6Address.opt("0001:-0023:0356:489f:0505:00:7001:-FFEAb").value should have(
+      'representation(Some("1:-23:356:489f:505:0:7001:-ffeab")))
+
+    IP6Address.opt("-ff00B").value should have(
+      'representation(Some("-ff00b")))
+
+    val longInput = (10100 to 10190) map ("-0" + _) mkString ":"
+    val longExpected = (-10100 to -10190 by -1) map (_.toString) mkString ":"
+    IP6Address.opt(longInput).value should have(
+      'representation(Some(longExpected)))
+
+    /* Left zero run */
+    IP6Address.opt("0:0:0:0:1:2:-3:-12345").value should have(
+      'representation(Some("::1:2:-3:-12345")))
+
+    /* Longest run is abbreviated with leftmost longest run winning */
+
+    /* Left, right, internal, no ties */
+    IP6Address.opt("0:0:30222:-4:0:0:0:0").value should have(
+      'representation(Some("0:0:30222:-4::")))
+
+    /* Ties */
+
+    /* Two twos */
+    IP6Address.opt("0:0:-a:-b:0:0:-c1234:-d").value should have(
+      'representation(Some("::-a:-b:0:0:-c1234:-d")))
+
+    /* Other cases */
+
+    /* More than eight octet pairs with zero runs should not have any abbreviations */
+
+    IP6Address.opt("0:0:0:0:0:-b9876:0:0:0").value should have(
+      'representation(Some("0:0:0:0:0:-b9876:0:0:0")))
   }
 
   it should "not convert to a string representation when unrepresentable elements are present" in {

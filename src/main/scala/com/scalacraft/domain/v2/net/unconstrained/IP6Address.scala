@@ -17,7 +17,7 @@ package com.scalacraft.domain.v2.net.unconstrained
 
 import com.scalacraft.domain.v2.binary.{OctetPair => ConstrainedOctetPair}
 import com.scalacraft.domain.v2.binary.unconstrained.{Octet, OctetPair}
-import com.scalacraft.domain.v2.internal.{Information, RejectNullConstructorArgument}
+import com.scalacraft.domain.v2.internal.{Information, IP6AddressRepresentation, RejectNullConstructorArgument}
 import com.scalacraft.domain.v2.net.{IP6Address => Constrained}
 
 /**
@@ -46,39 +46,35 @@ case class IP6Address(
       yield ip6Address
   }
 
-  //  /**
-  //   * Provide a string representation of this ip6 address in RFC5952 recommended form.
-  //   * - colon separator
-  //   * - lowercase hexadecimal digits
-  //   * - no leading zero digits
-  //   * - leftmost longest sequence of two or more zero groups abbreviated with double colon
-  //   * @example 0:10:20:::dd01:3
-  //   * @return A string representation using a colon separator, lowercase hexadecimal digits without leading
-  //   */
-  def representation: Option[String] = IP6Address.representation(this)
+    /**
+     * Provide a string representation of this unconstrained ip6 address based on RFC5952 recommended form.
+     * - colon separator
+     * - lowercase hexadecimal digits
+     * - minus signs where needed
+     * - no leading zero digits
+     * - leftmost longest sequence of two or more zero groups abbreviated with double colon when eight fields
+     *
+     * The zero group abbreviation is restricted to the case when there are eight fields to ensure the value is preserved when
+     * the abbreviation is expanded. For example if the unconstrained value was `0:0:0:5` then an representation of `::5` would
+     * expand to `0:0:0:0:0:0:0:5` which is not the same value.
+     *
+     * @example 0:10:20::dd01:3
+     * @example 0:0:0:-1:-2:dd01:3
+     * @return A string representation using a colon separator, lowercase hexadecimal digits without leading zeroes when possible
+     */
+  def representation: Option[String] = IP6Address.representation(this.octetPairs)
 }
 
 object IP6Address {
 
-  // List(OctetPair(Some(Octet(Some(0))),Some(Octet(Some(1)))), OctetPair(Some(Octet(Some(0))),Some(Octet(Some(35)))), OctetPair(Some(Octet(Some(3))),Some(Octet(Some(86)))), OctetPair(Some(Octet(Some(72))),Some(Octet(Some(159)))), OctetPair(Some(Octet(Some(5))),Some(Octet(Some(5)))), OctetPair(Some(Octet(Some(0))),Some(Octet(Some(0)))), OctetPair(Some(Octet(Some(112))),Some(Octet(Some(1)))), OctetPair(Some(Octet(Some(255))),Some(Octet(Some(234))))))
   // TODO: Move this detail back into OctetPair
   private val HiOctetMultiplier = BigInt(0x100)
 
-  // Complex - must handle None in OctectPairs - IP6Address.representation(this)
-  private def representation(ip6Address: IP6Address): Option[String] = {
-
-    ip6Address.constrained.map(_.representation) orElse (representation(ip6Address.octetPairs))
-
-  }
-
-//  private val formatRepresentableOctetPair: OctetPair => String = {
-//    case OctetPair(Some(Octet(Some(hi))), Some(Octet(Some(lo)))) =>
-//      (BigInt(hi) * HiOctetMultiplier + BigInt(lo)).formatted("%x")
-//  }
+  private val representationReducers: Map[Int, List[String] => String] = Map(
+    8 -> IP6AddressRepresentation.representation _
+  ) withDefaultValue (_ mkString GroupSeparator)
 
   private def representation(octetPairs: List[OctetPair]): Option[String] = {
-//    val s = formatRepresentableOctetPair
-    //    Some(octetPairs.map(s) mkString GroupSeparator)
     for {
       ops <- Option(octetPairs)
       reps = ops.collect {
@@ -87,7 +83,7 @@ object IP6Address {
       }
       if reps.size == ops.size
     } yield {
-      reps mkString GroupSeparator
+      representationReducers(reps.size)(reps)
     }
   }
 
