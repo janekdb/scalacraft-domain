@@ -17,6 +17,7 @@ package com.scalacraft.domain.v2.net
 
 import com.scalacraft.domain.v2.binary.OctetPair
 import com.scalacraft.domain.v2.internal.Information
+import com.scalacraft.domain.v2.internal.IP6AddressRepresentation
 import com.scalacraft.domain.v2.net.unconstrained.{IP6Address => Unconstrained}
 
 /**
@@ -69,8 +70,8 @@ case class IP6Address private(
    * - lowercase hexadecimal digits
    * - no leading zero digits
    * - leftmost longest sequence of two or more zero groups abbreviated with double colon
-   * @example 0:10:20:::dd01:3
-   * @return A string representation using a colon separator, lowercase hexadecimal digits without leading
+   * @example 0:10:20::dd01:3
+   * @return A string representation using a colon separator, lowercase hexadecimal digits without leading zeroes
    */
   def representation: String = IP6Address.representation(this)
 
@@ -87,76 +88,7 @@ object IP6Address {
 
     val s = (op: OctetPair) => OctetPair.`to-Int`(op).formatted("%x")
 
-    val runs = groupZeroes(ip6Address.fields, Nil)
-
-    /* Convert all zero runs back to full runs except for the leftmost longest run */
-
-    val maxRunLength = runs.map { case Repeated(_, n) => n }.max
-
-    val maximumLengthRun = Repeated(zero, maxRunLength)
-
-    val leftmostLongestRun = runs indexOf maximumLengthRun
-
-    /**
-     * The winner is the group that is the leftmost of the longest groups of zeroes.
-     * Isolate the winner to first group.
-     * For the cases when there is no winner or the winner is the head of the list the corresponding indcies are
-     * 0 or 1 and in both case the winner will not be in the second group.
-     */
-    val (winnerGroup, loserGroup) = runs splitAt (leftmostLongestRun + 1)
-
-    val unrollAll: PartialFunction[Repeated, List[Repeated]] = {
-      case Repeated(op, n) => List.fill(n)(Repeated(op, 1))
-    }
-
-    val preserveLongest: PartialFunction[Repeated, List[Repeated]] = {
-      case a@`maximumLengthRun` => a :: Nil
-    }
-
-    /* Convert all zero groups other than the first longest to a full run */
-
-    val left: List[Repeated] = winnerGroup flatMap (preserveLongest orElse unrollAll)
-
-    val right: List[Repeated] = loserGroup flatMap unrollAll
-
-    val unrolledRuns = left ++ right
-
-    /**
-     * Create the representation without resorting to postprocessing.
-     *
-     * Split into groups of three to provide context.
-     * For each group examine the middle octetpair run.
-     * map to one of: "", ":", hexadecimal number.
-     * It is then enough to use mkString ":" to complete the representation.
-     */
-    val contexts = ((Sentinel :: (unrolledRuns :+ Sentinel)) sliding 3).toList
-
-    val reps: List[String] = contexts map {
-      case Sentinel :: Repeated(`zero`, _) :: Sentinel :: Nil => "::"
-      case Sentinel :: Repeated(`zero`, n) :: _ if n > 1 => ":"
-      case _ :: Repeated(`zero`, n) :: Sentinel :: Nil if n > 1 => ":"
-      case _ :: Repeated(`zero`, n) :: _ if n > 1 => ""
-      case _ :: Repeated(x, 1) :: _ => s(x)
-    }
-
-    reps mkString IP6Address.GroupSeparator
-  }
-
-  /**
-   * Replace runs of zeroes with an single object counting the number of zeros in the run.
-   * @param fields The fields to accumulate into the runs
-   * @return A list containing one item per contiguous group of zeroes and one item for each non-zero
-   *         octet pair
-   */
-  private def groupZeroes(fields: List[OctetPair], acc: List[Repeated]): List[Repeated] = {
-    fields match {
-      case Nil => acc.reverse
-      case `zero` :: rest => acc match {
-        case Repeated(`zero`, n) :: accRest => groupZeroes(rest, Repeated(zero, n + 1) :: accRest)
-        case _ => groupZeroes(rest, Repeated(zero, 1) :: acc)
-      }
-      case f :: fs => groupZeroes(fs, Repeated(f, 1) :: acc)
-    }
+    IP6AddressRepresentation.representation(ip6Address.fields map s)
   }
 
   def opt(
