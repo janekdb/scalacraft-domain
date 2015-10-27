@@ -16,7 +16,7 @@
 package com.scalacraft.domain.v2.net.unconstrained
 
 import com.scalacraft.domain.v2.binary.{OctetPair => ConstrainedOctetPair}
-import com.scalacraft.domain.v2.binary.unconstrained.OctetPair
+import com.scalacraft.domain.v2.binary.unconstrained.{Octet, OctetPair}
 import com.scalacraft.domain.v2.internal.{Information, RejectNullConstructorArgument}
 import com.scalacraft.domain.v2.net.{IP6Address => Constrained}
 
@@ -46,9 +46,50 @@ case class IP6Address(
       yield ip6Address
   }
 
+  //  /**
+  //   * Provide a string representation of this ip6 address in RFC5952 recommended form.
+  //   * - colon separator
+  //   * - lowercase hexadecimal digits
+  //   * - no leading zero digits
+  //   * - leftmost longest sequence of two or more zero groups abbreviated with double colon
+  //   * @example 0:10:20:::dd01:3
+  //   * @return A string representation using a colon separator, lowercase hexadecimal digits without leading
+  //   */
+  def representation: Option[String] = IP6Address.representation(this)
 }
 
 object IP6Address {
+
+  // List(OctetPair(Some(Octet(Some(0))),Some(Octet(Some(1)))), OctetPair(Some(Octet(Some(0))),Some(Octet(Some(35)))), OctetPair(Some(Octet(Some(3))),Some(Octet(Some(86)))), OctetPair(Some(Octet(Some(72))),Some(Octet(Some(159)))), OctetPair(Some(Octet(Some(5))),Some(Octet(Some(5)))), OctetPair(Some(Octet(Some(0))),Some(Octet(Some(0)))), OctetPair(Some(Octet(Some(112))),Some(Octet(Some(1)))), OctetPair(Some(Octet(Some(255))),Some(Octet(Some(234))))))
+  // TODO: Move this detail back into OctetPair
+  private val HiOctetMultiplier = BigInt(0x100)
+
+  // Complex - must handle None in OctectPairs - IP6Address.representation(this)
+  private def representation(ip6Address: IP6Address): Option[String] = {
+
+    ip6Address.constrained.map(_.representation) orElse (representation(ip6Address.octetPairs))
+
+  }
+
+//  private val formatRepresentableOctetPair: OctetPair => String = {
+//    case OctetPair(Some(Octet(Some(hi))), Some(Octet(Some(lo)))) =>
+//      (BigInt(hi) * HiOctetMultiplier + BigInt(lo)).formatted("%x")
+//  }
+
+  private def representation(octetPairs: List[OctetPair]): Option[String] = {
+//    val s = formatRepresentableOctetPair
+    //    Some(octetPairs.map(s) mkString GroupSeparator)
+    for {
+      ops <- Option(octetPairs)
+      reps = ops.collect {
+        case OctetPair(Some(Octet(Some(hi))), Some(Octet(Some(lo)))) =>
+          (BigInt(hi) * HiOctetMultiplier + BigInt(lo)).formatted("%x")
+      }
+      if reps.size == ops.size
+    } yield {
+      reps mkString GroupSeparator
+    }
+  }
 
   def opt(x: String): Option[IP6Address] = {
     val allTokens: Option[List[Token]] = x match {
@@ -168,5 +209,5 @@ object IP6Address {
 
   case class D(digits: String) extends Token
 
-//  private val GroupSeparator = ":"
+  private val GroupSeparator = ":"
 }

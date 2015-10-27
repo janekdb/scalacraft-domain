@@ -304,6 +304,160 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     m("::8:7:6:5::4:3:2:1:8:6::") should be(None)
   }
 
+  /* Explicit Conversions */
+
+  it should "convert to a string representation" in {
+
+    /* No zero run */
+    IP6Address.opt("0001:0023:0356:489f:0505:00:7001:FFEA").value should have(
+      'representation(Some("1:23:356:489f:505:0:7001:ffea")))
+
+    IP6Address.opt("f00B").value should have(
+      'representation(Some("f00b")))
+    IP6Address.opt("2").value should have(
+      'representation(Some("2")))
+
+    IP6Address.opt("ACE7:f00B").value should have(
+      'representation(Some("ace7:f00b")))
+    IP6Address.opt("a:3").value should have(
+      'representation(Some("a:3")))
+
+    IP6Address.opt("0001:0023:0356:489f:0505:6660:7001:8321:9").value should have(
+      'representation(Some("1:23:356:489f:505:6660:7001:8321:9")))
+
+    val longInput = (1 to 90) map ("0" + _) mkString ":"
+    val longExpected = (1 to 90) map (_.toString) mkString ":"
+    IP6Address.opt(longInput).value should have(
+      'representation(Some(longExpected)))
+
+    /* Left zero run */
+    IP6Address.opt("0:0:0:0:1:2:3:4").value should have(
+      'representation(Some("::1:2:3:4")))
+
+    /* Right zero run */
+    IP6Address.opt("1:2:3:4:0:0:0:0").value should have(
+      'representation(Some("1:2:3:4::")))
+
+    /* Internal zero run */
+    IP6Address.opt("7:0:0:0:0:1:2:3").value should have(
+      'representation(Some("7::1:2:3")))
+
+    IP6Address.opt("::").value should have(
+      'representation(Some("::")))
+
+    /* Single zeroes should not be abbreviated */
+
+    /* Internal */
+    IP6Address.opt("7:8:9:a:0:1:2:3").value should have(
+      'representation(Some("7:8:9:a:0:1:2:3")))
+
+    /* Left */
+    IP6Address.opt("0:1:2:3:4:5:6:7").value should have(
+      'representation(Some("0:1:2:3:4:5:6:7")))
+
+    /* Right */
+    IP6Address.opt("ff77:1:2:3:4:5:6:0").value should have(
+      'representation(Some("ff77:1:2:3:4:5:6:0")))
+
+    IP6Address.opt("::fedc").value should have(
+      'representation(Some("::fedc")))
+
+    IP6Address.opt("abc8::").value should have(
+      'representation(Some("abc8::")))
+
+    /* Longest run is abbreviated with leftmost longest run winning */
+
+    /* Left, right, internal, no ties */
+    IP6Address.opt("0:0:3:4:0:0:0:0").value should have(
+      'representation(Some("0:0:3:4::")))
+
+    IP6Address.opt("0:0:0:0:5:6:0:0").value should have(
+      'representation(Some("::5:6:0:0")))
+
+    /* Internal left */
+    IP6Address.opt("1:0:0:0:5:0:0:8").value should have(
+      'representation(Some("1::5:0:0:8")))
+
+    /* Internal right */
+    IP6Address.opt("1:0:0:4:0:0:0:8").value should have(
+      'representation(Some("1:0:0:4::8")))
+
+    /* Ties */
+
+    /* Two twos */
+    IP6Address.opt("0:0:a:b:0:0:c:d").value should have(
+      'representation(Some("::a:b:0:0:c:d")))
+
+    /* Three twos */
+    IP6Address.opt("0:0:a:0:0:c:0:0").value should have(
+      'representation(Some("::a:0:0:c:0:0")))
+
+    /* Two threes, left */
+    IP6Address.opt("0:0:0:b:0:0:0:c").value should have(
+      'representation(Some("::b:0:0:0:c")))
+
+    /* Two threes, right */
+    IP6Address.opt("a:0:0:0:b:0:0:0").value should have(
+      'representation(Some("a::b:0:0:0")))
+
+    /* Other cases */
+
+    IP6Address.opt("0:0:0:0:b:0:0:0").value should have(
+      'representation(Some("::b:0:0:0")))
+
+    IP6Address.opt("0:0:0:feef:0:0:0:0").value should have(
+      'representation(Some("0:0:0:feef::")))
+
+    /* More than eight octet pairs with zero runs should not have any abbreviations */
+
+    IP6Address.opt("0:0:0:0:0:0:0:0:0").value should have(
+      'representation(Some("0:0:0:0:0:0:0:0:0")))
+
+    IP6Address.opt("0:0:0:0:0:b:0:0:0").value should have(
+      'representation(Some("0:0:0:0:0:b:0:0:0")))
+
+    /* Less than eight octet pairs with zero runs should not have any abbreviations */
+
+    IP6Address.opt("0:0:0:0:0:0").value should have(
+      'representation(Some("0:0:0:0:0:0")))
+
+    IP6Address.opt("0:0:0:0:0:b").value should have(
+      'representation(Some("0:0:0:0:0:b")))
+
+    fail("TODO: Add other case specific to unconstrained")
+  }
+
+  it should "convert to a string representation when some octet pairs are greater than the constrained maximum size" in {
+    fail("TODO")
+  }
+
+  it should "convert to a string representation when some octet pairs are negative" in {
+    fail("TODO")
+  }
+
+  it should "not convert to a string representation when unrepresentable elements are present" in {
+    val validOctet = Octet(0x62)
+    val invalidOctet = Octet(None)
+    val validOctetPair = op(0xcefa)
+
+    /* Octet pairs that have no representation */
+    val hiNone = new OctetPair(None, Some(validOctet))
+    val loNone = new OctetPair(Some(validOctet), None)
+    val bothNone = new OctetPair(None, None)
+    val hiOctetInvalid = new OctetPair(Some(invalidOctet), Some(validOctet))
+    val loOctetInvalid = new OctetPair(Some(validOctet), Some(invalidOctet))
+    val bothOctetInvalid = new OctetPair(Some(invalidOctet), Some(invalidOctet))
+
+    val unrepresentables: List[OctetPair] =
+      hiNone :: loNone :: bothNone :: hiOctetInvalid :: loOctetInvalid :: bothOctetInvalid :: Nil
+
+    unrepresentables foreach {
+      op =>
+        IP6Address(op :: Nil).representation should be(None)
+        IP6Address(validOctetPair :: op :: Nil).representation should be(None)
+        IP6Address(op :: validOctetPair :: Nil).representation should be(None)
+    }
+  }
 
   it should "convert a convertible unconstrained IP6Address to a constrained IP6Address" in {
     val unconstrained = IP6Address.opt("f00d:ca73::119").value
