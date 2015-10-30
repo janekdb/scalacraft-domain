@@ -81,6 +81,8 @@ case class IP6Address private(
 
 object IP6Address {
 
+  import IP6AddressRepresentation.RequiredGroupCount
+
   private case class Repeated(octetPair: OctetPair, repeatCount: Int)
 
   private object Sentinel
@@ -169,8 +171,6 @@ object IP6Address {
   private def countAbbreviations(tokens: Seq[Token]) = tokens.count(_ == AB)
 
   private val Some(zero) = OctetPair.opt(0)
-
-  private val RequiredGroupCount = 8
 
   private def countDigitGroups(tokens: Seq[Token]) =
     tokens.count {

@@ -22,6 +22,8 @@ import scala.util.matching.Regex
  */
 object IP6AddressRepresentation {
 
+  val RequiredGroupCount = 8
+
   private val Zero = "0"
 
   private case class Repeated(field: String, repeatCount: Int)

@@ -68,11 +68,13 @@ case class IP6Address(
 
 object IP6Address {
 
+  import IP6AddressRepresentation.RequiredGroupCount
+
   // TODO: Move this detail back into OctetPair
   private val HiOctetMultiplier = BigInt(0x100)
 
   private val representationReducers: Map[Int, List[String] => String] = Map(
-    8 -> IP6AddressRepresentation.representation _
+    RequiredGroupCount -> IP6AddressRepresentation.representation _
   ) withDefaultValue (IP6AddressRepresentation.representationWithoutAbbreviation _)
 
   private def representation(octetPairs: List[OctetPair]): Option[String] = {
@@ -145,16 +147,12 @@ object IP6Address {
 
   private val zero = OctetPair.opt(0)
 
-  // TODO: Refactor with constrained version
-  private val RequiredGroupCount = 8
-
   private def countOctetPairs(tokens: Seq[Any]) =
     tokens.count {
       case Some(_: OctetPair) => true
       case _ => false
     }
 
-  // TODO: Refactor with constrained version
   /**
    * @param digitsCount The number of digits group present
    * @return A list of D(0), S, ... sufficiently long to ensure a list of 8 digit groups when
