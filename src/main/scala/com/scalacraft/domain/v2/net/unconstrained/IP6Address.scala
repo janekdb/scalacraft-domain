@@ -72,7 +72,7 @@ object IP6Address {
 
   private val representationReducers: Map[Int, List[String] => String] = Map(
     8 -> IP6AddressRepresentation.representation _
-  ) withDefaultValue (_ mkString GroupSeparator)
+  ) withDefaultValue (IP6AddressRepresentation.representationWithoutAbbreviation _)
 
   private def representation(octetPairs: List[OctetPair]): Option[String] = {
     for {
@@ -204,6 +204,4 @@ object IP6Address {
   case object AB extends Token
 
   case class D(digits: String) extends Token
-
-  private val GroupSeparator = ":"
 }

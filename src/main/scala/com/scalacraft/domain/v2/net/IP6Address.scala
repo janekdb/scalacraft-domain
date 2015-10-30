@@ -210,6 +210,4 @@ object IP6Address {
   case object AB extends Token
 
   case class D(digits: String) extends Token
-
-  private val GroupSeparator = ":"
 }

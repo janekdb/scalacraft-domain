@@ -100,6 +100,7 @@ object IP6AddressRepresentation {
     }
   }
 
-  // TODO: Eliminate all other definitions of the group separator
+  def representationWithoutAbbreviation(fields: List[String]): String = fields mkString GroupSeparator
+
   private val GroupSeparator = ":"
 }
