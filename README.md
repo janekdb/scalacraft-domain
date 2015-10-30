@@ -52,7 +52,8 @@ CountryCodeNumeric | Numeric Country Codes | 732
 Class | Purpose | Example
 ---- | ---- | ----
 Port | Port numbers | 8080
-IPAddress | IP addresses | 192.162.0.83
+IP4Address | IP4 addresses | 192.162.0.83
+IP6Address | IP6 addresses | ::1
 DomainName | DNS names | scalacraft.com
 
 ### Maven
@@ -336,7 +337,7 @@ The notation [m, n] denotes the inclusive range m <= x <= n. For example [0, 655
 - [x] Country: Add ISO country codes for numeric
 - [x] Net: Add domain name
 - [x] Net: Add ip4 address
-- [ ] Net: Add ip6 address
+- [x] Net: Add ip6 address
 - [x] Net: Add port
 - [ ] Payment: PAN
 - [ ] Payment: CVV
