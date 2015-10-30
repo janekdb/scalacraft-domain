@@ -74,8 +74,9 @@ object IP6Address {
   private val HiOctetMultiplier = BigInt(0x100)
 
   private val representationReducers: Map[Int, List[String] => String] = Map(
+    /* Allow zero group abbreviation when later expansion would result in the same value. */
     RequiredGroupCount -> IP6AddressRepresentation.representation _
-  ) withDefaultValue (IP6AddressRepresentation.representationWithoutAbbreviation _)
+  ) withDefaultValue IP6AddressRepresentation.representationWithoutAbbreviation _
 
   private def representation(octetPairs: List[OctetPair]): Option[String] = {
     for {

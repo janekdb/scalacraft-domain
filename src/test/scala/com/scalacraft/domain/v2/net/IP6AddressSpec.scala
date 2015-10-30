@@ -103,17 +103,6 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     //    val NonNumeric = "a.b.c.d"
   }
 
-  private object InvalidStrings {
-    val FiveDigits = "0:0:0:0:0:0:12345:0"
-    val Negative = "0:0:0:0:0:0:-99aa:0"
-    val TwoZeroGroupAbbreviations = "1::1::"
-    val TrailingDot = "1:2:3:4:5:6:7:8."
-    val NonNumeric = "1k:2:3:4:5:6:7:8"
-    val FourGroups = "1:22:333:4444"
-    val InvalidSeparator = "1::0;1"
-    val NonHexadecimalCharacters = "0::t"
-  }
-
   it should "be constructed from a valid full string representation" in {
     IP6Address.opt(ValidStrings.AllZeros).value should have(
       'field1(zero),
@@ -241,6 +230,17 @@ class IP6AddressSpec extends FlatSpec with Matchers {
       'field7(six),
       'field8(seven)
     )
+  }
+
+  private object InvalidStrings {
+    val FiveDigits = "0:0:0:0:0:0:12345:0"
+    val Negative = "0:0:0:0:0:0:-99aa:0"
+    val TwoZeroGroupAbbreviations = "1::1::"
+    val TrailingDot = "1:2:3:4:5:6:7:8."
+    val NonNumeric = "1k:2:3:4:5:6:7:8"
+    val FourGroups = "1:22:333:4444"
+    val InvalidSeparator = "1::0;1"
+    val NonHexadecimalCharacters = "0::t"
   }
 
   it should "not be constructed when groups missing and multiple abbreviations" in {
@@ -431,5 +431,4 @@ class IP6AddressSpec extends FlatSpec with Matchers {
       UnconstrainedOctet(hi),
       UnconstrainedOctet(lo)
     )
-
 }

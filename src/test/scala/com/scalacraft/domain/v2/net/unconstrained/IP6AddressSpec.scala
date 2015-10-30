@@ -71,8 +71,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
 
   it should "be constructed from valid inputs" in {
     val ip6 = IP6Address(zero :: one :: two :: Nil)
-    // TODO: Use representation when available
-    ip6.octetPairs.map(OctetPair.`to-String`).map(_.get) mkString ":" should be("0000:0001:0002")
+    ip6.representation.value should be("0:1:2")
   }
 
   /* Construction from a string */
@@ -224,13 +223,6 @@ class IP6AddressSpec extends FlatSpec with Matchers {
 
   /* Pattern Matching */
 
-  //  IP6Address has less enforcement in it's constructor than IP4Address
-  //  and the extractor should follow this. As an API law for IP4 we have
-  //  For each IP4Address the string repr should be matched to. Clearly the
-  //  reverse relationship holds because the match results in an instance of
-  //  IP6Address. If IP6Address can be constructed from null, empty and any
-  //  non-empty string then the extractor should do the same.
-
   it should "be usable in string pattern matching" in {
     def m(x: String) = x match {
       case IP6Address(octetPairs) => octetPairs
@@ -238,6 +230,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     }
     val eightZeroes = List.fill(8)(zero)
 
+    m(null) should be(None)
     m("") should be(None)
     m("f") should be(op(0x0, 0xf) :: Nil)
     /* Case insensitive */
@@ -577,6 +570,4 @@ class IP6AddressSpec extends FlatSpec with Matchers {
   private def op(v: Int): OctetPair = OctetPair(Octet(v / 0x100), Octet(v % 0x100))
 
   private def constrainedOctetPair(v: Int): ConstrainedOctetPair = ConstrainedOctetPair.opt(v).value
-
-
 }

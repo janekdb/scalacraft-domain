@@ -85,7 +85,7 @@ object IP6Address {
 
   private def representation(ip6Address: IP6Address): String = {
 
-    val s = (op: OctetPair) => OctetPair.`to-Int`(op).formatted("%x")
+    val s = (op: OctetPair) => OctetPair.`to-Int`(op) formatted "%x"
 
     IP6AddressRepresentation.representation(ip6Address.fields map s)
   }
