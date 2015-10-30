@@ -18,6 +18,7 @@ package com.scalacraft.domain.v2.net.unconstrained
 import com.scalacraft.domain.v2.binary.{OctetPair => ConstrainedOctetPair}
 import com.scalacraft.domain.v2.binary.unconstrained.{Octet, OctetPair}
 import com.scalacraft.domain.v2.internal.{Information, IP6AddressRepresentation, RejectNullConstructorArgument}
+import com.scalacraft.domain.v2.internal.IP6AddressRepresentation.{Token, S, AB, D}
 import com.scalacraft.domain.v2.net.{IP6Address => Constrained}
 
 /**
@@ -46,22 +47,22 @@ case class IP6Address(
       yield ip6Address
   }
 
-    /**
-     * Provide a string representation of this unconstrained ip6 address based on RFC5952 recommended form.
-     * - colon separator
-     * - lowercase hexadecimal digits
-     * - minus signs where needed
-     * - no leading zero digits
-     * - leftmost longest sequence of two or more zero groups abbreviated with double colon when eight fields
-     *
-     * The zero group abbreviation is restricted to the case when there are eight fields to ensure the value is preserved when
-     * the abbreviation is expanded. For example if the unconstrained value was `0:0:0:5` then an representation of `::5` would
-     * expand to `0:0:0:0:0:0:0:5` which is not the same value.
-     *
-     * @example 0:10:20::dd01:3
-     * @example 0:0:0:-1:-2:dd01:3
-     * @return A string representation using a colon separator, lowercase hexadecimal digits without leading zeroes when possible
-     */
+  /**
+   * Provide a string representation of this unconstrained ip6 address based on RFC5952 recommended form.
+   * - colon separator
+   * - lowercase hexadecimal digits
+   * - minus signs where needed
+   * - no leading zero digits
+   * - leftmost longest sequence of two or more zero groups abbreviated with double colon when eight fields
+   *
+   * The zero group abbreviation is restricted to the case when there are eight fields to ensure the value is preserved when
+   * the abbreviation is expanded. For example if the unconstrained value was `0:0:0:5` then an representation of `::5` would
+   * expand to `0:0:0:0:0:0:0:5` which is not the same value.
+   *
+   * @example 0:10:20::dd01:3
+   * @example 0:0:0:-1:-2:dd01:3
+   * @return A string representation using a colon separator, lowercase hexadecimal digits without leading zeroes when possible
+   */
   def representation: Option[String] = IP6Address.representation(this.octetPairs)
 }
 
@@ -87,10 +88,14 @@ object IP6Address {
     }
   }
 
+  private val tokenParser = new IP6AddressRepresentation.TokenParser {
+    val Digits = "(-?[0-9a-f]++)(.*)".r
+  }
+
   def opt(x: String): Option[IP6Address] = {
     val allTokens: Option[List[Token]] = x match {
       case Information.Zero() => None
-      case _ => parseTokens(x.toLowerCase, Nil)
+      case _ => tokenParser.parseTokens(x.toLowerCase, Nil)
     }
     opt(allTokens)
   }
@@ -174,34 +179,4 @@ object IP6Address {
 
   def unapply(candidate: String): Option[List[OctetPair]] = opt(candidate) map (_.octetPairs)
 
-  // TODO: Refactor parsing with constrained version
-  private def parseTokens(x: String, acc: List[Token]): Option[List[Token]] =
-    nextToken(x) match {
-      case (Some(token), rest) => parseTokens(rest, token :: acc)
-      case (None, rest) if rest.isEmpty => Some(acc)
-      case (None, _) => None
-    }
-
-  private val ColonColon = "::(.*)".r
-  private val Colon = ":(.*)".r
-  private val Digits = "(-?[0-9a-f]++)(.*)".r
-
-  private def nextToken(x: String): (Option[Token], String) = {
-    x match {
-      case ColonColon(rest) => (Some(AB), rest)
-      case Colon(rest) => (Some(S), rest)
-      case Digits(digits, rest) => (Some(D(digits)), rest)
-      case _ => (None, x)
-    }
-  }
-
-  sealed trait Token
-
-  /* The colon separator between octet pairs */
-  case object S extends Token
-
-  /* The abbreviation used to represent a group of zero or more zeroes */
-  case object AB extends Token
-
-  case class D(digits: String) extends Token
 }

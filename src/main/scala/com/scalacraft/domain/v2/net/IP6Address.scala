@@ -18,6 +18,7 @@ package com.scalacraft.domain.v2.net
 import com.scalacraft.domain.v2.binary.OctetPair
 import com.scalacraft.domain.v2.internal.Information
 import com.scalacraft.domain.v2.internal.IP6AddressRepresentation
+import com.scalacraft.domain.v2.internal.IP6AddressRepresentation.{Token, S, AB, D}
 import com.scalacraft.domain.v2.net.unconstrained.{IP6Address => Unconstrained}
 
 /**
@@ -103,10 +104,14 @@ object IP6Address {
            ): Option[IP6Address] =
     Information.whenNotNull(o1, o2, o3, o4, o5, o6, o7, o8)(apply)
 
+  private val tokenParser = new IP6AddressRepresentation.TokenParser {
+    val Digits = "([0-9a-f]++)(.*)".r
+  }
+
   def opt(x: String): Option[IP6Address] = {
     val allTokens: Option[List[Token]] = x match {
       case Information.Zero() => None
-      case _ => parseTokens(x.toLowerCase, Nil)
+      case _ => tokenParser.parseTokens(x.toLowerCase, Nil)
     }
     val tokens = for {
       ts <- allTokens
@@ -181,33 +186,4 @@ object IP6Address {
   private def makeZeroes(digitsCount: Int): List[Token] =
     ((1 to (RequiredGroupCount - digitsCount)) flatMap { case _ => D("0") :: S :: Nil }).toList
 
-  private def parseTokens(x: String, acc: List[Token]): Option[List[Token]] =
-    nextToken(x) match {
-      case (Some(token), rest) => parseTokens(rest, token :: acc)
-      case (None, rest) if rest.isEmpty => Some(acc)
-      case (None, _) => None
-    }
-
-  private val ColonColon = "::(.*)".r
-  private val Colon = ":(.*)".r
-  private val Digits = "([0-9a-f]++)(.*)".r
-
-  private def nextToken(x: String): (Option[Token], String) = {
-    x match {
-      case ColonColon(rest) => (Some(AB), rest)
-      case Colon(rest) => (Some(S), rest)
-      case Digits(digits, rest) => (Some(D(digits)), rest)
-      case _ => (None, x)
-    }
-  }
-
-  sealed trait Token
-
-  /* The colon separator between octet pairs */
-  case object S extends Token
-
-  /* The abbreviation used to represent a group of zero or more zeroes */
-  case object AB extends Token
-
-  case class D(digits: String) extends Token
 }

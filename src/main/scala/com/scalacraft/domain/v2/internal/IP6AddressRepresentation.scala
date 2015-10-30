@@ -15,6 +15,8 @@
 */
 package com.scalacraft.domain.v2.internal
 
+import scala.util.matching.Regex
+
 /**
  * Create a representation from the fields of an IP6 address.
  */
@@ -103,4 +105,38 @@ object IP6AddressRepresentation {
   def representationWithoutAbbreviation(fields: List[String]): String = fields mkString GroupSeparator
 
   private val GroupSeparator = ":"
+
+  sealed trait Token
+
+  /* The colon separator between octet pairs */
+  case object S extends Token
+
+  /* The abbreviation used to represent a group of zero or more zeroes */
+  case object AB extends Token
+
+  case class D(digits: String) extends Token
+
+  trait TokenParser {
+
+    def parseTokens(x: String, acc: List[Token]): Option[List[Token]] =
+      nextToken(x) match {
+        case (Some(token), rest) => parseTokens(rest, token :: acc)
+        case (None, rest) if rest.isEmpty => Some(acc)
+        case (None, _) => None
+      }
+
+    private val ColonColon = "::(.*)".r
+    private val Colon = ":(.*)".r
+    val Digits: Regex
+
+    private def nextToken(x: String): (Option[Token], String) = {
+      x match {
+        case ColonColon(rest) => (Some(AB), rest)
+        case Colon(rest) => (Some(S), rest)
+        case Digits(digits, rest) => (Some(D(digits)), rest)
+        case _ => (None, x)
+      }
+    }
+  }
+
 }
