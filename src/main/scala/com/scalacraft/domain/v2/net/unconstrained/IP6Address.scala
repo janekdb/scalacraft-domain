@@ -22,8 +22,36 @@ import com.scalacraft.domain.v2.internal.IP6AddressRepresentation.{Token, S, AB,
 import com.scalacraft.domain.v2.net.{IP6Address => Constrained}
 
 /**
- * `IP6Address`
- * TODO: Documentation
+ * An unconstrained `IP6Address` represents an IP6 address that could have missing data or unconstrained
+ * data.
+ *
+ * The address is comprised of a list of unconstrained octet pairs.
+ *
+ * The rules concerning valid string representations for ip6 addresses are taken from http://en.wikipedia.org/wiki/IPv6_address.
+ *
+ * === Pattern Matching ===
+ *
+ * Pattern matching is supported as the following examples demonstrate,
+ * {{{
+ * &qt;01::0006:0010&qt; match {
+ *   case IP6Address(octetPairs) =>
+ *   (octetPairs(0), octetPairs(1), octetPairs(2)) // 0x0001, 0x0000, 0x0010
+ * }
+ *
+ * &qt;7::8&qt; match {
+ *   case IP6Address(octetPairs) => octetPairs // 7, 0, 0, 0, 0, 0, 0, 8
+ * }
+ * }}}
+ *
+ * === Limitations ===
+ *
+ * The special format that allows for a trailing dotted quad for the rightmost two 16 bit fields is not supported.
+ *
+ * As shown in the example above the shortening of groups of zeros with a double colon is recognised.
+ *
+ * A conversion to an option of the constrained version of this class is also available.
+ *
+ * @param octetPairs non-null octet pair list representing this ip6 address. The list can have any size.
  */
 case class IP6Address(
                        octetPairs: List[OctetPair]
@@ -62,6 +90,7 @@ case class IP6Address(
    * @example 0:10:20::dd01:3
    * @example 0:0:0:-1:-2:dd01:3
    * @return A string representation using a colon separator, lowercase hexadecimal digits without leading zeroes when possible
+   *         otherwise None
    */
   def representation: Option[String] = IP6Address.representation(this.octetPairs)
 }
@@ -174,5 +203,4 @@ object IP6Address {
   }
 
   def unapply(candidate: String): Option[List[OctetPair]] = opt(candidate) map (_.octetPairs)
-
 }
