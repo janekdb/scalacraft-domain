@@ -83,10 +83,6 @@ object IP6Address {
 
   import IP6AddressRepresentation.RequiredGroupCount
 
-  private case class Repeated(octetPair: OctetPair, repeatCount: Int)
-
-  private object Sentinel
-
   private def representation(ip6Address: IP6Address): String = {
 
     val s = (op: OctetPair) => OctetPair.`to-Int`(op).formatted("%x")

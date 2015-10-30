@@ -131,8 +131,6 @@ object IP6Address {
           case AB => S :: zeros
           case t => t :: Nil
         }
-      //      // Need to match D [S D}*
-      //      Alternating(octetPairs) <- ss
       }
         yield ss
     // Need to match D [S D}*
@@ -142,7 +140,6 @@ object IP6Address {
       yield IP6Address(octetPairs)
   }
 
-  // TODO: Refactor with constrained version
   private def countAbbreviations(tokens: Seq[Any]) = tokens.count(_ == AB)
 
   private val zero = OctetPair.opt(0)
