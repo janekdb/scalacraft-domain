@@ -15,7 +15,7 @@
 */
 package com.scalacraft.domain.v2.binary.unconstrained
 
-import com.scalacraft.domain.v2.binary.{Octet => ConstrainedOctet}
+import com.scalacraft.domain.v2.binary.{Octet => Constrained}
 import com.scalacraft.domain.v2.internal.Information
 import com.scalacraft.domain.v2.internal.NumericConversions.FromString
 import com.scalacraft.domain.v2.internal.RejectNullConstructorArgument
@@ -77,6 +77,14 @@ import com.scalacraft.domain.v2.internal.RejectNullConstructorArgument
  */
 case class Octet(octet: Option[Int]) {
   RejectNullConstructorArgument(octet, "octet")
+
+  /**
+   * Convert to the constrained version of octet.
+   * @return An constrained instance of octet as a some or none if this instance
+   *         does not convert to a constrained instance
+   */
+  def constrained: Option[Constrained] = octet flatMap Constrained.opt
+
 }
 
 object Octet {
@@ -93,8 +101,8 @@ object Octet {
   @deprecated(since = "2.1.0")
   implicit def `to-Option-String`(octet: Octet): Option[String] = octet.octet.map(_.formatted("%02x"))
 
-  implicit def `to-Option[Octet]`(octet: Octet): Option[ConstrainedOctet] =
-    octet.octet.flatMap(ConstrainedOctet.opt)
+  implicit def `to-Option[Octet]`(octet: Octet): Option[Constrained] =
+    octet.octet.flatMap(Constrained.opt)
 
   /**
    * @param octet A defined octet value

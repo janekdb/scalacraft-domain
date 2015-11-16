@@ -15,6 +15,7 @@
 */
 package com.scalacraft.domain.v2.binary
 
+import com.scalacraft.domain.v2.binary.unconstrained.{Octet => Unconstrained}
 import com.scalacraft.domain.v2.internal.NumericConversions.FromString
 
 /**
@@ -81,9 +82,17 @@ import com.scalacraft.domain.v2.internal.NumericConversions.FromString
  * }}}
  *
  * A conversion to the unconstrained version of this class is also available.
+ *
  * @param octet A valid octet
  */
-case class Octet private(octet: Int)
+case class Octet private(octet: Int) {
+
+  /**
+   * Convert to the unconstrained version of octet.
+   * @return An unconstrained instance of octet
+   */
+  def unconstrained: Unconstrained = Unconstrained(octet)
+}
 
 // TODO: Add trait to allow merge with Port following CountryCode regex example
 object Octet {

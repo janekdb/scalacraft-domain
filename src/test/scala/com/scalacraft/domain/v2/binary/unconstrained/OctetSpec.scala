@@ -159,4 +159,23 @@ class OctetSpec extends FlatSpec with Matchers {
     val otherOpt: Option[Other] = octet
     otherOpt should be(None)
   }
+
+  it should "convert a convertible unconstrained Octet to a constrained Octet" in {
+    val unconstrained = Octet(0xff)
+
+    unconstrained.constrained.value should have(
+      'octet(0xff))
+  }
+
+  private object UnconvertibleOctets {
+    val Negative = Octet(-0x17)
+    val TooLarge = Octet(0xab5)
+    val Undefined = new Octet(None)
+  }
+
+  it should "not convert an unconvertible unconstrained Octet to constrained Octet" in {
+    UnconvertibleOctets.Negative.constrained should be(None)
+    UnconvertibleOctets.TooLarge.constrained should be(None)
+    UnconvertibleOctets.Undefined.constrained should be(None)
+  }
 }

@@ -164,4 +164,10 @@ class OctetSpec extends FlatSpec with Matchers {
     val b = uncons.octet.value
     uncons.octet.value should equal(ValidOctet.Number)
   }
+
+  it should "convert to an unconstrained Octet" in {
+    val constrained = Octet.opt(ValidOctet.Number).value
+    constrained.unconstrained.octet.value should equal(ValidOctet.Number)
+  }
+
 }
