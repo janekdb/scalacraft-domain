@@ -60,6 +60,7 @@
     <properties>
         <scala.version>2.11.7</scala.version>
         <scalatest.version>2.2.4</scalatest.version>
+        <copyright>Copyright 2014 - 2015 Janek Bogucki</copyright>
     </properties>
 
     <dependencies>
@@ -195,6 +196,10 @@
                                     <jvmArg>-Xms64m</jvmArg>
                                     <jvmArg>-Xmx1024m</jvmArg>
                                 </jvmArgs>
+                                <args>
+                                    <arg>-doc-footer</arg>
+                                    <arg>${copyright}</arg>
+                                </args>
                             </configuration>
                         </plugin>
                     </reportPlugins>
