@@ -559,7 +559,7 @@ class IP6AddressSpec extends FlatSpec with Matchers {
     val IncompleteOctetPair = IP6Address(zero :: emptyOctetPair :: two :: Nil)
   }
 
-  it should "not convert unconvertible unconstrained IP6Addresses to a constrained IP6Addresses" in {
+  it should "not convert an unconvertible unconstrained IP6Address to a constrained IP6Address" in {
     UnconvertibleAddresses.TooShort.constrained should be(None)
     UnconvertibleAddresses.TooLong.constrained should be(None)
     UnconvertibleAddresses.IncompleteOctetPair.constrained should be(None)
