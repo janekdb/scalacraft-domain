@@ -197,6 +197,8 @@
                                     <jvmArg>-Xmx1024m</jvmArg>
                                 </jvmArgs>
                                 <args>
+                                    <arg>-doc-root-content</arg>
+                                    <arg>docroot.txt</arg>
                                     <arg>-doc-footer</arg>
                                     <arg>${copyright}</arg>
                                 </args>

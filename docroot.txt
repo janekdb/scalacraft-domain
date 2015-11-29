@@ -1,0 +1,27 @@
+'''ScalaCraft Domain''' is a collection of case classes covering a variety of common data types.
+
+The data types are split across two variations,
+
+ - Constrained
+ - Unconstrained
+
+Unconstrained versions of a data type generally have few restrictions imposed. This
+is useful for capturing data that may require further validation before it can be trusted.
+
+In contrast constrained versions enforce checks appropriate for the data type prior to construction
+which means instances can be relied on to have a known level of correctness.
+
+For example an unconstrained `IP6Address` can have any number of fields while a constrained `IP6Address`
+will always have eight fields.
+
+==Binary==
+
+Data types related to binary representations of numbers.
+
+==Country==
+
+Data types related to coding schemes for countries.
+
+==Net==
+
+Data types related to networking.
