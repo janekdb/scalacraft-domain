@@ -151,6 +151,21 @@ import com.scalacraft.domain.v2.internal.NumericConversions.FromString
 case class OctetPair(hi: Option[Octet], lo: Option[Octet]) {
   RejectNullConstructorArgument(hi, "hi")
   RejectNullConstructorArgument(lo, "lo")
+
+  /**
+   * Convert to the constrained version of octet pair.
+   * @return An constrained instance of octet pair as a some or none if this instance
+   *         does not convert to a constrained instance
+   */
+  def constrained: Option[Constrained] = {
+    for {
+      hiOctet <- hi
+      consHiOctet <- hiOctet.constrained
+      loOctet <- lo
+      consLoOctet <- loOctet.constrained
+      consOctetPair <- Constrained.opt(consHiOctet, consLoOctet)
+    } yield consOctetPair
+  }
 }
 
 object OctetPair {
@@ -171,15 +186,8 @@ object OctetPair {
       (BigInt(hiInt) * HiOctetMultiplier + BigInt(loInt)).formatted("%04x")
     }
 
-  implicit def `to-Option[OctetPair]`(octetPair: OctetPair): Option[Constrained] = {
-    for {
-      hiOctet <- octetPair.hi
-      consHiOctet <- Octet.`to-Option[Octet]`(hiOctet)
-      loOctet <- octetPair.lo
-      consLoOctet <- Octet.`to-Option[Octet]`(loOctet)
-      consOctetPair <- Constrained.opt(consHiOctet, consLoOctet)
-    } yield consOctetPair
-  }
+  @deprecated(since = "2.1.0")
+  implicit def `to-Option[OctetPair]`(octetPair: OctetPair): Option[Constrained] = octetPair.constrained
 
   def opt(x: String): Option[OctetPair] = unapply(x) map { case (hi, lo) => OctetPair(hi, lo) }
 

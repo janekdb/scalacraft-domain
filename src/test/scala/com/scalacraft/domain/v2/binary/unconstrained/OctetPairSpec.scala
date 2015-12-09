@@ -288,4 +288,58 @@ class OctetPairSpec extends FlatSpec with Matchers {
     otherOpt(OctetPair(hi, Octet(Some(-1)))) should be(None)
     otherOpt(OctetPair(hi, Octet(Some(0x100)))) should be(None)
   }
-}
+
+  /* Conversion to constrained */
+
+  it should "have a conversion to constrained OctetPair when the octets are valid" in {
+    val hi = Octet(Some(0xdd))
+    val lo = Octet(Some(0x11))
+    val octetPair = OctetPair(hi, lo)
+    val otherOpt: Option[Constrained] = octetPair.constrained
+    otherOpt.value.lo.octet should be(0x11)
+    otherOpt.value.hi.octet should be(0xdd)
+  }
+
+  it should "have a conversion to constrained OctetPair equal to none when the lo octet has an undefined value" in {
+    val hi = Octet(Some(0xdd))
+    val lo = Octet(None)
+    val octetPair = OctetPair(hi, lo)
+    val otherOpt: Option[Constrained] = octetPair.constrained
+    otherOpt should be(None)
+  }
+
+  it should "have a conversion to constrained OctetPair equal to none when the lo octet is undefined" in {
+    val hi = Some(Octet(Some(0xdd)))
+    val lo = None
+    val octetPair = OctetPair(hi, lo)
+    val otherOpt: Option[Constrained] = octetPair.constrained
+    otherOpt should be(None)
+  }
+
+  it should "have a conversion to constrained OctetPair equal to none when the hi octet has an undefined value" in {
+    val hi = Octet(None)
+    val lo = Octet(Some(0x11))
+    val octetPair = OctetPair(hi, lo)
+    val otherOpt: Option[Constrained] = octetPair.constrained
+    otherOpt should be(None)
+  }
+
+  it should "have a conversion to constrained OctetPair equal to one when the hi octet is undefined" in {
+    val hi = None
+    val lo = Some(Octet(Some(0x11)))
+    val octetPair = OctetPair(hi, lo)
+    val otherOpt: Option[Constrained] = octetPair.constrained
+    otherOpt should be(None)
+  }
+
+  it should "have a conversion to constrained OctetPair equal to none when either octet is out of range" in {
+    val hi = Octet(Some(0xdd))
+    val lo = Octet(Some(0x22))
+    val octetPair = OctetPair(hi, lo)
+    def otherOpt(octetPair: OctetPair): Option[Constrained] = octetPair.constrained
+    otherOpt(OctetPair(hi, lo)) should be('defined)
+    otherOpt(OctetPair(Octet(Some(-1)), lo)) should be(None)
+    otherOpt(OctetPair(Octet(Some(0x100)), lo)) should be(None)
+    otherOpt(OctetPair(hi, Octet(Some(-1)))) should be(None)
+    otherOpt(OctetPair(hi, Octet(Some(0x100)))) should be(None)
+  }}
