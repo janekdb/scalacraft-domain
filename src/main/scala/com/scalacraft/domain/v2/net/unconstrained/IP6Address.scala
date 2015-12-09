@@ -59,14 +59,13 @@ case class IP6Address(
   RejectNullConstructorArgument(octetPairs, "octetPairs")
   RejectNullConstructorArgument.rejectNullElement(octetPairs, "octetPairs")
 
-  // TODO: Add and use OctetPair.constrained
   /**
    * Convert to the constrained version of ip6 address.
    * @return An constrained instance of ip6 address as a some or none if this instance
    *         does not convert to a constrained instance
    */
   def constrained: Option[Constrained] = {
-    val constrainedOctetPairs: List[Option[ConstrainedOctetPair]] = octetPairs map OctetPair.`to-Option[OctetPair]`
+    val constrainedOctetPairs: List[Option[ConstrainedOctetPair]] = octetPairs map (_.constrained)
     type C = ConstrainedOctetPair
     for {
       Some(o1: C) :: Some(o2: C) :: Some(o3: C) :: Some(o4: C) :: Some(o5: C) :: Some(o6: C) :: Some(o7: C) :: Some(o8: C) :: Nil <- Some(constrainedOctetPairs)

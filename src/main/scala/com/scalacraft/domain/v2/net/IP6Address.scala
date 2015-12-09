@@ -58,12 +58,11 @@ case class IP6Address private(
                                field8: OctetPair
                                ) {
 
-  // TODO: Add and use OctetPair.unconstrained
   /**
    * Convert to the unconstrained version of ip6 address.
    * @return An unconstrained instance of ip6 address
    */
-  def unconstrained: Unconstrained = new Unconstrained(fields map OctetPair.`to-OctetPair`)
+  def unconstrained: Unconstrained = new Unconstrained(fields map( _.unconstrained))
 
   /**
    * Provide a string representation of this ip6 address in RFC5952 recommended form.
