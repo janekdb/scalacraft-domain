@@ -101,8 +101,8 @@ object Octet {
   @deprecated(since = "2.1.0")
   implicit def `to-Option-String`(octet: Octet): Option[String] = octet.octet.map(_.formatted("%02x"))
 
-  implicit def `to-Option[Octet]`(octet: Octet): Option[Constrained] =
-    octet.octet.flatMap(Constrained.opt)
+  @deprecated(since = "2.1.0")
+  implicit def `to-Option[Octet]`(octet: Octet): Option[Constrained] = octet.constrained
 
   /**
    * @param octet A defined octet value

@@ -113,7 +113,8 @@ object Octet {
    * @param octet The instance to convert
    * @return An unconstrained instance of octet
    */
-  implicit def `to-Octet`(octet: Octet): unconstrained.Octet = unconstrained.Octet(Some(octet.octet))
+  @deprecated(since = "2.1.0")
+  implicit def `to-Octet`(octet: Octet): unconstrained.Octet = octet.unconstrained
 
   private val HexPat = "^([0-9a-f]{1,2})$".r
 
