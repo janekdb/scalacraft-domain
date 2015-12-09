@@ -17,6 +17,8 @@ package com.scalacraft.domain.v2.binary
 
 import com.scalacraft.domain.v2.internal.Information
 
+import com.scalacraft.domain.v2.binary.unconstrained.{OctetPair => Unconstrained}
+
 /**
  * An `OctetPair` represents two [[Octet]]s.
  *
@@ -92,7 +94,14 @@ import com.scalacraft.domain.v2.internal.Information
  * @param hi A valid octet representing the high byte
  * @param lo A valid octet representing the low byte
  */
-case class OctetPair private(hi: Octet, lo: Octet)
+case class OctetPair private(hi: Octet, lo: Octet) {
+
+  /**
+   * Convert to the unconstrained version of octet pair.
+   * @return An unconstrained instance of octet pair
+   */
+  def unconstrained: Unconstrained = Unconstrained(hi.unconstrained, lo.unconstrained)
+}
 
 object OctetPair {
 
@@ -113,8 +122,8 @@ object OctetPair {
    * @param octetPair The instance to convert
    * @return An unconstrained instance of octet pair
    */
-  implicit def `to-OctetPair`(octetPair: OctetPair): unconstrained.OctetPair =
-    unconstrained.OctetPair(octetPair.hi, octetPair.lo)
+  @deprecated(since = "2.1.0")
+  implicit def `to-OctetPair`(octetPair: OctetPair): Unconstrained = octetPair.unconstrained
 
   def opt(x: Int): Option[OctetPair] = unapply(x) map { case (hi, lo) => OctetPair(hi, lo) }
 
