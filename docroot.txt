@@ -14,6 +14,8 @@ which means instances can be relied on to have a known level of correctness.
 For example an unconstrained `IP6Address` can have any number of fields while a constrained `IP6Address`
 will always have eight fields.
 
+----
+
 ==Binary==
 
 Data types related to binary representations of numbers.
