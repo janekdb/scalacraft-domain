@@ -339,6 +339,7 @@ The notation [m, n] denotes the inclusive range m <= x <= n. For example [0, 655
 - [x] Net: Add ip4 address
 - [x] Net: Add ip6 address
 - [x] Net: Add port
+- [ ] Net: Add MAC
 - [ ] Payment: PAN
 - [ ] Payment: CVV
 - [ ] Payment: Expiry date
