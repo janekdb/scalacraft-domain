@@ -22,7 +22,7 @@ import org.scalatest.Matchers
 
 import org.scalatest.OptionValues._
 
-import com.scalacraft.domain.v2.net.unconstrained.{IP4Address => Other}
+import com.scalacraft.domain.v2.net.unconstrained.{IP4Address => Unconstrained}
 
 /**
  * Specification for `IP4Adress`
@@ -134,15 +134,26 @@ class IP4AddressSpec extends FlatSpec with Matchers {
       ValidDottedQuad._3,
       ValidDottedQuad._4
     )
-    val s: String = ip4Opt.get
+    val s: String = ip4Opt.value
     /* n.n.n.n */
     s should equal(FormattedValidDottedQuad)
   }
 
   it should "implicitly convert to an unconstrained IP4Address" in {
-    val ipa: IP4Address = IP4Address.opt(88, 0, 2, 119).get
-    val other: Other = ipa
+    val ipa: IP4Address = IP4Address.opt(88, 0, 2, 119).value
+    val other: Unconstrained = ipa
     other should have(
+      'byte1(88),
+      'byte2(0),
+      'byte3(2),
+      'byte4(119)
+    )
+  }
+
+  it should "convert to an unconstrained IP4Address" in {
+    val constrained = IP4Address.opt(88, 0, 2, 119).value
+    val unconstrained: Unconstrained = constrained.unconstrained
+    unconstrained should have(
       'byte1(88),
       'byte2(0),
       'byte3(2),

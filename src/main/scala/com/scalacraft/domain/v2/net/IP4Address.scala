@@ -16,7 +16,7 @@
 package com.scalacraft.domain.v2.net
 
 import com.scalacraft.domain.v2.internal.NumericConversions.FromString
-import com.scalacraft.domain.v2.net.unconstrained.{IP4Address => UnconstrainedIP4Address}
+import com.scalacraft.domain.v2.net.unconstrained.{IP4Address => Unconstrained}
 
 /**
  * An `IP4Address` represents an IP4 address.
@@ -46,6 +46,12 @@ import com.scalacraft.domain.v2.net.unconstrained.{IP4Address => UnconstrainedIP
  */
 case class IP4Address private(byte1: Int, byte2: Int, byte3: Int, byte4: Int) {
   private def tuple = (byte1, byte2, byte3, byte4)
+
+  /**
+    * Convert to the unconstrained version of ip4 address.
+    * @return An unconstrained instance of ip4 address
+    */
+  def unconstrained: Unconstrained = Unconstrained(byte1, byte2, byte3, byte4)
 }
 
 object IP4Address {
@@ -59,8 +65,8 @@ object IP4Address {
   implicit def `to-String`(ip4Address: IP4Address): String =
     ip4Address.tuple.productIterator.mkString(".")
 
-  implicit def `to-IP4Address`(ip4Address: IP4Address): UnconstrainedIP4Address =
-    UnconstrainedIP4Address(ip4Address.byte1, ip4Address.byte2, ip4Address.byte3, ip4Address.byte4)
+  @deprecated(since = "2.1.0")
+  implicit def `to-IP4Address`(ip4Address: IP4Address): Unconstrained = ip4Address.unconstrained
 
   private val ValidRange = Range(0, 255 + 1)
 

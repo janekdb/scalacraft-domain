@@ -16,10 +16,7 @@
 package com.scalacraft.domain.v2.net.unconstrained
 
 import com.scalacraft.domain.v2.internal.NumericConversions.FromString
-import com.scalacraft.domain.v2.net.{IP4Address => ConstrainedIP4Address}
-
-import scala.util.control.Exception._
-import scala.util.matching.Regex
+import com.scalacraft.domain.v2.net.{IP4Address => Constrained}
 
 /**
  * An `IP4Address` represents an IP4 address.
@@ -49,6 +46,13 @@ import scala.util.matching.Regex
  */
 case class IP4Address(byte1: Int, byte2: Int, byte3: Int, byte4: Int) {
   private def tuple = (byte1, byte2, byte3, byte4)
+
+  /**
+    * Convert to the constrained version of ip4 address.
+    * @return An constrained instance of ip4 address as a some or none if this instance
+    *         does not convert to a constrained instance
+    */
+  def constrained: Option[Constrained] = Constrained.opt(byte1, byte2, byte3, byte4)
 }
 
 object IP4Address {
@@ -62,8 +66,9 @@ object IP4Address {
   implicit def `to-String`(ip4Address: IP4Address): String =
     ip4Address.tuple.productIterator.mkString(".")
 
-  implicit def `to-Option[IP4Address]`(ip4Address: IP4Address): Option[ConstrainedIP4Address] =
-    ConstrainedIP4Address.opt(ip4Address.byte1, ip4Address.byte2, ip4Address.byte3, ip4Address.byte4)
+  @deprecated(since = "2.1.0")
+  implicit def `to-Option[IP4Address]`(ip4Address: IP4Address): Option[Constrained] =
+    ip4Address.constrained
 
   private val DottedQuadPat = {
     val digits = "(-?[\\d]++)"

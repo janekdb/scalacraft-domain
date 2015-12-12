@@ -20,7 +20,7 @@ import org.scalatest.FlatSpec
 import org.scalatest.Matchers
 import org.scalatest.OptionValues._
 
-import com.scalacraft.domain.v2.net.{IP4Address => Other}
+import com.scalacraft.domain.v2.net.{IP4Address => Constrained}
 
 /**
  * Specification for an unconstrained `IP4AddressSpec`
@@ -57,7 +57,7 @@ class IP4AddressSpec extends FlatSpec with Matchers {
 
   it should "implicitly convert to a constrained IP4AddressSpec when the address is valid" in {
     val ipa = IP4Address(1, 2, 4, 5)
-    val otherOpt: Option[Other] = ipa
+    val otherOpt: Option[Constrained] = ipa
     otherOpt.value should have(
       'byte1(1),
       'byte2(2),
@@ -68,7 +68,26 @@ class IP4AddressSpec extends FlatSpec with Matchers {
 
   it should "implicitly convert to None when address is invalid" in {
     val ipa = IP4Address(999, 0, 0, 0)
-    val otherOpt: Option[Other] = ipa
+    val otherOpt: Option[Constrained] = ipa
+    otherOpt should be(None)
+  }
+
+  /* Conversion to constrained */
+
+  it should "have a conversion to a constrained IP4AddressSpec when the address is valid" in {
+    val ipa = IP4Address(1, 2, 4, 5)
+    val otherOpt: Option[Constrained] = ipa.constrained
+    otherOpt.value should have(
+      'byte1(1),
+      'byte2(2),
+      'byte3(4),
+      'byte4(5)
+    )
+  }
+
+  it should "have a conversion to None when address is invalid" in {
+    val ipa = IP4Address(999, 0, 0, 0)
+    val otherOpt: Option[Constrained] = ipa.constrained
     otherOpt should be(None)
   }
 
