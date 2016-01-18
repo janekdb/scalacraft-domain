@@ -201,6 +201,8 @@
                                     <arg>docroot.txt</arg>
                                     <arg>-doc-footer</arg>
                                     <arg>${copyright}</arg>
+                                    <arg>-skip-packages</arg>
+                                    <arg>com.scalacraft.domain.v2.internal</arg>
                                 </args>
                             </configuration>
                         </plugin>
