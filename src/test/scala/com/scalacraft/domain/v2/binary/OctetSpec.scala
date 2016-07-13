@@ -21,8 +21,8 @@ import org.scalatest.{FlatSpec, Matchers}
 import org.scalatest.OptionValues._
 
 /**
- * Specification for `Octet`
- */
+  * Specification for `Octet`
+  */
 class OctetSpec extends FlatSpec with Matchers {
 
   private object ValidOctet {
@@ -107,6 +107,23 @@ class OctetSpec extends FlatSpec with Matchers {
 
   it should "not allow direct instantiation" in {
     "new Octet(55)" shouldNot compile
+  }
+
+  // SCDM-61
+  private val SCDM61Fixed = false
+
+  it should "not allow instantiation via the companion object apply method" in {
+    /* error: constructor Octet in class Octet cannot be accessed in class OctetSpec */
+    // Octet(55)
+    SCDM61Fixed && {
+      "Octet(55)" shouldNot compile; true
+    }
+    SCDM61Fixed && {
+      "Octet(-1)" shouldNot compile; true
+    }
+    SCDM61Fixed && {
+      "Octet(55): Octet" shouldNot typeCheck; true
+    }
   }
 
   /* Pattern Matching */
