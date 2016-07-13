@@ -126,6 +126,16 @@ class OctetSpec extends FlatSpec with Matchers {
     }
   }
 
+  // SCDM-62
+  private val SCDM62Fixed = false
+
+  it should "not allow instantiation via the copy method" in {
+    SCDM62Fixed && {
+      "Octet.opt(55).get.copy(octet = -1)" shouldNot compile; true
+    }
+    Octet.opt(55).get.copy(octet = -1).octet should equal(-1)
+  }
+
   /* Pattern Matching */
 
   it should "be usable in pattern matching" in {
